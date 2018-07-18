@@ -1,0 +1,12 @@
+# xml style snippets
+snippet tag
+alias <
+    <${1:tag}>${2:text}</$1>
+snippet multiline-tag
+alias >
+    <${1:tag}>
+        ${2:text}
+    </$1>
+snippet img
+alias img
+    <img class='center' width='${2:widht}' src='img/${1:path}'/>$3
