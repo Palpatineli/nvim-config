@@ -27,6 +27,7 @@
         call dein#add('Konfekt/FastFold')
         call dein#add('airblade/vim-gitgutter')
         call dein#add('tpope/vim-fugitive')
+        call dein#add('sakhnik/nvim-gdb', {'on_ft': ['c', 'cpp', 'rust']})
         call dein#add('jsfaint/gen_tags.vim')
         call dein#add('morhetz/gruvbox')
         call dein#add('sjl/gundo.vim')
@@ -39,13 +40,8 @@
         call dein#add('lepture/vim-jinja', {'on_ft': ['html', 'jinja']})
         call dein#add('elzr/vim-json', {'on_ft': ['log', 'json']})
         call dein#add('udalov/kotlin-vim', {'on_ft': ['kotlin']})
-        call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh', 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r']})
-        " { python specific to replace palantir's lsp
-            call dein#add('w0rp/ale', {'on_ft': ['python', 'json', 'sql']})
-            call dein#add('maximbaz/lightline-ale', {'on_ft': ['python', 'json', 'sql']})
-            call dein#add('zchee/deoplete-jedi', {'on_ft': ['python']})
-            call dein#add('davidhalter/jedi-vim', {'on_ft': ['python']})
-        " }
+        call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',
+            \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'python', 'javascript']})
         call dein#add('itchyny/lightline.vim')
         call dein#add('Palpatineli/lightline-lsc-nvim', {'on_ft': ['c', 'cpp', 'rust', 'lua']})
         call dein#add('embear/vim-localvimrc')
@@ -56,7 +52,6 @@
         call dein#add('vim-pandoc/vim-pandoc', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('vim-pandoc/vim-pandoc-syntax', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('vim-pandoc/vim-pandoc-after', {'on_ft': ['markdown', 'txt', 'pandoc']})
-        " call dein#add('vyzyv/vimpyter', {'on_ft': ['ipynb'], 'build': {'linux': 'gksudo pip3 install notedown -U', 'windows': 'python3 -m pip install notedown -U'}})
         call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
         call dein#add('jalvesaq/Nvim-R', {'on_ft': ['r', 'rnoweb']})
         call dein#add('janko-m/vim-test')
@@ -95,6 +90,7 @@
 
     filetype indent plugin on
     set updatetime=100
+    set hidden
     syntax enable
     set autochdir " set working directory to file directory
     " Caching {
@@ -116,16 +112,6 @@
         set guifont=DejaVuSansMono\ NF\ 9
         set printfont=DejaVuSansMono\ NF\ 9
     endif
-    "if has('statusline')  " use lightline instead
-        "set laststatus=2
-        "set statusline=%<%f\  " filename
-        "set statusline+=%w%h%m%r  " status info
-        ""set statusline+=%{easygit#status()}  " git branch from fugitive
-        "set statusline+=%#warningmsg#
-        "set statusline+=\ [%{&ff}/%Y]  " filetype
-        "set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " nagvigation
-    "endif
-
     set smartcase " case insensitive search
     set fdm=syntax " folding by syntax for general files
     "set foldlevelstart=20 " starts with everything unfolded (because you have voom and ctags)
@@ -286,13 +272,14 @@
           \ 'active': {
               \'left': [ [ 'mode', 'paste' ],
               \          [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-              \'right': [ [ 'lineinfo' ],
+              \'right': [ [ 'lineinfo', 'lscinfo' ],
               \           [ 'percent' ],
               \           [ 'filetype'] ]
           \ },
           \ 'component_function': {
               \ 'filename': 'LightLineFilename',
               \ 'gitbranch': 'fugitive#head',
+              \ 'lscinfo': 'LanguageClient#statusLine'
           \ }
         \ }
         function! LightLineFilename()
@@ -312,54 +299,6 @@
             endfor
             return name
         endfunction
-    "}
-    "{ ALE
-    function! SetAleOptions()
-        nnoremap <silent> <c-.> <Plug>(ale_next_wrap)
-        nnoremap <silent> <c-,> <Plug>(ale_previsou_wrap)
-        let g:ale_set_loclist = 0
-        let g:ale_set_quickfix = 1
-        let g:ale_open_list = 0
-        let g:ale_list_window_size = 5
-    "{ lightline-ale
-        let g:lightline#ale#indicator_checking = "\ufbab"
-        let g:lightline#ale#indicator_warnings = "\uf071"
-        let g:lightline#ale#indicator_errors = "\uf05e"
-        let g:lightline#ale#indicator_ok = "\uf00c"
-        let g:lightline.active.right = [['linter_checking', 'linter_errors', 'linter_ok', 'linter_warnings']] + g:lightline.active.right
-        let g:lightline.component_expand = {
-        \  'linter_checking': 'lightline#ale#checking',
-        \  'linter_errors': 'lightline#ale#errors',
-        \  'linter_ok': 'lightline#ale#ok',
-        \  'linter_warnings': 'lightline#ale#warnings',
-        \ }
-        let g:lightline.component_type = {
-        \     'linter_checking': 'warning',
-        \     'linter_errors': 'error',
-        \     'linter_ok': 'left',
-        \     'linter_warnings': 'warning',
-        \ }
-    "}
-    endfunction
-    autocmd Filetype python,json,sql call SetAleOptions()
-    function! SetLightLSC()
-        let g:LanguageClient_autoStart = 1
-        let g:lightline#lsc#indicator_checking = "\ufbab"
-        let g:lightline#lsc#indicator_errors = "\uf05e"
-        let g:lightline#lsc#indicator_ok = "\uf00c"
-        let g:lightline.active.right = [['linter_checking', 'linter_errors', 'linter_ok']] + g:lightline.active.right
-        let g:lightline.component_expand = {
-        \     'linter_checking': 'lightline#lsc#notStarted',
-        \     'linter_errors': 'lightline#lsc#errors',
-        \     'linter_ok': 'lightline#lsc#ok',
-        \ }
-        let g:lightline.component_type = {
-        \     'linter_checking': 'warning',
-        \     'linter_errors': 'error',
-        \     'linter_ok': 'left',
-        \ }
-    endfunction
-    autocmd Filetype c,cpp,rust,lua,r call SetLightLSC()
     "}
     " Denite
     " {
@@ -381,7 +320,6 @@
         call denite#custom#var('file/rec/git', 'command', ['git', 'ls-files', '--exclude-standard', ':/'])
         nnoremap <silent> <leader>f :Denite `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`<CR>
         hi def link MyTodo Todo
-        "nnoremap <leader>f :DeniteProjectDir -buffer-name=project file<cr>
         nnoremap <leader>a :Denite -buffer-name=tags tag<cr>
         nnoremap <leader>d :Denite -buffer-name=tags tag -input=`expand('<cword>')` -mode=normal<cr>
         nnoremap <leader>b :Denite -buffer-name=buffer buffer -mode=normal<cr>
@@ -404,27 +342,31 @@
     let g:deoplete#enable_at_startup=1
     set completeopt-=preview
     autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-    " deoplete-rust
-    set hidden
-    "let g:deoplete#sources#rust#racer_binary = expand('~/.cargo/bin/racer')
-    "let g:deoplete#sources#rust#rust_source_path = expand('~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src')
-    " language client
-    let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'cpp': ['clangd-7'],
-    \ 'c': ['clangd-7'],
-    \ 'lua': ['lua-lsp', '--config', '~/.config/lualsprc'],
-    \ 'r': ['R', '--quiet', '--slave', '-e', 'languageserver::run()'],
-    \ }
-    let g:LanguageClient_selectionUI = "location-list"
-    let g:LanguageClient_diagnosticsEnable = 1
-    let g:LanguageClient_loggingLevel = 'DEBUG'
-    set formatexpr=LanguageClient_textDocument_rangeFormatting()
-    nnoremap <silent> K :call LanguageClient_textDocument_hover()<cr>
-    nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
-    nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<cr>
-    nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<cr>
-    nnoremap <silent> == :call LanguageClient_textDocument_formatting()<cr>
+    " LSP {
+        let g:LanguageClient_serverCommands = {
+        \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+        \ 'cpp': ['clangd-7'],
+        \ 'c': ['clangd-7'],
+        \ 'lua': ['lua-lsp', '--config', '~/.config/lualsprc'],
+        \ 'r': ['R', '--quiet', '--slave', '-e', 'languageserver::run()'],
+        \ 'python': ['pyls'],
+        \ 'javascript': ['typescript-language-server', '--stdio']
+        \ }
+
+        let g:LanguageClient_autoStart = 1
+        let g:LanguageClient_selectionUI = "location-list"
+        let g:LanguageClient_diagnosticsEnable = 1
+        let g:LanguageClient_loggingLevel = 'DEBUG'
+        set formatexpr=LanguageClient_textDocument_rangeFormatting()
+        nnoremap <silent> K :call LanguageClient_textDocument_hover()<cr>
+        nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
+        nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<cr>
+        nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<cr>
+        nnoremap <silent> == :call LanguageClient_textDocument_formatting()<cr>
+        " Denite LSP integration {
+            nnoremap <leader>O :Denite -buffer-name=references references<cr>    
+        " }
+    " } LSP
     " local-vimrc
     let g:localvimrc_sandbox = 0
     let g:localvimrc_ask = 0
@@ -452,11 +394,6 @@
          \ pumvisible() ? "\<C-n>" :
          \ neosnippet#expandable_or_jumpable() ?
          \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-        " For conceal markers.
-        if has('conceal')
-          set conceallevel=2 concealcursor=niv
-        endif
         " Enable snipMate compatibility feature.
         let g:neosnippet#enable_snipmate_compatibility = 1
     " }

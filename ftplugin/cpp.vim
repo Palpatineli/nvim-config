@@ -1,3 +1,4 @@
 set foldmethod=syntax
+let g:neobugger_leader = '['
 setlocal cindent cino=j1,(0,ws,Ws
-map <buffer> <F5> :wa<CR>:!clang % -o %< -Ofast -stdlib=libstdc++ -std=c++11 -pthread<CR>
+map <buffer> <F5> :wa<CR>:!clang-7 % -o %< -Ofast -lstdc++ -std=c++17 -pthread<CR>
