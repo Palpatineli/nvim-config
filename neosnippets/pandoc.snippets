@@ -1,0 +1,26 @@
+snippet head
+---
+title: ${1:Title}
+date: `!v strftime("%b %Y")`
+bibliography: `echo $HOME`${2:/Dropbox/Paper/library.bib}
+csl: `echo $HOME`${3:/.pandoc/zotero-jcn.csl}
+...
+endsnippet
+
+snippet note
+<aside class="notes">
+${1:note}
+</aside>
+endsnippet
+
+snippet doc
+<!-- ${1:comment} -->
+endsnippet
+
+snippet todo
+<!-- TODO: ${1:comment} -->
+endsnippet
+
+snippet fig
+![${1:caption}. (${2:ref})](img/${3:figname})
+endsnippet

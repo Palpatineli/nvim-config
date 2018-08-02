@@ -15,14 +15,11 @@
     if dein#load_state(g:dein_plugin_dir)
         call dein#begin(g:dein_plugin_dir)
         call dein#add(g:dein_dir)
-        call dein#add('craigemery/vim-autotag')
         call dein#add('chrisbra/csv.vim', {'on_ft': ['csv', 'tsv']})
         call dein#add('Raimondi/delimitMate')
         call dein#add('wsdjeg/dein-ui.vim')
         call dein#add('Shougo/denite.nvim')
         call dein#add('neoclide/denite-git')
-        call dein#add('Shougo/deoplete.nvim')
-        call dein#add('Shougo/echodoc.vim')
         call dein#add('mattn/emmet-vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Konfekt/FastFold')
         call dein#add('airblade/vim-gitgutter')
@@ -32,7 +29,7 @@
         call dein#add('morhetz/gruvbox')
         call dein#add('sjl/gundo.vim')
         call dein#add('othree/html5.vim', {'on_ft': ['html', 'txt', 'pandoc']})
-        call dein#add('nathanaelkane/vim-indent-guides')
+        call dein#add('Yggdroot/indentLine')
         call dein#add('bfredl/nvim-ipy', {'on_ft': ['python']})
         "call dein#add('BurningEther/iron.nvim', {'on_ft': ['python']})  " in case nvim-ipy doesn't work
         call dein#add('pangloss/vim-javascript', {'on_ft': ['javascript', 'json']})
@@ -44,8 +41,11 @@
         call dein#add('itchyny/lightline.vim')
         call dein#add('embear/vim-localvimrc')
         call dein#add('lazywei/vim-matlab', {'on_ft': ['mat', 'matlab']})
-        call dein#add('Shougo/neosnippet.vim')
-        call dein#add('Shougo/neosnippet-snippets')
+        call dein#add('ncm2/ncm2')
+        call dein#add('ncm2/ncm2-bufword')
+        call dein#add('ncm2/ncm2-path')
+        call dein#add('ncm2/ncm2-ultisnips')
+        call dein#add('SirVer/ultisnips')
         call dein#add('Shougo/neoyank.vim')
         call dein#add('scrooloose/nerdcommenter')
         call dein#add('jceb/vim-orgmode', {'on_ft': ['org']})
@@ -59,6 +59,7 @@
         call dein#add('tmhedberg/SimpylFold', {'on_ft': ['python']})
         call dein#add('cespare/vim-toml', {'on_ft': ['r', 'toml']})
         call dein#add('tomtom/tlib_vim')
+        call dein#add('roxma/nvim-yarp')
         call dein#end()
         call dein#save_state()
     endif
@@ -337,10 +338,24 @@
     noremap <leader>u :GundoToggle<CR>
     " multiple-cursors
     vnoremap <leader>s :MultipleCursorsFind
-    " Deoplete
-    let g:deoplete#enable_at_startup=1
-    set completeopt-=preview
-    autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+    " NCM2
+    autocmd BufEnter * call ncm2#enable_for_buffer()
+    set completeopt=noinsert,menuone,noselect
+    set shortmess+=c
+    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    au User Ncm2Plugin call ncm2#register_source({
+        \ 'name' : 'css',
+        \ 'priority': 9, 
+        \ 'subscope_enable': 1,
+        \ 'scope': ['css','scss'],
+        \ 'mark': 'css',
+        \ 'word_pattern': '[\w\-]+',
+        \ 'complete_pattern': ':\s*',
+        \ 'on_complete': ['ncm2#on_complete#delay', 180,
+        \                 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
+        \ })
     " LSP {
         let g:LanguageClient_serverCommands = {
         \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
@@ -366,7 +381,15 @@
         " Denite LSP integration {
             nnoremap <leader>O :Denite -buffer-name=references references<cr>    
         " }
+        let g:LanguageClient_completionPreferTextEdit=1
     " } LSP
+    " ultisnips
+    imap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
+    let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/neosnippets']
+    let g:UltiSnipsExpandTrigger="<c-j>"
+    let g:UltiSnipsJumpForwardTrigger = "<c-j>"
+    let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+    let g:UltiSnipsRemoveSelectModeMappings = 0
     " local-vimrc
     let g:localvimrc_sandbox = 0
     let g:localvimrc_ask = 0
@@ -380,27 +403,10 @@
     let g:loaded_gentags#gtags = 1
     let g:gen_tags#ctags_auto_gen = 1
     let g:gen_tags#ctags_prune = 1
-    " neosnippet
-    " {
-        " Plugin key-mappings.
-        " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-        imap <C-j>     <Plug>(neosnippet_expand_or_jump)
-        smap <C-j>     <Plug>(neosnippet_expand_or_jump)
-        xmap <C-j>     <Plug>(neosnippet_expand_target)
-
-        " SuperTab like snippets behavior.
-        " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-        imap <expr><TAB>
-         \ pumvisible() ? "\<C-n>" :
-         \ neosnippet#expandable_or_jumpable() ?
-         \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-        " Enable snipMate compatibility feature.
-        let g:neosnippet#enable_snipmate_compatibility = 1
-    " }
     " echodoc
     let g:echodoc_enable_at_startup = 1
-    " indent guides
-    let g:indent_guides_enable_on_vim_startup = 1
-    hi IndentGuidesOdd  guibg='#ebdbb2'
-    hi IndentGuidesEven guibg='#fbf1c7'
+    " indent line
+    let g:indentLine_setColors = 0
+    let g:indentLine_char = '▏'
+    let g:indentLine_enabled = 1
 " }
