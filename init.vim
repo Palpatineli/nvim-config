@@ -32,8 +32,7 @@
         call dein#add('morhetz/gruvbox')
         call dein#add('sjl/gundo.vim')
         call dein#add('othree/html5.vim', {'on_ft': ['html', 'txt', 'pandoc']})
-        call dein#add('Shougo/neosnippet.vim')
-        call dein#add('Shougo/neosnippet-snippets')
+        call dein#add('nathanaelkane/vim-indent-guides')
         call dein#add('bfredl/nvim-ipy', {'on_ft': ['python']})
         "call dein#add('BurningEther/iron.nvim', {'on_ft': ['python']})  " in case nvim-ipy doesn't work
         call dein#add('pangloss/vim-javascript', {'on_ft': ['javascript', 'json']})
@@ -45,6 +44,8 @@
         call dein#add('itchyny/lightline.vim')
         call dein#add('embear/vim-localvimrc')
         call dein#add('lazywei/vim-matlab', {'on_ft': ['mat', 'matlab']})
+        call dein#add('Shougo/neosnippet.vim')
+        call dein#add('Shougo/neosnippet-snippets')
         call dein#add('Shougo/neoyank.vim')
         call dein#add('scrooloose/nerdcommenter')
         call dein#add('jceb/vim-orgmode', {'on_ft': ['org']})
@@ -398,4 +399,8 @@
     " }
     " echodoc
     let g:echodoc_enable_at_startup = 1
+    " indent guides
+    let g:indent_guides_enable_on_vim_startup = 1
+    hi IndentGuidesOdd  guibg='#ebdbb2'
+    hi IndentGuidesEven guibg='#fbf1c7'
 " }

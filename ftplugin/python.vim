@@ -14,7 +14,7 @@
 
     let g:ipy_set_ft = 1
     imap <silent> <C-F> <Plug>(IPy-Complete)
-    map <silent> <leader>R  <Plug>(IPy-Run)
+    vmap <silent> <leader>R  <Plug>(IPy-Run)
     map <leader>?  <Plug>(IPy-WordObjInfo)
     map <silent> <F7>  :IPython<cr>
     map <F9>  <Plug>(IPy-Terminate)
