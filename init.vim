@@ -41,21 +41,19 @@
         call dein#add('elzr/vim-json', {'on_ft': ['log', 'json']})
         call dein#add('udalov/kotlin-vim', {'on_ft': ['kotlin']})
         call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',
-            \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'python', 'javascript']})
+            \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'python', 'javascript', 'dot']})
         call dein#add('itchyny/lightline.vim')
-        call dein#add('Palpatineli/lightline-lsc-nvim', {'on_ft': ['c', 'cpp', 'rust', 'lua']})
         call dein#add('embear/vim-localvimrc')
         call dein#add('lazywei/vim-matlab', {'on_ft': ['mat', 'matlab']})
         call dein#add('Shougo/neoyank.vim')
         call dein#add('scrooloose/nerdcommenter')
-        call dein#add('moll/vim-node', {'on_ft': ['javascript']})
+        call dein#add('jceb/vim-orgmode', {'on_ft': ['org']})
         call dein#add('vim-pandoc/vim-pandoc', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('vim-pandoc/vim-pandoc-syntax', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('vim-pandoc/vim-pandoc-after', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
         call dein#add('jalvesaq/Nvim-R', {'on_ft': ['r', 'rnoweb']})
         call dein#add('janko-m/vim-test')
-        call dein#add('rust-lang/rust.vim', {'on_ft': ['rust']})
         call dein#add('goldfeld/vim-seek')
         call dein#add('tmhedberg/SimpylFold', {'on_ft': ['python']})
         call dein#add('cespare/vim-toml', {'on_ft': ['r', 'toml']})
@@ -350,7 +348,8 @@
         \ 'lua': ['lua-lsp', '--config', '~/.config/lualsprc'],
         \ 'r': ['R', '--quiet', '--slave', '-e', 'languageserver::run()'],
         \ 'python': ['pyls'],
-        \ 'javascript': ['typescript-language-server', '--stdio']
+        \ 'javascript': ['typescript-language-server', '--stdio'],
+        \ 'dot': ["dot-language-server", "--stdio"],
         \ }
 
         let g:LanguageClient_autoStart = 1
