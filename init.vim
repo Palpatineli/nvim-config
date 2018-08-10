@@ -17,14 +17,12 @@
         call dein#add(g:dein_dir)
         call dein#add('chrisbra/csv.vim', {'on_ft': ['csv', 'tsv']})
         call dein#add('Raimondi/delimitMate')
-        call dein#add('wsdjeg/dein-ui.vim')
         call dein#add('Shougo/denite.nvim')
         call dein#add('neoclide/denite-git')
         call dein#add('mattn/emmet-vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Konfekt/FastFold')
         call dein#add('airblade/vim-gitgutter')
         call dein#add('tpope/vim-fugitive')
-        call dein#add('sakhnik/nvim-gdb', {'on_ft': ['c', 'cpp', 'rust']})
         call dein#add('jsfaint/gen_tags.vim')
         call dein#add('morhetz/gruvbox')
         call dein#add('sjl/gundo.vim')
@@ -32,10 +30,7 @@
         call dein#add('Yggdroot/indentLine')
         call dein#add('bfredl/nvim-ipy', {'on_ft': ['python']})
         "call dein#add('BurningEther/iron.nvim', {'on_ft': ['python']})  " in case nvim-ipy doesn't work
-        call dein#add('pangloss/vim-javascript', {'on_ft': ['javascript', 'json']})
-        call dein#add('lepture/vim-jinja', {'on_ft': ['html', 'jinja']})
         call dein#add('elzr/vim-json', {'on_ft': ['log', 'json']})
-        call dein#add('udalov/kotlin-vim', {'on_ft': ['kotlin']})
         call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',
             \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'python', 'javascript', 'dot']})
         call dein#add('itchyny/lightline.vim')
@@ -48,12 +43,10 @@
         call dein#add('SirVer/ultisnips')
         call dein#add('Shougo/neoyank.vim')
         call dein#add('scrooloose/nerdcommenter')
-        call dein#add('jceb/vim-orgmode', {'on_ft': ['org']})
         call dein#add('vim-pandoc/vim-pandoc', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('vim-pandoc/vim-pandoc-syntax', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('vim-pandoc/vim-pandoc-after', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
-        call dein#add('jalvesaq/Nvim-R', {'on_ft': ['r', 'rnoweb']})
         call dein#add('janko-m/vim-test')
         call dein#add('goldfeld/vim-seek')
         call dein#add('tmhedberg/SimpylFold', {'on_ft': ['python']})
@@ -250,8 +243,8 @@
     "}
     " bibpdf
     "{
-        set path+=~/Dropbox/Paper/comment  " comment folder to jump to
-        set path+=~/Dropbox/wiki  " wiki folder to jump to
+        set path+=~/Sync/paper/comment  " comment folder to jump to
+        set path+=~/Sync/notes  " wiki folder to jump to
         set suffixesadd+=.txt
     "}
     " -- vim-seek --
@@ -382,6 +375,7 @@
             nnoremap <leader>O :Denite -buffer-name=references references<cr>    
         " }
         let g:LanguageClient_completionPreferTextEdit=1
+        nnoremap <silent> <leader>cr :LanguageClientStop<cr>:LanguageClientStart<cr>
     " } LSP
     " ultisnips
     imap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
@@ -403,8 +397,6 @@
     let g:loaded_gentags#gtags = 1
     let g:gen_tags#ctags_auto_gen = 1
     let g:gen_tags#ctags_prune = 1
-    " echodoc
-    let g:echodoc_enable_at_startup = 1
     " indent line
     let g:indentLine_setColors = 0
     let g:indentLine_char = '▏'
