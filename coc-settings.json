@@ -1,32 +1,33 @@
 {
-"coc.preferences.diagnostic.errorSign": "",
-"coc.preferences.diagnostic.warningSign": "",
-"coc.preferences.diagnostic.infoSign": "",
-"coc.preferences.diagnostic.hintSign": "",
-"languageserver": {
-    "rust": {
-        "command": "rustup",
-        "args": ["run", "nightly", "rls"],
-        "filetypes": ["rust"]
-    },
-    "cpp": {
-        "command": "clangd-7",
-        "filetype": ["cpp", "c"]
-    },
-    "lua": {
-        "command": "lua-lsp",
-        "args": ["--config", "~/.config/lualsprc"],
-        "filetype": ["lua"]
-    },
-    "r": {
-        "command": "R",
-        "args": ["--quiet", "--slave", "-e", "languageserver::run()"],
-        "filetype": ["r"]
-    },
-    "javascript": {
-        "command": "typescript-language-server",
-        "args": ["--stdio"],
-        "filetype": ["javascript", "json", "typescript"]
+    "coc.preferences.diagnostic.errorSign": "",
+    "coc.preferences.diagnostic.warningSign": "",
+    "coc.preferences.diagnostic.infoSign": "",
+    "coc.preferences.diagnostic.hintSign": "",
+    "coc.preferences.triggerSignatureHelp": true,
+    "languageserver": {
+        "MPLS": {
+            "command": "dotnet",
+            "args": ["exec", "/home/palpatine/.local/share/python-language-server/output/bin/Release/Microsoft.Python.LanguageServer.dll"],
+            "filetypes": ["python"],
+            "initializationOptions": {
+                "interpreter": {
+                    "properties": {
+                        "InterpreterPath": "/usr/bin/python3",
+                        "UseDefaultDatabase": true,
+                        "Version": "3.7.2"
+                    }                    
+                }
+            }
+        },
+        "lua": {
+            "command": "lua-lsp",
+            "args": ["--config", "~/.config/lualsprc"],
+            "filetype": ["lua"]
+        },
+        "r": {
+            "command": "R",
+            "args": ["--quiet", "--slave", "-e", "languageserver::run()"],
+            "filetype": ["r"]
+        }
     }
-}
 }

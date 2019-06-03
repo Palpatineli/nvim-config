@@ -1,0 +1,19 @@
+{
+    "enabled": true,
+    "initializationOptions": {
+        "displayOptions": {
+            "preferredFormat": "plaintext",
+            "trimDocumentationLines": true,
+            "maxDocumentationLineLength": 0,
+            "trimDocumentationText": true,
+            "maxDocumentationTextLength": 0
+        },
+        "interpreter": {
+            "properties": {
+                "InterpreterPath": "/usr/bin/python3",
+                "UseDefaultDatabase": true,
+                "Version": "3.7"
+            }
+        }
+    }
+}

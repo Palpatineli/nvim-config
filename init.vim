@@ -15,31 +15,42 @@
     if dein#load_state(g:dein_plugin_dir)
         call dein#begin(g:dein_plugin_dir)
         call dein#add(g:dein_dir)
+        call dein#add('w0rp/ale', {'on_ft': ['python', 'pandoc']})  " when language server doesn't work
+        "call dein#add('neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install',
+            "\ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'javascript', 'dot', 'css', 'scss', 'python',
+            "\ 'json']})
+        call dein#add('chrisbra/Colorizer')
         call dein#add('chrisbra/csv.vim', {'on_ft': ['csv', 'tsv']})
         call dein#add('Raimondi/delimitMate')
         call dein#add('Shougo/denite.nvim')
         call dein#add('neoclide/denite-git')
         call dein#add('mattn/emmet-vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Konfekt/FastFold')
-        call dein#add('airblade/vim-gitgutter')
         call dein#add('tpope/vim-fugitive')
         call dein#add('jsfaint/gen_tags.vim')
-        call dein#add('morhetz/gruvbox')
+        call dein#add('davidhalter/jedi-vim', {'on_ft': ['python']})
+        " call dein#add('morhetz/gruvbox')
+        " call dein#add('arcticicestudio/nord-vim')
+        call dein#add('equalsraf/neovim-gui-shim')
         call dein#add('sjl/gundo.vim')
         call dein#add('othree/html5.vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Yggdroot/indentLine')
         call dein#add('bfredl/nvim-ipy', {'on_ft': ['python']})
-        "call dein#add('BurningEther/iron.nvim', {'on_ft': ['python']})  " in case nvim-ipy doesn't work
         call dein#add('elzr/vim-json', {'on_ft': ['log', 'json']})
         call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',
-            \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'python', 'javascript', 'dot']})
+            \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'javascript', 'json', 'dot', 'css',
+                       \'scss']})
+        " no python coz python has shitty language server til m$ft converts
+        " theirs for general use
         call dein#add('itchyny/lightline.vim')
         call dein#add('embear/vim-localvimrc')
         call dein#add('lazywei/vim-matlab', {'on_ft': ['mat', 'matlab']})
         call dein#add('ncm2/ncm2')
         call dein#add('ncm2/ncm2-bufword')
+        call dein#add('ncm2/ncm2-jedi', {'on_ft': ['python']})
         call dein#add('ncm2/ncm2-path')
         call dein#add('ncm2/ncm2-ultisnips')
+        " call dein#add('drewtempelmeyer/palenight.vim')
         call dein#add('SirVer/ultisnips')
         call dein#add('Shougo/neoyank.vim')
         call dein#add('scrooloose/nerdcommenter')
@@ -47,9 +58,13 @@
         call dein#add('vim-pandoc/vim-pandoc-syntax', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('vim-pandoc/vim-pandoc-after', {'on_ft': ['markdown', 'txt', 'pandoc']})
         call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
-        call dein#add('janko-m/vim-test')
+        call dein#add('junegunn/rainbow_parentheses.vim')
+        call dein#add('jalvesaq/Nvim-R.git', {'on_ft': ['r']})
         call dein#add('goldfeld/vim-seek')
+        call dein#add('numirias/semshi', {'on_ft': ['python']})
+        call dein#add('nightsense/snow.git')
         call dein#add('tmhedberg/SimpylFold', {'on_ft': ['python']})
+        call dein#add('janko-m/vim-test')
         call dein#add('cespare/vim-toml', {'on_ft': ['r', 'toml']})
         call dein#add('tomtom/tlib_vim')
         call dein#add('roxma/nvim-yarp')
@@ -66,17 +81,12 @@
 " }
 
 " General {
-    " get some autoload
-    for f in split(glob(expand('~/.config/nvim/autoload/*.vim')), '\n')
-        exe 'source' f
-    endfor
-
     set termguicolors
-    colorscheme gruvbox
     " dim inactive pane in tmux; not working
     "au FocusLost hi Normal guifg='#7c6f64' guibg='#ebdbb2'
     "au FocusGained hi Normal guifg='#3c3836' guibg='#fbf1c7'
     set background=light
+    colorscheme snow
     set t_Co=256
     set t_Sf=[3%p1%dm
     set t_Sb=[4%p1%dm
@@ -102,8 +112,8 @@
     if has('win32') || has('win64')
         set guifont=consolas:h8
     else
-        set guifont=DejaVuSansMono\ NF\ 9
-        set printfont=DejaVuSansMono\ NF\ 9
+        set guifont=Monoisome\ 9
+        set printfont=Monoisome\ 9
     endif
     set smartcase " case insensitive search
     set fdm=syntax " folding by syntax for general files
@@ -143,23 +153,15 @@
 " }
 
 " Additional Filetype Detection {
-    " for vim-pandoc
-    au BufNewFile,BufRead *.md,*.txt set filetype=pandoc
+    au BufNewFile,BufRead *.md,*.txt set filetype=pandoc  " for vim-pandoc
     "au BufNewFile,BufRead *.txt set ff=dos
-    " for CSV files
-    au BufNewFile,BufRead *.csv,*.dat set filetype=csv
-    " for qtquick
-    au BufNewFile,BufRead *.qml set filetype=javascript
-    " for antlr
-    au BufNewFile,BufRead *.g set filetype=antlr3
+    au BufNewFile,BufRead *.csv,*.dat set filetype=csv  " for CSV files
+    au BufNewFile,BufRead *.qml set filetype=javascript  " for qtquick
+    au BufNewFile,BufRead *.g set filetype=antlr3  " for antlr
     au BufNewFile,BufRead *.g4 set filetype=antlr4
+    au BufNewFile,BufRead *.ts set filetype=javascript  " for ts
+    au BufNewFile,BufRead *.ino set filetype=c  " for auduino
 " }
-
-"if has('nvim')
-    ""force cursor change in gnome-terminal
-    "let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1  # using this creates remnant
-    "characters in guake although it works fine in gnome-ternimal
-"endif
 
 " General Settings
 "{
@@ -261,7 +263,7 @@
     "{
         set noshowmode
         let g:lightline = {
-          \ 'colorscheme': 'gruvbox',
+          \ 'colorscheme': 'snow_light',
           \ 'active': {
               \'left': [ [ 'mode', 'paste' ],
               \          [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
@@ -272,7 +274,8 @@
           \ 'component_function': {
               \ 'filename': 'LightLineFilename',
               \ 'gitbranch': 'fugitive#head',
-              \ 'lscinfo': 'LanguageClient#statusLine'
+              \ 'lscinfo': 'LanguageClient#statusLine',
+              \ 'cocstatus': 'coc#status'
           \ }
         \ }
         function! LightLineFilename()
@@ -293,40 +296,6 @@
             return name
         endfunction
     "}
-    " Denite
-    " {
-        call denite#custom#var('grep', 'command', ['rg'])
-        call denite#custom#var('grep', 'default_opts',
-                \ ['--vimgrep', '--no-heading'])
-        call denite#custom#var('grep', 'recursive_opts', [])
-        call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-        call denite#custom#var('grep', 'separator', ['--'])
-        call denite#custom#var('grep', 'final_opts', [])
-        nnoremap <leader>T :Denite -buffer-name=TODO -mode=normal grep:::TODO<cr>
-        augroup vimrc_todo
-            au!
-            au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX)/
-                  \ containedin=.*Comment,vimCommentTitle
-        augroup END
-
-        call denite#custom#alias('source', 'file/rec/git', 'file/rec')
-        call denite#custom#var('file/rec/git', 'command', ['git', 'ls-files', '--exclude-standard', ':/'])
-        nnoremap <silent> <leader>f :Denite `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`<CR>
-        hi def link MyTodo Todo
-        nnoremap <leader>a :Denite -buffer-name=tags tag<cr>
-        nnoremap <leader>d :Denite -buffer-name=tags tag -input=`expand('<cword>')` -mode=normal<cr>
-        nnoremap <leader>b :Denite -buffer-name=buffer buffer -mode=normal<cr>
-        nnoremap <leader>o :Denite -buffer-name=outline outline<cr>
-        nnoremap <leader><c-g> :Denite -buffer-name=gitlog gitlog:all -mode=normal<cr>
-        nnoremap <leader>g :DeniteProjectDir -buffer-name=grep grep:::`expand('<cword>')` -mode=normal <cr>
-        vnoremap <leader>g y:DeniteProjectDir -buffer-name=grep grep:::`expand('<C-R>"')` -mode=normal <cr>
-        nnoremap <leader>G :Denite -buffer-name=gitchanged gitchanged -mode=normal<cr>
-        nnoremap <leader>y :Denite -buffer-name=yank-history neoyank -mode=normal<cr> call denite#custom#map('normal', 'a', '<denite:do_action:add>', 'noremap')
-        call denite#custom#map('normal', 'd', '<denite:do_action:delete>', 'noremap')
-        call denite#custom#map('normal', 'r', '<denite:do_action:reset>', 'noremap')
-        call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-        call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-    " }
     " Toggle Gundo
     noremap <leader>u :GundoToggle<CR>
     " multiple-cursors
@@ -349,40 +318,12 @@
         \ 'on_complete': ['ncm2#on_complete#delay', 180,
         \                 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
         \ })
-    " LSP {
-        let g:LanguageClient_serverCommands = {
-        \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-        \ 'cpp': ['clangd-7'],
-        \ 'c': ['clangd-7'],
-        \ 'lua': ['lua-lsp', '--config', '~/.config/lualsprc'],
-        \ 'r': ['R', '--quiet', '--slave', '-e', 'languageserver::run()'],
-        \ 'python': ['pyls'],
-        \ 'javascript': ['typescript-language-server', '--stdio'],
-        \ 'dot': ["dot-language-server", "--stdio"],
-        \ }
-
-        let g:LanguageClient_autoStart = 1
-        let g:LanguageClient_selectionUI = "location-list"
-        let g:LanguageClient_diagnosticsEnable = 1
-        let g:LanguageClient_loggingLevel = 'DEBUG'
-        set formatexpr=LanguageClient_textDocument_rangeFormatting()
-        nnoremap <silent> K :call LanguageClient_textDocument_hover()<cr>
-        nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
-        nnoremap <silent> <leader>r :call LanguageClient_textDocument_rename()<cr>
-        nnoremap <silent> <F3> :call LanguageClient_textDocument_references()<cr>
-        nnoremap <silent> == :call LanguageClient_textDocument_formatting()<cr>
-        " Denite LSP integration {
-            nnoremap <leader>O :Denite -buffer-name=references references<cr>    
-        " }
-        let g:LanguageClient_completionPreferTextEdit=1
-        nnoremap <silent> <leader>cr :LanguageClientStop<cr>:LanguageClientStart<cr>
-    " } LSP
     " ultisnips
     imap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
     let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/neosnippets']
     let g:UltiSnipsExpandTrigger="<c-j>"
     let g:UltiSnipsJumpForwardTrigger = "<c-j>"
-    let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+    "let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
     let g:UltiSnipsRemoveSelectModeMappings = 0
     " local-vimrc
     let g:localvimrc_sandbox = 0
@@ -393,12 +334,23 @@
     nnoremap <silent> <leader>ts :TestSuite<cr>
     nnoremap <silent> <leader>tl :TestLast<cr>
     nnoremap <silent> <leader>tg :TestVisit<cr>
+    let test#strategy = {
+      \ 'nearest': 'neovim',
+    \}
     " gen_tags
     let g:loaded_gentags#gtags = 1
     let g:gen_tags#ctags_auto_gen = 1
     let g:gen_tags#ctags_prune = 1
     " indent line
-    let g:indentLine_setColors = 0
+    let g:indentLine_setColors = 1
+    let g:indentLine_bgcolor_gui = '#fbffff'
     let g:indentLine_char = '▏'
     let g:indentLine_enabled = 1
+    " vim json
+    let g:vim_json_syntax_conceal = 0
+    " rainbow parenthessi
+    au BufNewFile,BufRead * RainbowParentheses
+    " semantic highlighting
+    let s:semanticGUIColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80', '#ffab91', '#bcaaa4', '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9', '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
+    nnoremap <leader>c :SemanticHighlightToggle<cr>
 " }
