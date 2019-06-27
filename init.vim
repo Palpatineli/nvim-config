@@ -15,51 +15,47 @@
     if dein#load_state(g:dein_plugin_dir)
         call dein#begin(g:dein_plugin_dir)
         call dein#add(g:dein_dir)
-        call dein#add('w0rp/ale', {'on_ft': ['python', 'pandoc']})  " when language server doesn't work
-        "call dein#add('neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install',
-            "\ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'javascript', 'dot', 'css', 'scss', 'python',
-            "\ 'json']})
+        " call dein#add('w0rp/ale', {'on_ft': ['python', 'pandoc']})  " when language server doesn't work
+        call dein#add('neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install'})
         call dein#add('chrisbra/Colorizer')
         call dein#add('chrisbra/csv.vim', {'on_ft': ['csv', 'tsv']})
-        call dein#add('Raimondi/delimitMate')
+        " call dein#add('Raimondi/delimitMate')
         call dein#add('Shougo/denite.nvim')
         call dein#add('neoclide/denite-git')
         call dein#add('mattn/emmet-vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Konfekt/FastFold')
         call dein#add('tpope/vim-fugitive')
         call dein#add('jsfaint/gen_tags.vim')
-        call dein#add('davidhalter/jedi-vim', {'on_ft': ['python']})
+        " call dein#add('davidhalter/jedi-vim', {'on_ft': ['python']})
         " call dein#add('morhetz/gruvbox')
         " call dein#add('arcticicestudio/nord-vim')
-        call dein#add('equalsraf/neovim-gui-shim')
+        " call dein#add('equalsraf/neovim-gui-shim')
         call dein#add('sjl/gundo.vim')
         call dein#add('othree/html5.vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Yggdroot/indentLine')
         call dein#add('bfredl/nvim-ipy', {'on_ft': ['python']})
-        call dein#add('elzr/vim-json', {'on_ft': ['log', 'json']})
-        call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',
-            \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'javascript', 'json', 'dot', 'css',
-                       \'scss']})
+        " call dein#add('elzr/vim-json', {'on_ft': ['log', 'json']})
+        " call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',
+        "   \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'javascript', 'json', 'dot', 'css',
+        "              \'scss']})
         " no python coz python has shitty language server til m$ft converts
         " theirs for general use
+        " call dein#add('Yggdroot/LeaderF', {'build': 'bash install.sh'})
         call dein#add('itchyny/lightline.vim')
-        call dein#add('embear/vim-localvimrc')
+        " call dein#add('embear/vim-localvimrc')
         call dein#add('lazywei/vim-matlab', {'on_ft': ['mat', 'matlab']})
-        call dein#add('ncm2/ncm2')
-        call dein#add('ncm2/ncm2-bufword')
-        call dein#add('ncm2/ncm2-jedi', {'on_ft': ['python']})
-        call dein#add('ncm2/ncm2-path')
-        call dein#add('ncm2/ncm2-ultisnips')
+        " call dein#add('ncm2/ncm2')
+        " call dein#add('ncm2/ncm2-bufword')
+        " call dein#add('ncm2/ncm2-jedi', {'on_ft': ['python']})
+        " call dein#add('ncm2/ncm2-path')
+        " call dein#add('ncm2/ncm2-ultisnips')
         " call dein#add('drewtempelmeyer/palenight.vim')
         call dein#add('SirVer/ultisnips')
-        call dein#add('Shougo/neoyank.vim')
+        " call dein#add('Shougo/neoyank.vim')
         call dein#add('scrooloose/nerdcommenter')
-        call dein#add('vim-pandoc/vim-pandoc', {'on_ft': ['markdown', 'txt', 'pandoc']})
-        call dein#add('vim-pandoc/vim-pandoc-syntax', {'on_ft': ['markdown', 'txt', 'pandoc']})
-        call dein#add('vim-pandoc/vim-pandoc-after', {'on_ft': ['markdown', 'txt', 'pandoc']})
-        call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
+        " call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
         call dein#add('junegunn/rainbow_parentheses.vim')
-        call dein#add('jalvesaq/Nvim-R.git', {'on_ft': ['r']})
+        " call dein#add('jalvesaq/Nvim-R.git', {'on_ft': ['r']})
         call dein#add('goldfeld/vim-seek')
         call dein#add('numirias/semshi', {'on_ft': ['python']})
         call dein#add('nightsense/snow.git')
@@ -162,6 +158,8 @@
     au BufNewFile,BufRead *.ts set filetype=javascript  " for ts
     au BufNewFile,BufRead *.ino set filetype=c  " for auduino
 " }
+" Addition Formatting
+au FileType json syntax match Comment +\/\/.\+$+
 
 " General Settings
 "{
@@ -191,6 +189,8 @@
     nnoremap <Leader>s :%s/\<<C-r><C-w>\>//<Left>
     " Insert date time
     iab <expr> dts strftime("%F %T")
+    " Update
+    nnoremap <F12> :call dein#check_update()<cr>:call dein#update()<cr>
     " Toggle Semicolon at the end of line
     "{
         function! s:ToggleTrailingSemiColon()
@@ -299,44 +299,10 @@
     " Toggle Gundo
     noremap <leader>u :GundoToggle<CR>
     " multiple-cursors
-    vnoremap <leader>s :MultipleCursorsFind
-    " NCM2
-    autocmd BufEnter * call ncm2#enable_for_buffer()
-    set completeopt=noinsert,menuone,noselect
-    set shortmess+=c
-    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-    au User Ncm2Plugin call ncm2#register_source({
-        \ 'name' : 'css',
-        \ 'priority': 9, 
-        \ 'subscope_enable': 1,
-        \ 'scope': ['css','scss'],
-        \ 'mark': 'css',
-        \ 'word_pattern': '[\w\-]+',
-        \ 'complete_pattern': ':\s*',
-        \ 'on_complete': ['ncm2#on_complete#delay', 180,
-        \                 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-        \ })
-    " ultisnips
-    imap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
-    let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/neosnippets']
-    let g:UltiSnipsExpandTrigger="<c-j>"
-    let g:UltiSnipsJumpForwardTrigger = "<c-j>"
-    "let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
-    let g:UltiSnipsRemoveSelectModeMappings = 0
+    " vnoremap <leader>s :MultipleCursorsFind
     " local-vimrc
-    let g:localvimrc_sandbox = 0
-    let g:localvimrc_ask = 0
-    " vim-test
-    nnoremap <silent> <leader>tn :TestNearest<cr>
-    nnoremap <silent> <leader>tf :TestFile<cr>
-    nnoremap <silent> <leader>ts :TestSuite<cr>
-    nnoremap <silent> <leader>tl :TestLast<cr>
-    nnoremap <silent> <leader>tg :TestVisit<cr>
-    let test#strategy = {
-      \ 'nearest': 'neovim',
-    \}
+    "let g:localvimrc_sandbox = 0
+    "let g:localvimrc_ask = 0
     " gen_tags
     let g:loaded_gentags#gtags = 1
     let g:gen_tags#ctags_auto_gen = 1
@@ -346,11 +312,12 @@
     let g:indentLine_bgcolor_gui = '#fbffff'
     let g:indentLine_char = '▏'
     let g:indentLine_enabled = 1
-    " vim json
-    let g:vim_json_syntax_conceal = 0
+    au Filetype json :IndentLinesDisable
     " rainbow parenthessi
     au BufNewFile,BufRead * RainbowParentheses
     " semantic highlighting
-    let s:semanticGUIColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80', '#ffab91', '#bcaaa4', '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9', '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
+    let s:semanticGUIColors = ['#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80', '#ffab91', '#bcaaa4',
+        \ '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9',
+        \ '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
     nnoremap <leader>c :SemanticHighlightToggle<cr>
 " }

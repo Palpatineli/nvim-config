@@ -1,7 +1,7 @@
 " LSP {
 function SetupLSC()
     let g:LanguageClient_serverCommands = {
-    \ 'python': ["~/.local/share/dotnet-sdk/dotnet", "exec", '~/.local/share/python-language-server/package/Python-Language-Server-linux-x64.0.1.80/Microsoft.Python.LanguageServer.dll'],
+    \ 'python': ["~/.local/share/mspls/Microsoft.Python.LanguageServer"],
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
     \ 'cpp': ['clangd-7'],
     \ 'c': ['clangd-7'],
@@ -32,3 +32,4 @@ function SetupLSC()
 endfunction
 au FileType rust,c,cpp,lua,r,javascript,dot,css,scss call SetupLSC()
 " } LSP
+" 'python': ["~/.local/share/dotnet-sdk/dotnet", "exec", '~/.local/share/python-language-server/package/Python-Language-Server-linux-x64.0.1.80/Microsoft.Python.LanguageServer.dll'],
