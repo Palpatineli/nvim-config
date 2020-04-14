@@ -15,5 +15,20 @@
                 "Version": "3.7"
             }
         }
+    },
+    "pyls": {
+        "plugins": {
+            "pyls_mypy": {
+                "enabled": true,
+                "live_mode": true,
+                "python_version": "3.7",
+                "warn_redundant_casts": true,
+                "strict_optional": true,
+                "check_untyped_defs": true,
+                "incremental": true,
+                "follow_imports": "silent",
+                "ignore_missing_imports": true
+            }
+        }
     }
 }

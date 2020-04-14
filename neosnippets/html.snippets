@@ -10,5 +10,15 @@ snippet >
 endsnippet
 
 snippet img
-<img class='center' width='${2:widht}' src='img/${1:path}'/>$3
+<img class='center' width='${2:width}' src='img/${1:path}'/>$3
+endsnippet
+
+snippet imgl
+<img class='figure' data-src='${1:src}'/>
+endsnippet
+
+snippet videol
+<video>
+	<source data-src="${1:src}" type="video/${2:type}" />
+</video>
 endsnippet

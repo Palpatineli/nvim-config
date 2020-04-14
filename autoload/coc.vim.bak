@@ -1,0 +1,17 @@
+" imap<expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+nmap <leader>k <Plug>(coc-diagnostic-prev)
+nmap <leader>j <Plug>(coc-diagnostic-next)
+nmap <leader>r <Plug>(coc-rename)
+nmap <leader>d <Plug>(coc-definition)
+nmap <leader>D <Plug>(coc-implementation)
+"nnoremap <silent> <leader>a :CocList symbols<cr>
+"nnoremap <silent> <leader>a :CocList tags<cr>
+nnoremap <silent> <leader>b :CocList --normal buffers<cr>
+nnoremap <silent> <leader>o :CocList outline<cr>
+nnoremap <silent> <leader>T :CocList --normal --input=TODO grep<cr>
+
+nmap <silent> <F3> <Plug>(coc-references)
+vmap <silent> == <Plug>(coc-format-selected)
+" coc-snippet
+let g:coc_snippet_prev = '<c-k>'
+imap <c-j> <Plug>(coc-snippets-expand-jump)

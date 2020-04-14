@@ -29,11 +29,6 @@ import numpy as np
 ${1}
 endsnippet
 
-snippet pd "import pandas" b
-import pandas as pd
-${1}
-endsnippet
-
 snippet tf "import tensorflow" b
 import tensorflow as tf
 ${1}
@@ -68,9 +63,6 @@ print(${1:var})
 endsnippet
 
 snippet ifmain "if __main__" b
-def main():
-	${2:main content}
-
 if __name__ == '__main__':
     ${1:main()}$0
 endsnippet
@@ -84,12 +76,4 @@ from time import perf_counter
 old_time = perf_counter()
 ${0:loop}
 print("time used: ", perf_counter() - old_time)${1}
-endsnippet
-
-snippet dbg "debug with try catch"
-try:
-	${0:${VISUAL}}
-except $1 as e:
-	print("$0", $2)
-	raise e
 endsnippet

@@ -6,19 +6,6 @@
     vnoremap <space> zf
     nnoremap <buffer> <F5> :w<CR>:!python3 %<CR>
 "}
-"{ ale
-    let b:ale_fixers = ['autopep8']
-    let b:ale_linters = ['flake8', 'mypy']
-    let b:ale_python_mypy_options='--warn-redundant-casts --incremental --check-untyped-defs --show-column-numbers --follow-imports=normal --ignore-missing-imports'
-    let g:ale_completion_enabled = 0
-    let g:ale_set_loclist = 0
-    let g:ale_set_quickfix = 1
-    nmap <silent> <leader>j :ALENext<cr>
-    nmap <silent> <leader>k :ALEPrevious<cr>
-""}
-""{ jedi
-    let g:jedi#completions_enabled = 0
-"}
 "{ replsend
     "function! GetVisualSelection()
         "let [line_start, col_start] = getpos("'<")[1:2]

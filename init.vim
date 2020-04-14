@@ -15,55 +15,45 @@
     if dein#load_state(g:dein_plugin_dir)
         call dein#begin(g:dein_plugin_dir)
         call dein#add(g:dein_dir)
-        " call dein#add('w0rp/ale', {'on_ft': ['python', 'pandoc']})  " when language server doesn't work
-        call dein#add('neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install'})
+        " call dein#add('neoclide/coc.nvim', {'rev': 'release'})
         call dein#add('chrisbra/Colorizer')
         call dein#add('chrisbra/csv.vim', {'on_ft': ['csv', 'tsv']})
-        " call dein#add('Raimondi/delimitMate')
+        call dein#add('anntzer/vim-cython', {'on_ft': ['cython']})
         call dein#add('Shougo/denite.nvim')
-        call dein#add('neoclide/denite-git')
+        call dein#add('kmnk/denite-dirmark')
         call dein#add('mattn/emmet-vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Konfekt/FastFold')
         call dein#add('tpope/vim-fugitive')
         call dein#add('jsfaint/gen_tags.vim')
-        " call dein#add('davidhalter/jedi-vim', {'on_ft': ['python']})
-        " call dein#add('morhetz/gruvbox')
-        " call dein#add('arcticicestudio/nord-vim')
-        " call dein#add('equalsraf/neovim-gui-shim')
         call dein#add('sjl/gundo.vim')
         call dein#add('othree/html5.vim', {'on_ft': ['html', 'txt', 'pandoc']})
         call dein#add('Yggdroot/indentLine')
         call dein#add('bfredl/nvim-ipy', {'on_ft': ['python']})
-        " call dein#add('elzr/vim-json', {'on_ft': ['log', 'json']})
-        " call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',
-        "   \ 'on_ft': ['c', 'cpp', 'rust', 'lua', 'r', 'javascript', 'json', 'dot', 'css',
-        "              \'scss']})
-        " no python coz python has shitty language server til m$ft converts
-        " theirs for general use
-        " call dein#add('Yggdroot/LeaderF', {'build': 'bash install.sh'})
+        call dein#add('Shougo/echodoc.vim')
+        call dein#add('Shougo/deoplete.nvim', {'build': 'UpdateRemotePlugins'})
+        call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',})
         call dein#add('itchyny/lightline.vim')
-        " call dein#add('embear/vim-localvimrc')
+        call dein#add('Palpatineli/lightline-lsc-nvim')
+        call dein#add('iamcco/markdown-preview.nvim', {'on_ft': ['markdown', 'pandoc', 'rmd'],
+                    \'build': 'cd app & yarn install'})
         call dein#add('lazywei/vim-matlab', {'on_ft': ['mat', 'matlab']})
-        " call dein#add('ncm2/ncm2')
-        " call dein#add('ncm2/ncm2-bufword')
-        " call dein#add('ncm2/ncm2-jedi', {'on_ft': ['python']})
-        " call dein#add('ncm2/ncm2-path')
-        " call dein#add('ncm2/ncm2-ultisnips')
-        " call dein#add('drewtempelmeyer/palenight.vim')
-        call dein#add('SirVer/ultisnips')
-        " call dein#add('Shougo/neoyank.vim')
+        call dein#add('goodell/vim-mscgen', {'on_ft': ['mscgen']})
         call dein#add('scrooloose/nerdcommenter')
-        " call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
+        call dein#add('jceb/vim-orgmode')
+        " call dein#add('vim-pandoc/vim-pandoc-syntax', {'on_ft': ['pandoc', 'markdown']})
+        call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
         call dein#add('junegunn/rainbow_parentheses.vim')
-        " call dein#add('jalvesaq/Nvim-R.git', {'on_ft': ['r']})
+        call dein#add('jalvesaq/Nvim-R.git', {'on_ft': ['r']})
         call dein#add('goldfeld/vim-seek')
         call dein#add('numirias/semshi', {'on_ft': ['python']})
         call dein#add('nightsense/snow.git')
         call dein#add('tmhedberg/SimpylFold', {'on_ft': ['python']})
         call dein#add('janko-m/vim-test')
+        call dein#add('kassio/neoterm')
+        call dein#add('donRaphaco/neotex', {'on_ft': ['tex']})
         call dein#add('cespare/vim-toml', {'on_ft': ['r', 'toml']})
+        call dein#add('SirVer/ultisnips')
         call dein#add('tomtom/tlib_vim')
-        call dein#add('roxma/nvim-yarp')
         call dein#end()
         call dein#save_state()
     endif
@@ -155,8 +145,9 @@
     au BufNewFile,BufRead *.qml set filetype=javascript  " for qtquick
     au BufNewFile,BufRead *.g set filetype=antlr3  " for antlr
     au BufNewFile,BufRead *.g4 set filetype=antlr4
-    au BufNewFile,BufRead *.ts set filetype=javascript  " for ts
+    au BufNewFile,BufRead *.ts set filetype=typescript  " for ts
     au BufNewFile,BufRead *.ino set filetype=c  " for auduino
+    au BufNewFile,BufRead *.msc set filetype=mscgen
 " }
 " Addition Formatting
 au FileType json syntax match Comment +\/\/.\+$+
@@ -232,6 +223,11 @@ au FileType json syntax match Comment +\/\/.\+$+
     if has("nvim")
         set inccommand=nosplit
     endif
+    augroup vimrc_todo
+        au!
+        au Syntax * syn match MyTodo /\v<(FIXME|NOTE|TODO|OPTIMIZE|XXX)/
+              \ containedin=.*Comment,vimCommentTitle
+    augroup END
 "}
 
 " Plugin Specific
@@ -262,20 +258,33 @@ au FileType json syntax match Comment +\/\/.\+$+
     " -- lightline --
     "{
         set noshowmode
+        let g:lightline#lsc#indicator_checking = "\uf110"
+        let g:lightline#lsc#indicator_notstarted = "\ufbab"
+        let g:lightline#lsc#indicator_errors = "\uf05e"
+        let g:lightline#lsc#indicator_ok = "\uf00c"
         let g:lightline = {
           \ 'colorscheme': 'snow_light',
+          \ 'component_type': {
+          \     'linter_checking': 'left',
+          \     'linter_warnings': 'warning',
+          \     'linter_errors': 'error',
+          \     'linter_ok': 'left',
+          \ },
           \ 'active': {
               \'left': [ [ 'mode', 'paste' ],
-              \          [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-              \'right': [ [ 'lineinfo', 'lscinfo' ],
-              \           [ 'percent' ],
-              \           [ 'filetype'] ]
+              \          [ 'currentfunction', 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+              \'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
+              \           [ 'lineinfo' ],
+              \           [ 'percent' ] ]
           \ },
           \ 'component_function': {
-              \ 'filename': 'LightLineFilename',
-              \ 'gitbranch': 'fugitive#head',
-              \ 'lscinfo': 'LanguageClient#statusLine',
-              \ 'cocstatus': 'coc#status'
+          \     'filename': 'LightLineFilename',
+          \     'gitbranch': 'fugitive#head',
+          \     'currentfunction': 'CocCurrentFunction',
+          \     'linter_checking': 'lightline#lsc#checking',
+          \     'linter_warnings': 'lightline#lsc#warnings',
+          \     'linter_errors': 'lightline#lsc#errors',
+          \     'linter_ok': 'lightline#lsc#ok',
           \ }
         \ }
         function! LightLineFilename()
@@ -320,4 +329,9 @@ au FileType json syntax match Comment +\/\/.\+$+
         \ '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9',
         \ '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
     nnoremap <leader>c :SemanticHighlightToggle<cr>
+    command Splitline :s/\(\.\) \|\(?\) \|\([.?!]\"\) \|\(!\) /\1\r<cr>
+    let g:deoplete#enable_at_startup = 1
+    set cmdheight=2
+    let g:echodoc#enable_at_startup = 1
+    let g:echodoc#type = 'signature'
 " }
