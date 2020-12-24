@@ -20,14 +20,21 @@ function! s:denite_settings() abort
     nnoremap <silent><buffer><expr> d       denite#do_map("do_action", "delete")
     nnoremap <silent><buffer><expr> <tab>   denite#do_map("choose_action")
 endfunction
+
+call denite#custom#option('default', {
+            \ 'auto_resize': 1,
+            \ 'statusline': 0,
+            \ 'reversed': 0,
+            \ 'match_highlight': 1,
+            \ 'filter_updatetime': 100,
+            \ })
+
 au FileType denite-filter call s:denite_filter_settings()
 function! s:denite_filter_settings() abort
-    nnoremap <silent><buffer><expr> <Esc>   denite#do_map("quit")
-    nnoremap <silent><buffer><expr> q       denite#do_map("quit")
-    inoremap <silent><buffer><expr> <C-c>   denite#do_map("quit")
-    nnoremap <silent><buffer><expr> <C-c>   denite#do_map("quit")
-    inoremap <silent><buffer> <C-j> <Esc><C-w>p:call cursor(line('.')+1,0)<CR><C-w>pA
-    inoremap <silent><buffer> <C-k> <Esc><C-w>p:call cursor(line('.')-1,0)<CR><C-w>pA
+    inoremap <silent><buffer><expr> <C-j> denite#increment_parent_cursor(1)
+    inoremap <silent><buffer><expr> <C-k> denite#increment_parent_cursor(-1)
+    nnoremap <silent><buffer><expr> <C-j> denite#increment_parent_cursor(1)
+    nnoremap <silent><buffer><expr> <C-k> denite#increment_parent_cursor(-1)
 endfunction
 
 call denite#custom#alias('source', 'file/rec/git', 'file/rec')

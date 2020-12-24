@@ -15,31 +15,35 @@ exec 'set runtimepath^='.g:dein_dir
 if dein#load_state(g:dein_plugin_dir)
     call dein#begin(g:dein_plugin_dir)
     call dein#add(g:dein_dir)
+    call dein#add('akinsho/nvim-bufferline.lua')
     call dein#add('jalvesaq/vimcmdline', {'on_ft': ['python']})
     call dein#add('chrisbra/Colorizer')
-    call dein#add('Shougo/denite.nvim')
-    call dein#add('kmnk/denite-dirmark')
+    call dein#add('nvim-lua/completion-nvim')
+    call dein#add('steelsojka/completion-buffers')
     call dein#add('Konfekt/FastFold')
     call dein#add('tpope/vim-fugitive')
     call dein#add('rhysd/vim-grammarous', {'on_ft': ['html', 'txt', 'pandoc']})
     call dein#add('sjl/gundo.vim')
     call dein#add('Yggdroot/indentLine')
-    call dein#add('autozimu/LanguageClient-neovim', {'rev': 'next', 'build': 'bash install.sh',})
-    call dein#add('ncm2/ncm2')
-    call dein#add('ncm2/ncm2-bufword')
-    call dein#add('ncm2/ncm2-path')
-    call dein#add('ncm2/ncm2-neosnippet')
+    call dein#add('neovim/nvim-lspconfig')
+    call dein#add('nvim-lua/lsp-status.nvim')
     call dein#add('Shougo/neosnippet.vim')
     call dein#add('scrooloose/nerdcommenter')
     call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
     call dein#add('goldfeld/vim-seek')
     call dein#add('nightsense/snow.git')
     call dein#add('tmhedberg/SimpylFold', {'on_ft': ['python']})
+    " " telescope and its support
+    call dein#add('nvim-lua/popup.nvim')
+    call dein#add('nvim-lua/plenary.nvim')
+    call dein#add('nvim-telescope/telescope.nvim')
+    call dein#add('kyazdani42/nvim-tree.lua')
     call dein#add('nvim-treesitter/nvim-treesitter', {'build': 'TSUpdate'})
     call dein#add('romgrk/nvim-treesitter-context')
     call dein#add('p00f/nvim-ts-rainbow')
     call dein#add('nvim-treesitter/nvim-treesitter-refactor')
     call dein#add('roxma/nvim-yarp')
+    call dein#add('kyazdani42/nvim-web-devicons')
     call dein#end()
     call dein#save_state()
 endif
@@ -124,42 +128,29 @@ vnoremap <leader><c> "+y
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//<Left>
 " " Insert date time
 iab <expr> dts strftime("%F %T")
-" " Toggle Error Window
-function! ToggleErrors()
-    let old_last_winnr = winnr('$')
-    cclose
-    if old_last_winnr == winnr('$')
-        " Nothing was closed, open syntastic error location panel
-        copen
-    endif
-endfunction
-function! ToggleLocations()
-    let old_last_winnr = winnr('$')
-    lclose
-    if old_last_winnr == winnr('$')
-    " Nothing was closed, open syntastic error location panel
-        lopen
-    endif
-endfunction
-noremap <leader>e :call ToggleErrors()<cr>
-noremap <leader>l :call ToggleLocations()<cr>
 noremap <leader>m :message<cr>
 set inccommand=nosplit
 
-" ncm2
-autocmd BufEnter * call ncm2#enable_for_buffer()
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-" " ncm2 snippet
-let g:neosnippet#enable_completed_snippet = 1
-inoremap <silent> <expr> <CR> ncm2_neosnippet#expand_or("\<CR>", 'n')
-imap <C-i>     <Plug>(neosnippet_expand_or_jump)
-smap <C-i>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-i>     <Plug>(neosnippet_expand_target)
+" completion-nvim
+let g:completion_enable_snippet = "Neosnippet"
+let g:completion_chain_complete_list = {
+            \ 'default': [
+            \   {'complete_items': ['lsp']},
+            \   {'complete_items': ['buffers']},
+            \   {'complete_items': ['snippet', 'path']}
+            \ ]}
+autocmd BufEnter * lua require'completion'.on_attach()
 
 autocmd BufNewFile,BufRead * TSContextEnable
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
 lua require('treesitter')
+lua require('lsp')
+
+" nvim-bufferline
+lua require'bufferline'.setup()
+nnoremap <silent><leader>bj :BufferLineCycleNext<CR>
+nnoremap <silent><leader>bk :BufferLineCyclePrev<CR>
+nnoremap <silent><leader>bJ :BufferLineMoveNext<CR>
+nnoremap <silent><leader>bK :BufferLineMovePrev<CR>

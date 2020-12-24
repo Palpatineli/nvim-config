@@ -1,6 +1,9 @@
 local lspconfig = require("lspconfig")
 local configs = require("lspconfig/configs")
 local util = require("lspconfig/util")
+local lsp_status = require('lsp-status')
+
+lsp_status.register_progress()
 
 --- handlers ---
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -16,19 +19,22 @@ vim.fn.sign_define( "LspDiagnosticsSignWarning", { text = "", texthl = "LspDi
 vim.fn.sign_define( "LspDiagnosticsSignInformation", { text = "", texthl = "LspDiagnosticsSignInformation" })
 vim.fn.sign_define("LspDiagnosticsSignHint", {text = "➤", texthl = "LspDiagnosticsSignHint"})
 
---- simple ---
-local on_attach = function()
-    require("completion").on_attach()
-    require("folding").on_attach()
-end
-local servers = {
-    "bashls",
-    "cssls",
-    "jsonls",
-    "pyright"
-}
-for _, lsp in ipairs(servers) do
-    lspconfig[lsp].setup{on_attach = on_attach}
+--- move diagnostics to quickfix ---
+do
+  local method = "textDocument/publishDiagnostics"
+  local default_callback = vim.lsp.callbacks[method]
+  vim.lsp.callbacks[method] = function(err, method, result, client_id)
+    default_callback(err, method, result, client_id)
+    if result and result.diagnostics then
+      for _, v in ipairs(result.diagnostics) do
+        v.bufnr = client_id
+        v.lnum = v.range.start.line + 1
+        v.col = v.range.start.character + 1
+        v.text = v.message
+      end
+      vim.lsp.util.set_qflist(result.diagnostics)
+    end
+  end
 end
 
 --- pyright ---
@@ -36,7 +42,7 @@ configs.pyright = {
     default_config = {
         cmd = {"pyright-langserver", "--stdio"},
         filetypes = {"python"},
-        root_dir = util.root_patten(".git", "setup.py", "setup.cfg", "pyproject.toml", "requirement.txt", "Makefile"),
+        root_dir = util.root_pattern(".git", "setup.py", "setup.cfg", "pyproject.toml", "requirement.txt", "Makefile"),
         settings = {
             analysis = {autoSearchPaths = true},
             pyright = {useLibraryCodeForTypes = true}
@@ -54,6 +60,21 @@ configs.pyright = {
         ]]
     }
 }
+
+--- simple ---
+local on_attach = function(client)
+    require("completion").on_attach()
+    lsp_status.on_attach(client)
+end
+local servers = {
+    "bashls",
+    "cssls",
+    "jsonls",
+    "pyright"
+}
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup{on_attach = on_attach}
+end
 
 --- vim ---
 lspconfig.vimls.setup {
