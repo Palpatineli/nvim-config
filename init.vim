@@ -9,7 +9,7 @@ let g:dein_dir = g:config_path.'/dein'
 let g:dein_plugin_dir = g:config_path.'/dein_plugins'
 if empty(glob(g:dein_dir.'/rplugin'))
     exec 'silent !mkdir -p '.g:dein_dir
-    exec '!git clone git@github.com:Shougo/dein.vim '.g:dein_dir
+    exec '!git clone https://github.com/Shougo/dein.vim.git '.g:dein_dir
 endif
 exec 'set runtimepath^='.g:dein_dir
 if dein#load_state(g:dein_plugin_dir)
@@ -36,12 +36,9 @@ if dein#load_state(g:dein_plugin_dir)
     " " telescope and its support
     call dein#add('nvim-lua/popup.nvim')
     call dein#add('nvim-lua/plenary.nvim')
+    call dein#add('luochen1990/rainbow')
     call dein#add('nvim-telescope/telescope.nvim')
     call dein#add('kyazdani42/nvim-tree.lua')
-    call dein#add('nvim-treesitter/nvim-treesitter', {'build': 'TSUpdate'})
-    call dein#add('romgrk/nvim-treesitter-context')
-    call dein#add('p00f/nvim-ts-rainbow')
-    call dein#add('nvim-treesitter/nvim-treesitter-refactor')
     call dein#add('roxma/nvim-yarp')
     call dein#add('kyazdani42/nvim-web-devicons')
     call dein#end()
@@ -129,7 +126,14 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>//<Left>
 " " Insert date time
 iab <expr> dts strftime("%F %T")
 noremap <leader>m :message<cr>
-set inccommand=nosplit
+set inccommand=split  " previwe substitution
+augroup LuaHighlight  " highlight yanked
+  autocmd!
+  autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
+augroup END
+
+" ranbow
+let g:rainbow_active = 1
 
 " completion-nvim
 let g:completion_enable_snippet = "Neosnippet"
@@ -140,13 +144,6 @@ let g:completion_chain_complete_list = {
             \   {'complete_items': ['snippet', 'path']}
             \ ]}
 autocmd BufEnter * lua require'completion'.on_attach()
-
-autocmd BufNewFile,BufRead * TSContextEnable
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-
-lua require('treesitter')
-lua require('lsp')
 
 " nvim-bufferline
 lua require'bufferline'.setup()
