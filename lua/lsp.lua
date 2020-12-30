@@ -64,6 +64,7 @@ configs.pyright = {
 --- simple ---
 local on_attach = function(client)
     require("completion").on_attach()
+    require("illuminate").on_attach()
     lsp_status.on_attach(client)
 end
 local servers = {

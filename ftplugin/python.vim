@@ -5,6 +5,7 @@ command! Undebug :%s/^\s*# debugging$\n^.*$\n//
 nnoremap <space> za
 vnoremap <space> zf
 nnoremap <buffer> <F5> :w<CR>:!python3 %<CR>
+inoremap <buffer> <F6> import pdb; pdb.set_trace()
 
 " vimcmdline
 let g:cmdline_app = {"python": "python3.8 -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()' --no-autoindent"}

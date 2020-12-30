@@ -1,49 +1,13 @@
 " packages
-if has('win32') || has('win64')
-    let g:config_path = expand('~/AppData/Local/nvim')
-else
-    let g:config_path = expand('~/.config/nvim')
+" " bootstrap packadd somehow not working
+let g:packer_path = expand('~/.local/share/nvim/site/pack/packer/opt/paq-nvim')
+if empty(glob(g:packer_path.'/lua/paq-nvim.lua'))
+    exec 'silent !mkdir -p '.g:packer_path
+    exec '!git clone https://github.com/savq/paq-nvim.git '.g:packer_path
 endif
-let g:dein#install_github_api_token='76b7fe6e8c790dfe4bee05322694a9125c7d0338'
-let g:dein_dir = g:config_path.'/dein'
-let g:dein_plugin_dir = g:config_path.'/dein_plugins'
-if empty(glob(g:dein_dir.'/rplugin'))
-    exec 'silent !mkdir -p '.g:dein_dir
-    exec '!git clone https://github.com/Shougo/dein.vim.git '.g:dein_dir
-endif
-exec 'set runtimepath^='.g:dein_dir
-if dein#load_state(g:dein_plugin_dir)
-    call dein#begin(g:dein_plugin_dir)
-    call dein#add(g:dein_dir)
-    call dein#add('akinsho/nvim-bufferline.lua')
-    call dein#add('jalvesaq/vimcmdline', {'on_ft': ['python']})
-    call dein#add('chrisbra/Colorizer')
-    call dein#add('nvim-lua/completion-nvim')
-    call dein#add('steelsojka/completion-buffers')
-    call dein#add('Konfekt/FastFold')
-    call dein#add('tpope/vim-fugitive')
-    call dein#add('rhysd/vim-grammarous', {'on_ft': ['html', 'txt', 'pandoc']})
-    call dein#add('sjl/gundo.vim')
-    call dein#add('Yggdroot/indentLine')
-    call dein#add('neovim/nvim-lspconfig')
-    call dein#add('nvim-lua/lsp-status.nvim')
-    call dein#add('Shougo/neosnippet.vim')
-    call dein#add('scrooloose/nerdcommenter')
-    call dein#add('Vimjas/vim-python-pep8-indent', {'on_ft': ['python']})
-    call dein#add('goldfeld/vim-seek')
-    call dein#add('nightsense/snow.git')
-    call dein#add('tmhedberg/SimpylFold', {'on_ft': ['python']})
-    " " telescope and its support
-    call dein#add('nvim-lua/popup.nvim')
-    call dein#add('nvim-lua/plenary.nvim')
-    call dein#add('luochen1990/rainbow')
-    call dein#add('nvim-telescope/telescope.nvim')
-    call dein#add('kyazdani42/nvim-tree.lua')
-    call dein#add('roxma/nvim-yarp')
-    call dein#add('kyazdani42/nvim-web-devicons')
-    call dein#end()
-    call dein#save_state()
-endif
+exec 'set runtimepath^='.g:packer_path
+" " initialize
+lua require('plugins')
 
 " general
 set updatetime=100
