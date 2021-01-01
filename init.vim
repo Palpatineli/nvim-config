@@ -115,3 +115,5 @@ nnoremap <silent><leader>bj :BufferLineCycleNext<CR>
 nnoremap <silent><leader>bk :BufferLineCyclePrev<CR>
 nnoremap <silent><leader>bJ :BufferLineMoveNext<CR>
 nnoremap <silent><leader>bK :BufferLineMovePrev<CR>
+
+lua require"treesitter"
