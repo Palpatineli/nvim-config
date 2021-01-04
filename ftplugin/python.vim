@@ -12,7 +12,3 @@ nmap <silent><buffer> <F7> :call VimCmdLineStartApp()<CR>
 nmap <silent><buffer> <F9> :call VimCmdLineQuit("python")<CR>
 nmap <silent> <leader>R ?^##<cr>jV/^##<cr>k<Esc>:call VimCmdLineSendSelection()<CR>jj:nohl<cr>
 vmap <silent> <leader>R <Esc>:call VimCmdLineSendSelection()<CR>
-
-lua require('python_config')
-nnoremap <silent> <leader>dn :lua require('dap-python').test_method()<CR>
-vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
