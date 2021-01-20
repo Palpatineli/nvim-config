@@ -64,6 +64,14 @@ local on_attach = function(client)
     require("completion").on_attach()
     lsp_status.on_attach(client)
 end
+
+local on_attach_nohl = function(client)
+    vim.api.nvim_command [[ hi LspReferenceText guibg=#247695 ]]
+    vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
+    require("completion").on_attach()
+    lsp_status.on_attach(client)
+end
+
 local servers = {
     "bashls",
     "cssls",
@@ -73,6 +81,14 @@ local servers = {
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup{on_attach = on_attach}
 end
+
+local servers_nohl = {
+    "jsonls",
+}
+for _, lsp in ipairs(servers_nohl) do
+    lspconfig[lsp].setup{on_attach = on_attach_nohl}
+end
+
 
 --- vim ---
 lspconfig.vimls.setup {
