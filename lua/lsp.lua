@@ -75,8 +75,8 @@ end
 local servers = {
     "bashls",
     "cssls",
-    "jsonls",
-    "pyright"
+    "pyright",
+    "rust_analyzer",
 }
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup{on_attach = on_attach}
