@@ -117,3 +117,4 @@ nnoremap <silent><leader>bJ :BufferLineMoveNext<CR>
 nnoremap <silent><leader>bK :BufferLineMovePrev<CR>
 
 lua require('treesitter')
+lua require('statusline')
