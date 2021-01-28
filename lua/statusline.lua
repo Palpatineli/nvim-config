@@ -47,7 +47,7 @@ gls.left = {
     }},
     { FileName = { provider = {'FileName'}, condition = buffer_not_empty, separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, highlight = {colors.darkblue, colors.grey} }},
     { GitIcon = { provider = function() return ' ' end, condition = buffer_not_empty, highlight = {colors.blue, colors.lightgrey} }},
-    { GitBranch = { provider = 'GitBranch', separator = ' ', separator_highlight = {colors.blue, colors.bg}, condition = buffer_not_empty, highlight = {colors.cyan, colors.lightgrey} }},
+    { GitBranch = { provider = 'GitBranch', separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, condition = buffer_not_empty, highlight = {colors.cyan, colors.lightgrey} }},
     { DiffAdd = { provider = 'DiffAdd', condition = checkwidth, icon = '  ', highlight = {colors.green, colors.bg} }},
     { DiffModified = { provider = 'DiffModified', condition = checkwidth, icon = '  ', highlight = {colors.blue, colors.bg} }},
     { DiffRemove = { provider = 'DiffRemove', condition = checkwidth, icon = '  ', highlight = {colors.red, colors.bg} }},
