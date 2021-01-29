@@ -3,20 +3,27 @@ require'nvim-treesitter.configs'.setup{
         enable = true,
         disable = { "c", "rust" }
     },
-    indent = { enable = true },
+    indent = { enable = false },
     rainbow = {
         enable = true,
         disable = {'bash'}
     },
     refactor = {
         highlight_current_scope = { enable = false },
-        highlight_definitions = { enable = true },
+        highlight_definitions = { enable = false },
         smart_rename = {
             enable = true,
             keymaps = { smart_rename = "<leader>r" },
         },
         navigation = {
-            enable = false,
+            enable = true,
+            keymaps = {
+                goto_definition = "gd",
+                list_definitions = "gD",
+                list_definitions_toc = "gO",
+                goto_next_usage = "<C-j>",
+                goto_previous_usage = "<C-k>"
+            }
         }
     }
 }

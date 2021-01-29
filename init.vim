@@ -38,8 +38,7 @@ else
     set printfont=DejaVuSansMono\ NF\ 9
 endif
 set smartcase " case insensitive search
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+set fdm=syntax " folding by syntax for general files
 set gdefault " substitutions go global by default
 set title " program title shows file name
 set nonumber
@@ -97,7 +96,8 @@ augroup LuaHighlight  " highlight yanked
   autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
 augroup END
 
-lua require('colorizer').setup()
+" ranbow
+let g:rainbow_active = 1
 
 " completion-nvim
 let g:completion_enable_snippet = "Neosnippet"
@@ -115,6 +115,4 @@ nnoremap <silent><leader>bj :BufferLineCycleNext<CR>
 nnoremap <silent><leader>bk :BufferLineCyclePrev<CR>
 nnoremap <silent><leader>bJ :BufferLineMoveNext<CR>
 nnoremap <silent><leader>bK :BufferLineMovePrev<CR>
-
-lua require('treesitter')
 lua require('statusline')
