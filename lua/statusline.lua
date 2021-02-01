@@ -3,18 +3,18 @@ local gls = gl.section
 gl.short_line_list = {'LuaTree','vista','dbui'}
 
 local colors = {
-  bg = '#ebebf1',
-  yellow = '#fabd2f',
-  cyan = '#008080',
-  darkblue = '#535c65',
-  green = '#4d7f43',
+  bg = '#373e4d',
+  yellow = '#ebcb8b',
+  cyan = '#88c0d0',
+  darkblue = '#e5e9f0',
+  green = '#a3be8c',
   orange = '#FF8800',
   purple = '#5d4d7a',
-  magenta = '#d16d9e',
-  grey = '#c0c0c0',
-  lightgrey = '#dadada',
-  blue = '#2b7ab2',
-  red = '#ae5865'
+  magenta = '#b48ead',
+  grey = '#4c566a',
+  lightgrey = '#3b4252',
+  blue = '#81a1c1',
+  red = '#bf616a'
 }
 
 local buffer_not_empty = function()

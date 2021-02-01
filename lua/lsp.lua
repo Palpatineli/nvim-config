@@ -57,7 +57,7 @@ configs.pyright = {
 
 --- simple ---
 local on_attach = function(client)
-    vim.api.nvim_command [[ hi LspReferenceText guibg=#247695 ]]
+    vim.api.nvim_command [[ hi LspReferenceText guibg=#4c566a ]]
     vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]
     vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]
     vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
@@ -66,7 +66,7 @@ local on_attach = function(client)
 end
 
 local on_attach_nohl = function(client)
-    vim.api.nvim_command [[ hi LspReferenceText guibg=#247695 ]]
+    vim.api.nvim_command [[ hi LspReferenceText guibg=#4c566a ]]
     vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
     require("completion").on_attach()
     lsp_status.on_attach(client)
@@ -101,7 +101,7 @@ lspconfig.vimls.setup {
 
 --- yaml ---
 lspconfig.yamlls.setup {
-    on_attach = on_attach,
+    on_attach = on_attach_nohl,
     settings = {
         yaml = {format = {enable = true, singleQuote = true}, validate = true}
     }
