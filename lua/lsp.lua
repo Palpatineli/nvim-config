@@ -74,7 +74,6 @@ end
 
 local servers = {
     "bashls",
-    "cssls",
     "pyright",
     "rust_analyzer",
 }
@@ -105,4 +104,10 @@ lspconfig.yamlls.setup {
     settings = {
         yaml = {format = {enable = true, singleQuote = true}, validate = true}
     }
+}
+
+--- cssls ---
+lspconfig.cssls.setup {
+    on_attach = on_attach,
+    cmd = {"css-language-server", "--stdio"},
 }
