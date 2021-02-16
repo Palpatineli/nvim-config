@@ -4,17 +4,17 @@ gl.short_line_list = {'LuaTree','vista','dbui'}
 
 local colors = {
   bg = '#373e4d',
-  yellow = '#ebcb8b',
-  cyan = '#88c0d0',
-  darkblue = '#e5e9f0',
-  green = '#a3be8c',
-  orange = '#FF8800',
-  purple = '#5d4d7a',
-  magenta = '#b48ead',
-  grey = '#4c566a',
-  lightgrey = '#3b4252',
-  blue = '#81a1c1',
-  red = '#bf616a'
+  yellow = '#f1fa8c',
+  cyan = '#8be9fd',
+  white = '#f8f8f2',
+  green = '#50fa7b',
+  orange = '#ffb86c',
+  purple = '#6272a4',
+  magenta = '#bd93f9',
+  grey = '#282a36',
+  lightgrey = '#44475a',
+  blue = '#ff79c6',
+  red = '#ff5555'
 }
 
 local buffer_not_empty = function()
@@ -45,7 +45,7 @@ gls.left = {
         separator_highlight = {colors.yellow, colors.grey},
         highlight = {colors.grey, colors.bg, 'bold'},
     }},
-    { FileName = { provider = {'FileName'}, condition = buffer_not_empty, separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, highlight = {colors.darkblue, colors.grey} }},
+    { FileName = { provider = {'FileName'}, condition = buffer_not_empty, separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, highlight = {colors.white, colors.grey} }},
     { GitIcon = { provider = function() return ' ' end, condition = buffer_not_empty, highlight = {colors.blue, colors.lightgrey} }},
     { GitBranch = { provider = 'GitBranch', separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, condition = buffer_not_empty, highlight = {colors.cyan, colors.lightgrey} }},
     { DiffAdd = { provider = 'DiffAdd', condition = checkwidth, icon = '  ', highlight = {colors.green, colors.bg} }},
@@ -60,9 +60,9 @@ gls.left = {
 }
 gls.right = {
     { FileIcon = { separator = ' ', provider = 'FileIcon', condition = buffer_not_empty, separator_highlight = {colors.blue, colors.bg}, highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color, colors.bg} }},
-    { FileType = { provider = 'FileTypeName', separator = ' ', separator_highlight = {colors.bg, colors.bg}, highlight = {colors.darkblue, colors.bg} }},
-    { Space2 = { provider = function () return ' ' end, separator = ' ', separator_highlight = {colors.blue, colors.bg}, highlight = {colors.darkblue, colors.bg}}},
-    { LineInfo = { provider = 'LineColumn', separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, highlight = {colors.darkblue, colors.lightgrey} }},
-    { Space3 = { provider = function () return ' ' end, separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, highlight = {colors.darkblue, colors.lightgrey} }},
-    { PerCent = { provider = 'LinePercent', separator = ' ', separator_highlight = {colors.blue, colors.grey}, highlight = {colors.darkblue, colors.grey} }},
+    { FileType = { provider = 'FileTypeName', separator = ' ', separator_highlight = {colors.bg, colors.bg}, highlight = {colors.white, colors.bg} }},
+    { Space2 = { provider = function () return ' ' end, separator = ' ', separator_highlight = {colors.blue, colors.bg}, highlight = {colors.white, colors.bg}}},
+    { LineInfo = { provider = 'LineColumn', separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, highlight = {colors.white, colors.lightgrey} }},
+    { Space3 = { provider = function () return ' ' end, separator = ' ', separator_highlight = {colors.blue, colors.lightgrey}, highlight = {colors.white, colors.lightgrey} }},
+    { PerCent = { provider = 'LinePercent', separator = ' ', separator_highlight = {colors.blue, colors.grey}, highlight = {colors.white, colors.grey} }},
 }

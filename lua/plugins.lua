@@ -15,7 +15,7 @@ paq 'glepnir/lspsaga.nvim'
 paq 'nvim-lua/lsp-status.nvim'
 paq 'Shougo/neosnippet.vim'
 paq 'scrooloose/nerdcommenter'
-paq 'arcticicestudio/nord-vim'
+paq{'dracula/vim', as='dracula'}
 paq 'Vimjas/vim-python-pep8-indent'
 paq 'goldfeld/vim-seek'
 -- telescope and its support

@@ -25,8 +25,8 @@ endif
 
 " ui
 set termguicolors
-set background=light
-colorscheme nord
+set background=dark
+colorscheme dracula
 set t_Co=256
 set t_Sf=[3%p1%dm
 set t_Sb=[4%p1%dm
