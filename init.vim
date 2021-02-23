@@ -34,8 +34,8 @@ set t_Sb=[4%p1%dm
 if has('win32') || has('win64')
     set guifont=consolas:h8
 else
-    set guifont=DejaVuSansMono\ NF\ 9
-    set printfont=DejaVuSansMono\ NF\ 9
+    set guifont=Iosevka\ 9
+    set printfont=Iosevka\ 9
 endif
 set smartcase " case insensitive search
 set fdm=syntax " folding by syntax for general files
