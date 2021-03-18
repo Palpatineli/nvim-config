@@ -15,7 +15,6 @@ paq 'glepnir/lspsaga.nvim'
 paq 'nvim-lua/lsp-status.nvim'
 paq 'Shougo/neosnippet.vim'
 paq 'scrooloose/nerdcommenter'
-paq{'dracula/vim', as='dracula'}
 paq 'Vimjas/vim-python-pep8-indent'
 paq 'goldfeld/vim-seek'
 -- telescope and its support
@@ -25,3 +24,7 @@ paq 'luochen1990/rainbow'
 paq 'nvim-telescope/telescope.nvim'
 paq 'roxma/nvim-yarp'
 paq 'kyazdani42/nvim-web-devicons'
+
+-- colorschemes
+-- paq{'dracula/vim', as='dracula'}
+paq 'arcticicestudio/nord-vim'
