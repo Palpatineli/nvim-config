@@ -1,0 +1,12 @@
+{
+    "doc": {
+        "prefix": ["doc"],
+        "body": [
+            "\"\"\"",
+            "\t$0",
+            "\"\"\"",
+            "$1"
+        ],
+        "description": "long form docs for functions and classes"
+    }
+}

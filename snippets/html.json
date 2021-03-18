@@ -1,0 +1,28 @@
+{
+    "Reveal.js section": {
+        "prefix": ["sec"],
+        "body": [
+            "<section>",
+            "\t<h2>${0:title}</h2>",
+            "\t$1",
+            "</section>"
+        ],
+        "description": "reveal js section"
+    },
+    "figure": {
+        "prefix": ["fig"],
+        "body": [
+            "<img class='figure' data-src='img/$0' data-preload/>"
+        ],
+        "description": "reveal js lazy loading image"
+    },
+    "code section": {
+        "prefix": ["code"],
+        "body": [
+            "<pre><code data-noescape data-trim class='$0'>",
+            "\t$1",
+            "</code></pre>"
+        ],
+        "description": "reveal js code section"
+    }
+}

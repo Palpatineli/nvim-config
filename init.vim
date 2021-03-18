@@ -99,8 +99,9 @@ augroup END
 " ranbow
 let g:rainbow_active = 1
 
+let g:vsnip_snippet_dir = "~/.config/nvim/snippets"
 " completion-nvim
-let g:completion_enable_snippet = "Neosnippet"
+let g:completion_enable_snippet = "vim-vsnip"
 let g:completion_chain_complete_list = {
             \ 'default': [
             \   {'complete_items': ['lsp']},
@@ -108,6 +109,12 @@ let g:completion_chain_complete_list = {
             \   {'complete_items': ['snippet', 'path']}
             \ ]}
 autocmd BufEnter * lua require'completion'.on_attach()
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'       : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'       : '<C-j>'
+imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'    : '<C-j>'
+smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'    : '<C-j>'
+imap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
+smap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
 
 " nvim-bufferline
 lua require'bufferline'.setup()
