@@ -68,6 +68,7 @@ end
 
 local servers_nohl = {
     "jsonls",
+    "dotls",
 }
 for _, lsp in ipairs(servers_nohl) do
     lspconfig[lsp].setup{on_attach = on_attach_nohl}
