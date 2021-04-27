@@ -29,4 +29,7 @@ paq 'kyazdani42/nvim-web-devicons'
 
 -- colorschemes
 -- paq{'dracula/vim', as='dracula'}
-paq 'arcticicestudio/nord-vim'
+-- paq 'arcticicestudio/nord-vim'
+paq 'RRethy/nvim-base16'
+local colorscheme = require('base16-colorscheme')
+colorscheme.setup('brushtrees')
