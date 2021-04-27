@@ -48,8 +48,8 @@ gls.left = {
             vim.api.nvim_command('hi GalaxyViMode guibg='..mode_color[vim.fn.mode()])
             return '   '
         end,
-        separator = ' ',
-        separator_highlight = {mode_color[vim.fn.mode()], colors.shade6},
+        separator = ' ',
+        separator_highlight = { colors.shade0, colors.shade6},
         highlight = {colors.grey, colors.bg, 'bold'},
     }},
     { FileName = { provider = {'FileName'}, condition = buffer_not_empty, separator = ' ', separator_highlight = {colors.shade6, colors.shade4}, highlight = {colors.blue, colors.shade6} }},
