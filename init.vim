@@ -71,10 +71,10 @@ au BufNewFile,BufRead *.msc set filetype=mscgen
 let mapleader=';'
 ca w!! w !sudo tee "%"
 " " Move around between windows
-noremap <c-j> <c-w>j
-noremap <c-k> <c-w>k
-noremap <c-h> <c-w>h
-noremap <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
 " " " Move around in terminal
 :tnoremap <c-h> <C-\><C-n><C-w>h
 :tnoremap <c-j> <C-\><C-n><C-w>j
@@ -98,7 +98,13 @@ augroup END
 " ranbow
 let g:rainbow_active = 1
 
+" vsnip snippet
 let g:vsnip_snippet_dir = "~/.config/nvim/snippets"
+imap <expr> <C-n> vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<C-n>')
+smap <expr> <C-n> vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<C-n>')
+imap <expr> <C-p> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'
+smap <expr> <C-p> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'
+
 " completion-nvim
 let g:completion_enable_snippet = "vim-vsnip"
 let g:completion_chain_complete_list = {
@@ -108,12 +114,6 @@ let g:completion_chain_complete_list = {
             \   {'complete_items': ['snippet', 'path']}
             \ ]}
 autocmd BufEnter * lua require'completion'.on_attach()
-imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'       : '<C-j>'
-smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'       : '<C-j>'
-imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'    : '<C-j>'
-smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'    : '<C-j>'
-imap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
-smap <expr> <C-k> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
 
 " nvim-bufferline
 lua require'bufferline'.setup()

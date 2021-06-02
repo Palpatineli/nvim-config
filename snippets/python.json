@@ -2,11 +2,18 @@
     "doc": {
         "prefix": ["doc"],
         "body": [
+            "\"\"\"$1",
+            "\t$2",
             "\"\"\"",
-            "\t$0",
-            "\"\"\"",
-            "$1"
+            "$3"
         ],
         "description": "long form docs for functions and classes"
+    },
+    "ifmain": {
+        "prefix": ["ifmain"],
+        "body": [
+            "if __name__ == \"__main__\":",
+            "\tmain()"
+        ]
     }
 }
