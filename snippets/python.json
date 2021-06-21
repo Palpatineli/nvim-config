@@ -15,5 +15,25 @@
             "if __name__ == \"__main__\":",
             "\tmain()"
         ]
+    },
+    "pandas": {
+        "prefix": ["pd"],
+        "body": [
+            "import numpy as np",
+            "import pandas as pd"
+        ]
+    },
+    "numpy": {
+        "prefix": ["np"],
+        "body": [
+            "import numpy as np"
+        ]
+    },
+    "parquet": {
+        "prefix": ["pq"],
+        "body": [
+            "import pyarrow as pa",
+            "from pyarrow import parquet as pq"
+        ]
     }
 }
