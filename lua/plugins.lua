@@ -14,6 +14,7 @@ paq 'Yggdroot/indentLine'
 paq 'neovim/nvim-lspconfig'
 paq 'glepnir/lspsaga.nvim'
 paq 'nvim-lua/lsp-status.nvim'
+paq {'euclio/vim-markdown-composer', run='cargo build --release'}
 paq 'scrooloose/nerdcommenter'
 paq 'Vimjas/vim-python-pep8-indent'
 paq 'goldfeld/vim-seek'
