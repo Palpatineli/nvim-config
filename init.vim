@@ -106,13 +106,22 @@ imap <expr> <C-p> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'
 smap <expr> <C-p> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'
 
 " completion-nvim
+augroup completion
+    autocmd!
+    autocmd BufEnter * lua require'completion'.on_attach()
+    autocmd FileType sql let g:completion_trigger_character = ['.', '"', '`', '[']
+augroup END
 let g:completion_enable_snippet = "vim-vsnip"
 let g:completion_chain_complete_list = {
             \ 'default': [
             \   {'complete_items': ['lsp']},
             \   {'complete_items': ['buffers']},
             \   {'complete_items': ['snippet', 'path']}
-            \ ]}
+            \ ],
+            \ 'sql': [
+            \   {'completion_items': ['vim-dadbod-completion']},
+            \ ],
+            \ }
 autocmd BufEnter * lua require'completion'.on_attach()
 
 " nvim-bufferline
@@ -122,3 +131,8 @@ nnoremap <silent><leader>bk :BufferLineCyclePrev<CR>
 nnoremap <silent><leader>bJ :BufferLineMoveNext<CR>
 nnoremap <silent><leader>bK :BufferLineMovePrev<CR>
 lua require('statusline')
+
+" dadbod
+let g:dbs = {
+            \    "aam-macs": "sqlserver://kli@bos-dbrnd01:1433"
+            \}
