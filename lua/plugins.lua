@@ -14,7 +14,7 @@ paq 'airblade/vim-gitgutter'
 paq 'rhysd/vim-grammarous'
 paq 'glepnir/galaxyline.nvim'
 paq 'sjl/gundo.vim'
-paq 'Yggdroot/indentLine'
+paq 'lukas-reineke/indent-blankline.nvim'
 paq 'neovim/nvim-lspconfig'
 paq 'glepnir/lspsaga.nvim'
 paq 'nvim-lua/lsp-status.nvim'
@@ -35,6 +35,7 @@ paq 'kyazdani42/nvim-web-devicons'
 -- colorschemes
 -- paq{'dracula/vim', as='dracula'}
 -- paq 'arcticicestudio/nord-vim'
-paq 'RRethy/nvim-base16'
-local colorscheme = require('base16-colorscheme')
-colorscheme.setup('brushtrees')
+-- paq 'RRethy/nvim-base16'
+paq 'marko-cerovac/material.nvim'
+vim.g.material_style = "lighter"
+require('material').set()

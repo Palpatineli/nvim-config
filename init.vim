@@ -136,3 +136,19 @@ lua require('statusline')
 let g:dbs = {
             \    "aam-macs": "sqlserver://kli@bos-dbrnd01:1433"
             \}
+
+" indentline
+" " not show characters just change background
+highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
+highlight IndentEven guifg=NONE guibg=#F0F0F0 gui=nocombine
+let g:indent_blankline_char_highlight_list = ["IndentOdd", "IndentEven"]
+let g:indent_blankline_space_char_highlight_list = ["IndentOdd", "IndentEven"]
+let g:indent_blankline_char = " "
+let g:indent_blankline_space_char = " "
+let g:indent_blankline_show_trailing_blankline_indent = 0
+
+" extra highlighting
+hi Comment guifg=#aabfc9 guibg=NONE gui=nocombine
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+    \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+    \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>

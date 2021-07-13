@@ -35,5 +35,14 @@
             "import pyarrow as pa",
             "from pyarrow import parquet as pq"
         ]
+    },
+    "timing": {
+        "prefix": ["timing"],
+        "body": [
+            "from time import perf_counter",
+            "old = perf_counter()",
+            "$1",
+            "print(f'time spent: {perf_counter() - old}')"
+        ]
     }
 }
