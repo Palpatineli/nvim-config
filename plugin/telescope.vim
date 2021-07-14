@@ -7,5 +7,4 @@ nnoremap <leader>l <cmd>lua require('telescope.builtin').lsp_workspace_diagnosti
 
 nnoremap <leader>F <cmd>lua require('telescope.builtin').lsp_references()<cr>
 nnoremap <leader>o <cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>
-nnoremap <leader>a <cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>
-nnoremap <leader>O :Telescope lsp_workspace_symbols query=
+nnoremap <leader>a <cmd>lua require('telescope').extensions.fzf_writer.staged_grep()<cr>
