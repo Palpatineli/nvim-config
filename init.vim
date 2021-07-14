@@ -10,18 +10,12 @@ exec 'set runtimepath^='.g:packer_path
 lua require('plugins')
 
 " general
-set updatetime=100
 set hidden
-syntax enable
 set autochdir " set working directory to file directory
-set updatecount=0 " no swap files
 set noswapfile
 set nobackup
-if has('win32') || has('win64')
-    set directory=%TMP%
-else
-    set directory=/tmp " throw out the temp file
-endif
+set exrc   " allow local rc fiel
+set secure " disallow autocmd, shell and write commands in local rc
 
 " ui
 set termguicolors
@@ -116,7 +110,10 @@ let g:completion_chain_complete_list = {
             \ 'default': [
             \   {'complete_items': ['lsp']},
             \   {'complete_items': ['buffers']},
-            \   {'complete_items': ['snippet', 'path']}
+            \   {'complete_items': ['snippet', 'path']},
+            \ ],
+            \ 'org': [
+            \   {'mode': 'omni'}
             \ ],
             \ 'sql': [
             \   {'completion_items': ['vim-dadbod-completion']},
@@ -134,7 +131,7 @@ lua require('statusline')
 
 " dadbod
 let g:dbs = {
-            \    "aam-macs": "sqlserver://kli@bos-dbrnd01:1433"
+            \    "aam-macs": "sqlserver://bos-dbrnd01:1433"
             \}
 
 " indentline
@@ -152,3 +149,15 @@ hi Comment guifg=#aabfc9 guibg=NONE gui=nocombine
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" neogit
+lua require('neogit').setup{}
+lua require('diffview').setup{}
+nnoremap <silent> <F3> :Neogit<cr>
+
+" orgmode
+lua require('orgmode').setup({
+    \ org_agenda_files = {'~/.local/notes/*'},
+    \ org_default_notes_file = '~/.local/notes/main.org',
+    \ })
+autocmd FileType org setlocal iskeyword+=:,#,+
