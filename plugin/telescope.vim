@@ -8,3 +8,4 @@ nnoremap <leader>l <cmd>lua require('telescope.builtin').lsp_workspace_diagnosti
 nnoremap <leader>F <cmd>lua require('telescope.builtin').lsp_references()<cr>
 nnoremap <leader>o <cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>
 nnoremap <leader>a <cmd>lua require('telescope').extensions.fzf_writer.staged_grep()<cr>
+nnoremap <expr> <leader>A ':lua require("telescope").extensions.fzf_writer.staged_grep()<cr>\b' . expand('<cword>') . '\b'
