@@ -37,6 +37,34 @@ configs.pyright = {
     },
 }
 
+-- sumneko lua --
+local system_name
+if vim.fn.has("mac") == 1 then
+    system_name = "macOS"
+elseif vim.fn.has("unix") == 1 then
+    system_name = "Linux"
+elseif vim.fn.has('win32') == 1 then
+    system_name = "Windows"
+else
+    print("Unsupported system for sumneko")
+end
+local runtime_path = vim.split(package.path, ';')
+local sumneko_root_path = os.getenv('HOME')..'/.local/share/lua-language-server'
+local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+require'lspconfig'.sumneko_lua.setup {
+    cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+        settings = {
+            Lua = {
+            runtime = { version = 'LuaJIT', path = runtime_path, },
+            diagnostics = { globals = {'vim'}, },
+            workspace = { library = vim.api.nvim_get_runtime_file("", true), },
+            telemetry = { enable = false, },
+        },
+    },
+}
+
 --- simple ---
 local on_attach = function(client)
     vim.api.nvim_command [[ hi LspReferenceText guibg=#4c566a ]]

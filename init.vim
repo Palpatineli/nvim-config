@@ -155,9 +155,5 @@ lua require('neogit').setup{}
 lua require('diffview').setup{}
 nnoremap <silent> <F3> :Neogit<cr>
 
-" orgmode
-lua require('orgmode').setup({
-    \ org_agenda_files = {'~/.local/notes/*'},
-    \ org_default_notes_file = '~/.local/notes/main.org',
-    \ })
-autocmd FileType org setlocal iskeyword+=:,#,+
+" nabla
+nnoremap <F5> <cmd>lua require("nabla").action()<cr>

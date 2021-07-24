@@ -12,7 +12,3 @@ vnoremap <buffer> <C-A-u> <Esc>`>a^<Esc>`<i^<Esc>
 vnoremap <buffer> <C-u> <Esc>`>a~<Esc>`<i~<Esc>
 
 command! SSplit :s/\([\.!?]['"]\?\) /\1\r
-let g:mkdp_command_for_global=1
-" let g:mkdp_browser='flatpak run org.mozilla.firefox'
-nnoremap <F4> :call mkdp#util#open_preview_page()<cr>
-nnoremap <F5> :call mkdp#util#stop_preview()<cr>
