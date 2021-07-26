@@ -56,7 +56,7 @@ set listchars=tab:<+  " highlight hard tab
 set tags=tags;
 runtime macros/matchit.vim  " turn on matchit
 set go= " minial gui
-set completeopt=menuone,noinsert,noselect
+set completeopt=menuone,noselect
 set shortmess+=c
 
 " tabs
@@ -103,6 +103,9 @@ augroup LuaHighlight  " highlight yanked
   autocmd!
   autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
 augroup END
+" completion
+inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 
 " vsnip snippet
 let g:vsnip_snippet_dir = "~/.config/nvim/snippets"
@@ -110,28 +113,6 @@ imap <expr> <C-n> vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(
 smap <expr> <C-n> vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<C-n>')
 imap <expr> <C-p> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'
 smap <expr> <C-p> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'
-
-" completion-nvim
-augroup completion
-    autocmd!
-    autocmd BufEnter * lua require'completion'.on_attach()
-    autocmd FileType sql let g:completion_trigger_character = ['.', '"', '`', '[']
-augroup END
-let g:completion_enable_snippet = "vim-vsnip"
-let g:completion_chain_complete_list = {
-            \ 'default': [
-            \   {'complete_items': ['lsp']},
-            \   {'complete_items': ['buffers']},
-            \   {'complete_items': ['snippet', 'path']},
-            \ ],
-            \ 'org': [
-            \   {'mode': 'omni'}
-            \ ],
-            \ 'sql': [
-            \   {'completion_items': ['vim-dadbod-completion']},
-            \ ],
-            \ }
-autocmd BufEnter * lua require'completion'.on_attach()
 
 " nvim-bufferline
 lua require'bufferline'.setup()

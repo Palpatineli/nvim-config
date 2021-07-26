@@ -3,8 +3,7 @@ require'paq' {
     'akinsho/nvim-bufferline.lua';
     'jalvesaq/vimcmdline';
     'chrisbra/Colorizer';
-    'nvim-lua/completion-nvim';
-    'steelsojka/completion-buffers';
+    'hrsh7th/nvim-compe';
     'tpope/vim-dadbod';
     'kristijanhusak/vim-dadbod-ui';
     'kristijanhusak/vim-dadbod-completion';
@@ -40,15 +39,32 @@ require'paq' {
 }
 
 -- general
-vim.g.mapleader = ";"
+vim.g.mapleader = ";"  -- seem to be separate from vim mapleader
+
+-- nvim-comp
+require("compe").setup {
+    source_timeout = 600;
+    source = {
+        path = true;
+        buffer = true;
+        calc = true;
+        nvim_lsp = true;
+        nvim_lua = false;
+        vsnip = true;
+        ultisnips = false;
+        luasnip = false;
+        dadbod = true;  -- vim-dadbod-completion
+    };
+}
+
+vim.api.nvim_set_keymap("i", "<C-n>", "compe#complete()", {silent = true, expr = true, noremap = true})
+vim.api.nvim_set_keymap("i", "<cr>", "compe#confirm('<CR>')", {silent = true, expr = true, noremap = true})
+vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')", {silent = true, expr = true, noremap = true})
 
 -- vim-markdown-composer
 vim.g.markdown_composer_autostart = false
 
 -- colorschemes
--- paq{'dracula/vim', as='dracula'}
--- paq 'arcticicestudio/nord-vim'
--- paq 'RRethy/nvim-base16'
 vim.g.material_style = "lighter"
 require('material').set()
 
@@ -79,12 +95,21 @@ require'nvim-treesitter.configs'.setup {
             scope_incremental = ";tl"
         },
     },
-    indent = { enable = true },
+    indent = { enable = true, disable = {"python"}, },
     -- nvim-ts-rainbow
     rainbow = {
         enable = true,
         extended_mode = true,
-        max_file_lines = 10000
+        max_file_lines = 10000,
+        colors = {
+            "#39ADB5",
+            "#FF5370",
+            "#6182B8",
+            "#F6A434",
+            "#91B859",
+            "#E53935",
+            "#5E8526"
+        }
     },
 }
 
