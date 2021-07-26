@@ -1,18 +1,3 @@
-" folding of my html presentation files
-set nolist
-set foldmethod=marker
-" Set a nicer foldtext function
-set foldtext=MyFoldText()
-function! MyFoldText()
-  let line = getline(v:foldstart+2)
-  let line = substitute(line,'^\s*','    ','')
-  let line = substitute(line,'</*h[1-6]>','','g')
-
-  let n = v:foldend - v:foldstart + 1
-  let info = "------" . n . " lines"
-  return line . info
-endfunction
-
 " super, sub, italic and bold
 vnoremap <buffer> <c-b> <Esc>`>a</b><Esc>`<i<b><Esc>
 vnoremap <buffer> <c-i> <Esc>`>a</i><Esc>`<i<i><Esc>

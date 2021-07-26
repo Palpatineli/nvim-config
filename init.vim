@@ -16,6 +16,8 @@ set noswapfile
 set nobackup
 set exrc   " allow local rc fiel
 set secure " disallow autocmd, shell and write commands in local rc
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 
 " ui
 set termguicolors
@@ -88,9 +90,6 @@ augroup LuaHighlight  " highlight yanked
   autocmd!
   autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
 augroup END
-
-" ranbow
-let g:rainbow_active = 1
 
 " vsnip snippet
 let g:vsnip_snippet_dir = "~/.config/nvim/snippets"

@@ -27,11 +27,12 @@ paq 'Vimjas/vim-python-pep8-indent'
 -- telescope and its support
 paq 'nvim-lua/popup.nvim'
 paq 'nvim-lua/plenary.nvim'
-paq 'luochen1990/rainbow'
 paq 'nvim-telescope/telescope.nvim'
 paq 'nvim-telescope/telescope-fzf-writer.nvim'
+paq 'p00f/nvim-ts-rainbow'
 paq 'folke/todo-comments.nvim'
 paq 'kyazdani42/nvim-tree.lua'
+paq 'nvim-treesitter/nvim-treesitter'
 paq 'hrsh7th/vim-vsnip'
 paq 'hrsh7th/vim-vsnip-integ'
 paq 'kyazdani42/nvim-web-devicons'
@@ -63,3 +64,26 @@ vim.api.nvim_set_keymap("n", "<leader>T", ":TodoTelescope<cr>", {})
 
 -- nvim-tree
 vim.api.nvim_set_keymap("n", "<F2>", ":NvimTreeToggle<cr>", {})
+
+-- tree-sitter
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = {"bash", "c", "css", "dockerfile", "html", "javascript", "json", "lua", "python", "r", "regex", "rust", "scss", "toml", "typescript", "yaml"},
+    highlight = { enable = true },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = ";tn",
+            node_incremental = ";tk",
+            node_decremental = ";tj",
+            scope_incremental = ";tl"
+        },
+    },
+    indent = { enable = true },
+    -- nvim-ts-rainbow
+    rainbow = {
+        enable = true,
+        extended_mode = true,
+        max_file_lines = 10000
+    },
+}
+
