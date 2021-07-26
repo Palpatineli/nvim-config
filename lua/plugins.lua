@@ -1,41 +1,43 @@
-local paq = require'paq-nvim'.paq
-paq {'savq/paq-nvim', opt=true}
-paq 'akinsho/nvim-bufferline.lua'
-paq 'jalvesaq/vimcmdline'
-paq 'chrisbra/Colorizer'
-paq 'nvim-lua/completion-nvim'
-paq 'steelsojka/completion-buffers'
-paq 'tpope/vim-dadbod'
-paq 'kristijanhusak/vim-dadbod-ui'
-paq 'kristijanhusak/vim-dadbod-completion'
-paq 'sindrets/diffview.nvim'
-paq 'mattn/emmet-vim'
-paq 'airblade/vim-gitgutter'
-paq 'rhysd/vim-grammarous'
-paq 'glepnir/galaxyline.nvim'
-paq 'lukas-reineke/indent-blankline.nvim'
-paq 'b3nj5m1n/kommentary'
-paq 'ggandor/lightspeed.nvim'
-paq 'neovim/nvim-lspconfig'
-paq 'glepnir/lspsaga.nvim'
-paq 'nvim-lua/lsp-status.nvim'
-paq {'euclio/vim-markdown-composer', run='cargo build --release'}
-paq 'jbyuki/nabla.nvim'
-paq {'oberblastmeister/neuron.nvim', branch="unstable"}
-paq 'TimUntersberger/neogit'
-paq 'Vimjas/vim-python-pep8-indent'
--- telescope and its support
-paq 'nvim-lua/popup.nvim'
-paq 'nvim-lua/plenary.nvim'
-paq 'nvim-telescope/telescope.nvim'
-paq 'nvim-telescope/telescope-fzf-writer.nvim'
-paq 'p00f/nvim-ts-rainbow'
-paq 'folke/todo-comments.nvim'
-paq 'kyazdani42/nvim-tree.lua'
-paq 'nvim-treesitter/nvim-treesitter'
-paq 'hrsh7th/vim-vsnip'
-paq 'hrsh7th/vim-vsnip-integ'
-paq 'kyazdani42/nvim-web-devicons'
+require'paq' {
+    {'savq/paq-nvim'};
+    'akinsho/nvim-bufferline.lua';
+    'jalvesaq/vimcmdline';
+    'chrisbra/Colorizer';
+    'nvim-lua/completion-nvim';
+    'steelsojka/completion-buffers';
+    'tpope/vim-dadbod';
+    'kristijanhusak/vim-dadbod-ui';
+    'kristijanhusak/vim-dadbod-completion';
+    'sindrets/diffview.nvim';
+    'mattn/emmet-vim';
+    'airblade/vim-gitgutter';
+    'rhysd/vim-grammarous';
+    'glepnir/galaxyline.nvim';
+    'lukas-reineke/indent-blankline.nvim';
+    'b3nj5m1n/kommentary';
+    'ggandor/lightspeed.nvim';
+    'neovim/nvim-lspconfig';
+    'glepnir/lspsaga.nvim';
+    'nvim-lua/lsp-status.nvim';
+    {'euclio/vim-markdown-composer', run='cargo build --release'};
+    'marko-cerovac/material.nvim';
+    'jbyuki/nabla.nvim';
+    {'oberblastmeister/neuron.nvim', branch="unstable"};
+    'TimUntersberger/neogit';
+    'Vimjas/vim-python-pep8-indent';
+    -- telescope and its support
+    'nvim-lua/popup.nvim';
+    'nvim-lua/plenary.nvim';
+    'nvim-telescope/telescope.nvim';
+    'nvim-telescope/telescope-fzf-writer.nvim';
+    'p00f/nvim-ts-rainbow';
+    'folke/todo-comments.nvim';
+    'kyazdani42/nvim-tree.lua';
+    'nvim-treesitter/nvim-treesitter';
+    'hrsh7th/vim-vsnip';
+    'hrsh7th/vim-vsnip-integ';
+    'kyazdani42/nvim-web-devicons';
+}
 
 -- general
 vim.g.mapleader = ";"
@@ -47,7 +49,6 @@ vim.g.markdown_composer_autostart = false
 -- paq{'dracula/vim', as='dracula'}
 -- paq 'arcticicestudio/nord-vim'
 -- paq 'RRethy/nvim-base16'
-paq 'marko-cerovac/material.nvim'
 vim.g.material_style = "lighter"
 require('material').set()
 
