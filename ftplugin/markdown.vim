@@ -3,9 +3,8 @@ nnoremap <buffer> <F6> :w<CR>:!pandoc -s -t odt --filter pandoc-citeproc -o %<.o
 nnoremap <buffer> <F7> :w<CR>:!pandoc -s -t html % > %<.html<CR>
 let g:pandoc#syntax#conceal#use=0
 let g:pandoc#after#modules#enabled=["neosnippet"]
-let g:pandoc#biblio#bibs=['/home/palpatine/.pandoc/library.bib']
+let g:pandoc#biblio#bibs=['~/.pandoc/library.bib']
 
-nnoremap <leader>o :TOC<cr>
 vnoremap <buffer> <c-b> <Esc>`>a**<Esc>`<i**<Esc>
 vnoremap <buffer> <c-i> <Esc>`>a_<Esc>`<i_<Esc>
 vnoremap <buffer> <C-A-u> <Esc>`>a^<Esc>`<i^<Esc>

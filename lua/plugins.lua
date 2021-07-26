@@ -21,6 +21,7 @@ paq 'glepnir/lspsaga.nvim'
 paq 'nvim-lua/lsp-status.nvim'
 paq {'euclio/vim-markdown-composer', run='cargo build --release'}
 paq 'jbyuki/nabla.nvim'
+paq {'oberblastmeister/neuron.nvim', branch="unstable"}
 paq 'TimUntersberger/neogit'
 paq 'Vimjas/vim-python-pep8-indent'
 -- telescope and its support
@@ -37,6 +38,9 @@ paq 'kyazdani42/nvim-web-devicons'
 
 -- general
 vim.g.mapleader = ";"
+
+-- vim-markdown-composer
+vim.g.markdown_composer_autostart = false
 
 -- colorschemes
 -- paq{'dracula/vim', as='dracula'}

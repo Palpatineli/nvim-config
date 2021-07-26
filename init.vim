@@ -52,7 +52,7 @@ set shiftwidth=4 " backspace delete soft tabs
 set backspace=indent,eol,start
 
 " filetypes
-au BufNewFile,BufRead *.md,*.txt set filetype=pandoc  " for vim-pandoc
+au BufNewFile,BufRead *.md,*.txt set filetype=markdown
 au BufNewFile,BufRead *.csv,*.dat set filetype=csv  " for CSV files
 au BufNewFile,BufRead *.qml set filetype=javascript  " for qtquick
 au BufNewFile,BufRead *.g set filetype=antlr3  " for antlr
