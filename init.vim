@@ -26,6 +26,19 @@ set t_Co=256
 set t_Sf=[3%p1%dm
 set t_Sb=[4%p1%dm
 
+" speedup
+let g:loaded_matchit           = 0
+let g:loaded_logiPat           = 0
+let g:loaded_tarPlugin         = 0
+let g:loaded_gzip              = 0
+let g:loaded_zipPlugin         = 0
+let g:loaded_2html_plugin      = 0
+let g:loaded_shada_plugin      = 0
+let g:loaded_netrw             = 0
+let g:loaded_netrwPlugin       = 0
+let g:loaded_tutor_mode_plugin = 0
+let g:loaded_remote_plugins    = 0
+
 if has('win32') || has('win64')
     set guifont=consolas:h8
 else
