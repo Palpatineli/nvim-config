@@ -1,16 +1,16 @@
 require'paq' {
     {'savq/paq-nvim'};
     'akinsho/nvim-bufferline.lua';
-    'jalvesaq/vimcmdline';
+    {'jalvesaq/vimcmdline', opt=true};
     'chrisbra/Colorizer';
     'hrsh7th/nvim-compe';
-    'tpope/vim-dadbod';
-    'kristijanhusak/vim-dadbod-ui';
-    'kristijanhusak/vim-dadbod-completion';
+    {'tpope/vim-dadbod', opt=true};
+    {'kristijanhusak/vim-dadbod-ui', opt=true};
+    {'kristijanhusak/vim-dadbod-completion', opt=true};
     'sindrets/diffview.nvim';
-    'mattn/emmet-vim';
+    {'mattn/emmet-vim', opt=true};
     'airblade/vim-gitgutter';
-    'rhysd/vim-grammarous';
+    {'rhysd/vim-grammarous', opt=true};
     'glepnir/galaxyline.nvim';
     'lukas-reineke/indent-blankline.nvim';
     'b3nj5m1n/kommentary';
@@ -18,12 +18,12 @@ require'paq' {
     'neovim/nvim-lspconfig';
     'glepnir/lspsaga.nvim';
     'nvim-lua/lsp-status.nvim';
-    {'euclio/vim-markdown-composer', run='cargo build --release'};
+    {'euclio/vim-markdown-composer', run='cargo build --release', opt=true};
     'marko-cerovac/material.nvim';
-    'jbyuki/nabla.nvim';
-    {'oberblastmeister/neuron.nvim', branch="unstable"};
+    {'jbyuki/nabla.nvim', opt=true};
+    {'oberblastmeister/neuron.nvim', branch="unstable", opt=true};
     'TimUntersberger/neogit';
-    'Vimjas/vim-python-pep8-indent';
+    {'Vimjas/vim-python-pep8-indent', opt=true};
     -- telescope and its support
     'nvim-lua/popup.nvim';
     'nvim-lua/plenary.nvim';
@@ -41,6 +41,17 @@ require'paq' {
 -- general
 vim.g.mapleader = ";"  -- seem to be separate from vim mapleader
 
+-- bufferline
+require'bufferline'.setup()
+vim.api.nvim_set_keymap("n", "<leader>bj", "<cmd>BufferLineCycleNext<CR>", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>bk", "<cmd>BufferLineCyclePrev<CR>", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>bJ", "<cmd>BufferLineMoveNext<CR>", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>bK", "<cmd>BufferLineMovePrev<CR>", {silent = true})
+
+-- colorschemes
+vim.g.material_style = "lighter"
+require('material').set()
+
 -- nvim-comp
 require("compe").setup {
     source_timeout = 600;
@@ -53,20 +64,10 @@ require("compe").setup {
         vsnip = true;
         ultisnips = false;
         luasnip = false;
-        dadbod = true;  -- vim-dadbod-completion
     };
 }
-
-vim.api.nvim_set_keymap("i", "<C-n>", "compe#complete()", {silent = true, expr = true, noremap = true})
 vim.api.nvim_set_keymap("i", "<cr>", "compe#confirm('<CR>')", {silent = true, expr = true, noremap = true})
-vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')", {silent = true, expr = true, noremap = true})
-
--- vim-markdown-composer
-vim.g.markdown_composer_autostart = false
-
--- colorschemes
-vim.g.material_style = "lighter"
-require('material').set()
+vim.api.nvim_set_keymap("i", "<c-e>", "compe#close('<C-e>')", {silent = true, expr = true, noremap = true})
 
 -- kommentary
 vim.g.kommentary_create_default_mappings = false
@@ -74,6 +75,14 @@ vim.api.nvim_set_keymap("n", "<leader>ci", "<Plug>kommentary_line_increase", {})
 vim.api.nvim_set_keymap("n", "<leader>cd", "<Plug>kommentary_line_decrease", {})
 vim.api.nvim_set_keymap("x", "<leader>ci", "<Plug>kommentary_visual_increase", {})
 vim.api.nvim_set_keymap("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
+
+-- neogit
+require('neogit').setup{}
+require('diffview').setup{}
+vim.api.nvim_set_keymap("n", "<F3>", "<cmd>Neogit<cr>", {noremap = true, silent = true})
+
+-- my statusline based on galaxyline
+require('statusline')
 
 -- todo-comments
 require("todo-comments").setup()
@@ -112,4 +121,11 @@ require'nvim-treesitter.configs'.setup {
         }
     },
 }
+
+-- vsnip
+vim.g.vsnip_snippet_dir = "~/.config/nvim/snippets"
+vim.api.nvim_set_keymap("i", "<c-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : 'compe#complete'", {expr = true})
+vim.api.nvim_set_keymap("s", "<C-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : 'compe#complete'", {expr = true})
+vim.api.nvim_set_keymap("i", "<C-p>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'", {expr = true})
+vim.api.nvim_set_keymap("s", "<C-p>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'", {expr = true})
 

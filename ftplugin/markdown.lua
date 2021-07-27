@@ -1,3 +1,27 @@
+vim.cmd [[
+    packadd vim-grammarous
+    packadd vim-markdown-composer
+    packadd nabla.nvim
+    packadd neuron.nvim
+]]
+
+-- vim-markdown-composer
+vim.g.markdown_composer_autostart = false
+
+vim.wo.spell = true
+vim.api.nvim_buf_set_keymap(0, "n", "<F5>", ":ComposerStart<CR>", {noremap = true})
+
+-- bold, italic and super/sub-script
+vim.api.nvim_buf_set_keymap(0, "v", "<c-b>", "<Esc>`>a**<Esc>`<i**<Esc>", {noremap = true})
+vim.api.nvim_buf_set_keymap(0, "v", "<c-i>", "<Esc>`>a_<Esc>`<i_<Esc>", {noremap = true})
+vim.api.nvim_buf_set_keymap(0, "v", "<c-a-u>", "<Esc>`>a^<Esc>`<i^<Esc>", {noremap = true})
+vim.api.nvim_buf_set_keymap(0, "v", "<c-u>", "<Esc>`>a~<Esc>`<i~<Esc>", {noremap = true})
+vim.cmd [["command! SSplit :s/\([\.!?]['"]\?\) /\1\r"]]
+
+-- nabla
+vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('nabla').action()<cr>", {noremap = true})
+
+-- neuron
 require("neuron").setup { neuron_dir = os.getenv("HOME") .. "/note" }
 vim.api.nvim_buf_set_keymap(0, "n", "<CR>", "<cmd>lua require'neuron'.enter_link()<CR>", {noremap = true})
 vim.api.nvim_buf_set_keymap(0, "n", ";zn", "<cmd>lua require'neuron/cmd'.new_edit(require'neuron'.config.neuron_dir)<CR>", {noremap = true})

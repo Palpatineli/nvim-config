@@ -5,6 +5,9 @@ local lsp_status = require('lsp-status')
 
 lsp_status.register_progress()
 
+--- general ---
+vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.definition()<cr>", {silent = true})
+
 --- handlers ---
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics,
@@ -67,16 +70,19 @@ require'lspconfig'.sumneko_lua.setup {
 
 --- simple ---
 local on_attach = function(client)
-    vim.api.nvim_command [[ hi LspReferenceText guibg=#4c566a ]]
-    vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]
-    vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]
-    vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
+    vim.cmd [[
+        hi LspReferenceText guibg=#4c566a
+        autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    ]]
     lsp_status.on_attach(client)
 end
 
 local on_attach_nohl = function(client)
-    vim.api.nvim_command [[ hi LspReferenceText guibg=#4c566a ]]
-    vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
+    vim.cmd [[
+        hi LspReferenceText guibg=#4c566a
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    ]]
     lsp_status.on_attach(client)
 end
 

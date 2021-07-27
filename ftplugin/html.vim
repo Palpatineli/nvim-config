@@ -1,3 +1,4 @@
+packadd emmet-vim
 " super, sub, italic and bold
 vnoremap <buffer> <c-b> <Esc>`>a</b><Esc>`<i<b><Esc>
 vnoremap <buffer> <c-i> <Esc>`>a</i><Esc>`<i<i><Esc>
