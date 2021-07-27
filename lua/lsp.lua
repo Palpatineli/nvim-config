@@ -36,7 +36,9 @@ configs.pyright = {
             initialize_params["workspaceFolders"] = {
                 {name = "workspace", uri = initialize_params["rootUri"]}
             }
-        end
+        end,
+        on_attach = lsp_status.on_attach,
+        capabilities = lsp_status.capabilities,
     },
 }
 
@@ -95,7 +97,7 @@ local servers = {
     "html",
 }
 for _, lsp in ipairs(servers) do
-    lspconfig[lsp].setup{on_attach = on_attach}
+    lspconfig[lsp].setup{on_attach = on_attach, capabilities = lsp_status.capabilities}
 end
 
 local servers_nohl = {
@@ -103,9 +105,8 @@ local servers_nohl = {
     "dotls",
 }
 for _, lsp in ipairs(servers_nohl) do
-    lspconfig[lsp].setup{on_attach = on_attach_nohl}
+    lspconfig[lsp].setup{on_attach = on_attach_nohl, capabilities = lsp_status.capabilities}
 end
-
 
 --- vim ---
 lspconfig.vimls.setup {
