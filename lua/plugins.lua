@@ -1,6 +1,7 @@
 require'paq' {
     {'savq/paq-nvim'};
     'akinsho/nvim-bufferline.lua';
+    'ojroques/nvim-bufdel';
     {'jalvesaq/vimcmdline', opt=true};
     'chrisbra/Colorizer';
     'hrsh7th/nvim-compe';
@@ -45,8 +46,13 @@ vim.g.mapleader = ";"  -- seem to be separate from vim mapleader
 require'bufferline'.setup()
 vim.api.nvim_set_keymap("n", "<leader>bj", "<cmd>BufferLineCycleNext<CR>", {silent = true})
 vim.api.nvim_set_keymap("n", "<leader>bk", "<cmd>BufferLineCyclePrev<CR>", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>bJ", "<cmd>BufferLineMoveNext<CR>", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>bK", "<cmd>BufferLineMovePrev<CR>", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>BufferLinePick<CR>", {silent = true, noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>BufferLinePickClose<CR>", {silent = true, noremap = true})
+
+-- bufdel
+require'bufdel'.setup { next = 'cycle' }
+vim.api.nvim_set_keymap("n", "qx", ":w\\|BufDel<cr>", { silent = true, noremap = true })
+vim.api.nvim_set_keymap("n", "qq", "<cmd>BufDel!<cr>", { silent = true, noremap = true })
 
 -- colorschemes
 vim.g.material_style = "lighter"
