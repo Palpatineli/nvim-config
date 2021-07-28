@@ -3,7 +3,7 @@ require'paq' {
     'akinsho/nvim-bufferline.lua';
     'ojroques/nvim-bufdel';
     {'jalvesaq/vimcmdline', opt=true};
-    'chrisbra/Colorizer';
+    'norcalli/nvim-colorizer.lua';
     'hrsh7th/nvim-compe';
     {'tpope/vim-dadbod', opt=true};
     {'kristijanhusak/vim-dadbod-ui', opt=true};
@@ -51,8 +51,11 @@ vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>BufferLinePickClose<CR>", {silen
 
 -- bufdel
 require'bufdel'.setup { next = 'cycle' }
-vim.api.nvim_set_keymap("n", "qx", ":w\\|BufDel<cr>", { silent = true, noremap = true })
+vim.api.nvim_set_keymap("n", "qw", ":w\\|BufDel<cr>", { silent = true, noremap = true })
 vim.api.nvim_set_keymap("n", "qq", "<cmd>BufDel!<cr>", { silent = true, noremap = true })
+
+-- colorizer
+require'colorizer'.setup()
 
 -- colorschemes
 vim.g.material_style = "lighter"

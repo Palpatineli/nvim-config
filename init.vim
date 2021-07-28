@@ -6,9 +6,6 @@ if empty(glob(g:packer_path.'/lua/paq-nvim.lua'))
     exec '!git clone https://github.com/savq/paq-nvim.git '.g:packer_path
 endif
 exec 'set runtimepath^='.g:packer_path
-" " initialize
-lua require('plugins')
-lua require('lsp')
 
 " speedup
 let g:loaded_matchit           = 0
@@ -84,3 +81,7 @@ hi Comment guifg=#aabfc9 guibg=NONE gui=nocombine
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" " initialize
+lua require('plugins')
+lua require('lsp')
