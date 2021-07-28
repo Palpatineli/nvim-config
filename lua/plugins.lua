@@ -44,8 +44,8 @@ vim.g.mapleader = ";"  -- seem to be separate from vim mapleader
 
 -- bufferline
 require'bufferline'.setup()
-vim.api.nvim_set_keymap("n", "<leader>bj", "<cmd>BufferLineCycleNext<CR>", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>bk", "<cmd>BufferLineCyclePrev<CR>", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>BufferLineCycleNext<CR>", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>BufferLineCyclePrev<CR>", {silent = true})
 vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>BufferLinePick<CR>", {silent = true, noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>BufferLinePickClose<CR>", {silent = true, noremap = true})
 
