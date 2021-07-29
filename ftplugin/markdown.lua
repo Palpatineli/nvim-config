@@ -24,7 +24,7 @@ vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('nabla').action()<cr>", {
 -- neuron
 require("neuron").setup { neuron_dir = "~/note" }
 vim.api.nvim_buf_set_keymap(0, "n", "<CR>", "<cmd>lua require'neuron'.enter_link()<CR>", {noremap = true})
-vim.api.nvim_buf_set_keymap(0, "n", ";zn", "<cmd>lua require'neuron/cmd'.new_edit(require'neuron'.config.neuron_dir)<CR>", {noremap = true})
+vim.api.nvim_buf_set_keymap(0, "n", ";zn", "<cmd>lua require'neuron/cmd'.new_edit('~/note')<CR>", {noremap = true})
 vim.api.nvim_buf_set_keymap(0, "n", ";zz", "<cmd>lua require'neuron/telescope'.find_zettels()<CR>", {noremap = true})
 vim.api.nvim_buf_set_keymap(0, "n", ";zZ", "<cmd>lua require'neuron/telescope'.find_zettels {insert = true}<CR>", {noremap = true})
 vim.api.nvim_buf_set_keymap(0, "n", ";zb", "<cmd>lua require'neuron/telescope'.find_backlinks()<CR>", {noremap = true})
