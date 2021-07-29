@@ -1,6 +1,5 @@
 lua require('telescope-setting')
-nnoremap <leader>f <cmd>lua require('telescope.builtin').git_files()<cr>
-nnoremap <leader>g <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>f <cmd>lua require('telescope').extensions.fzf_writer.files()<cr>
 nnoremap <leader>B <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>e <cmd>lua require('telescope.builtin').lsp_document_diagnostics()<cr>
 nnoremap <leader>l <cmd>lua require('telescope.builtin').lsp_workspace_diagnostics()<cr>

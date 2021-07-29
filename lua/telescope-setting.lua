@@ -11,3 +11,5 @@ require('telescope').setup{
     },
   }
 }
+
+require'telescope._extensions.fzf_writer'

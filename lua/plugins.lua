@@ -2,7 +2,7 @@ require'paq' {
     {'savq/paq-nvim'};
     'akinsho/nvim-bufferline.lua';
     'ojroques/nvim-bufdel';
-    {'jalvesaq/vimcmdline', opt=true};
+    {'jalvesaq/vimcmdline'};
     'norcalli/nvim-colorizer.lua';
     'hrsh7th/nvim-compe';
     {'tpope/vim-dadbod', opt=true};
@@ -29,7 +29,6 @@ require'paq' {
     'nvim-lua/popup.nvim';
     'nvim-lua/plenary.nvim';
     'nvim-telescope/telescope.nvim';
-    'nvim-telescope/telescope-fzf-writer.nvim';
     'p00f/nvim-ts-rainbow';
     'folke/todo-comments.nvim';
     'kyazdani42/nvim-tree.lua';
@@ -47,7 +46,7 @@ require'bufferline'.setup()
 vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>BufferLineCycleNext<CR>", {silent = true})
 vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>BufferLineCyclePrev<CR>", {silent = true})
 vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>BufferLinePick<CR>", {silent = true, noremap = true})
-vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>BufferLinePickClose<CR>", {silent = true, noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>x", "<cmd>BufferLinePickClose<CR>", {silent = true, noremap = true})
 
 -- bufdel
 require'bufdel'.setup { next = 'cycle' }
@@ -131,10 +130,13 @@ require'nvim-treesitter.configs'.setup {
     },
 }
 
+-- vimcmdline
+vim.g.cmdline_app = {python='python3 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()" --no-autoindent'}
+
 -- vsnip
 vim.g.vsnip_snippet_dir = "~/.config/nvim/snippets"
-vim.api.nvim_set_keymap("i", "<c-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : 'compe#complete'", {expr = true})
-vim.api.nvim_set_keymap("s", "<C-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : 'compe#complete'", {expr = true})
+vim.api.nvim_set_keymap("i", "<c-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : 'compe#complete')", {expr = true})
+vim.api.nvim_set_keymap("s", "<C-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : 'compe#complete')", {expr = true})
 vim.api.nvim_set_keymap("i", "<C-p>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'", {expr = true})
 vim.api.nvim_set_keymap("s", "<C-p>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'", {expr = true})
 
