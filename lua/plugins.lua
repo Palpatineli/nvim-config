@@ -22,7 +22,6 @@ require'paq' {
     {'euclio/vim-markdown-composer', run='cargo build --release', opt=true};
     'marko-cerovac/material.nvim';
     {'jbyuki/nabla.nvim', opt=true};
-    {'oberblastmeister/neuron.nvim', branch="unstable", opt=true};
     'TimUntersberger/neogit';
     {'Vimjas/vim-python-pep8-indent', opt=true};
     -- telescope and its support
