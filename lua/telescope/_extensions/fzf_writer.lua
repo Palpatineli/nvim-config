@@ -94,7 +94,7 @@ return require('telescope').register_extension {
             fzf_prompt = ""
           end
 
-          local rg_args = flatten { conf.vimgrep_arguments, rg_prompt, ".", get_git_root(), "-tpy", "-tyaml", "-ttxt", "-tmd" }
+          local rg_args = flatten { conf.vimgrep_arguments, rg_prompt, ".", get_git_root(), "-tpy", "-tyaml", "-ttxt", "-tmd", "-tjson" }
           table.remove(rg_args, 1)
 
           return {

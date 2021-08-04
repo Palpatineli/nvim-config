@@ -1,4 +1,4 @@
-vim.g.dbs = {["aam-macs"] = "sqlserver://bos-dbrnd01:1433"}
+vim.g.dbs = {["aam-macs"] = "sqlserver://bos-dbrnd01.acadian-asset.com:1433"}
 vim.cmd [[
     packadd vim-dadbod 
     packadd vim-dadbod-ui

@@ -32,6 +32,7 @@ require'paq' {
     'folke/todo-comments.nvim';
     'kyazdani42/nvim-tree.lua';
     'nvim-treesitter/nvim-treesitter';
+    'jbyuki/venn.nvim';
     'hrsh7th/vim-vsnip';
     'hrsh7th/vim-vsnip-integ';
     'kyazdani42/nvim-web-devicons';
@@ -128,6 +129,9 @@ require'nvim-treesitter.configs'.setup {
         }
     },
 }
+
+-- venn
+vim.api.nvim_set_keymap("v", "<c-m>", ":'<,'>VBox<cr>", {noremap=true, silent=true})
 
 -- vimcmdline
 vim.g.cmdline_app = {python='python3 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()" --no-autoindent'}
