@@ -2,6 +2,26 @@ local gl = require('galaxyline')
 local gls = gl.section
 gl.short_line_list = {'LuaTree','vista','dbui'}
 
+local gps = require("nvim-gps")
+gps.setup({
+    icons = {
+        ["class-name"] = ' ',      -- Classes and class-like objects
+        ["function-name"] = ' ',   -- Functions
+        ["method-name"] = ' '      -- Methods (functions inside class-like objects)
+    },
+    languages = {                    -- You can disable any language individually here
+        ["c"] = true,
+        ["cpp"] = true,
+        ["go"] = true,
+        ["java"] = true,
+        ["javascript"] = true,
+        ["lua"] = true,
+        ["python"] = true,
+        ["rust"] = true,
+    },
+    separator = ' > ',
+})
+
 local colors = {
     bg      = '#FAFAFA',
     yellow  = '#F6A434',
@@ -39,15 +59,6 @@ local mode_color = {n = colors.green, i = colors.yellow, v = colors.blue, [''] 
 no = colors.magenta, s = colors.orange, S = colors.orange, [''] = colors.orange, ic = colors.yellow, R = colors.red, Rv = colors.red,
 cv = colors.red, ce=colors.red, r = colors.cyan, rm = colors.cyan, ['r?'] = colors.cyan, ['!']  = colors.red, t = colors.red}
 
-local get_current_function = function()
-    local lsp_function = vim.b.lsp_current_function
-    if lsp_function == nil then
-        return ''
-    else
-        return " " .. lsp_function .. "    "
-    end
-end
-
 gls.left = {
     { ViMode = {
         provider = function()
@@ -73,7 +84,7 @@ gls.left = {
     { LeftEnd = { provider = function() return ' ' end, highlight = {colors.shade3, colors.bg} }},
 }
 gls.right = {
-    { LspFunc = { provider = get_current_function, highlight = {colors.blue, colors.bg}}},
+    { GPS = { provider = gps.get_location, condition=gps.is_available, highlight = {colors.blue, colors.bg}}},
     { RightEnd = { provider = function() return ' ' end, highlight = {colors.shade3, colors.bg} }},
     { FileIcon = { separator = ' ', provider = 'FileIcon', condition = buffer_not_empty, separator_highlight = {colors.shade3, colors.shade3}, highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color, colors.shade3} }},
     { FileType = { provider = 'FileTypeName', separator = ' ', separator_highlight = {colors.shade3, colors.shade3}, highlight = {colors.blue, colors.shade3} }},

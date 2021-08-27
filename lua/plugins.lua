@@ -13,6 +13,7 @@ require'paq' {
     'airblade/vim-gitgutter';
     {'rhysd/vim-grammarous', opt=true};
     'glepnir/galaxyline.nvim';
+    'SmiteshP/nvim-gps';
     'lukas-reineke/indent-blankline.nvim';
     'b3nj5m1n/kommentary';
     'ggandor/lightspeed.nvim';
@@ -23,6 +24,7 @@ require'paq' {
     'marko-cerovac/material.nvim';
     {'jbyuki/nabla.nvim', opt=true};
     'TimUntersberger/neogit';
+    'ojroques/vim-oscyank';
     {'Vimjas/vim-python-pep8-indent', opt=true};
     -- telescope and its support
     'nvim-lua/popup.nvim';
@@ -88,6 +90,11 @@ vim.api.nvim_set_keymap("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {
 require('neogit').setup{}
 require('diffview').setup{}
 vim.api.nvim_set_keymap("n", "<F3>", "<cmd>Neogit<cr>", {noremap = true, silent = true})
+
+-- oscyank
+vim.g.oscyank_term = 'tmux'
+vim.g.oscyank_silent = true
+vim.cmd[[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYankReg + | endif]]
 
 -- my statusline based on galaxyline
 require('statusline')
