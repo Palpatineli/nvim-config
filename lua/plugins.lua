@@ -60,7 +60,7 @@ require'colorizer'.setup()
 
 -- colorschemes
 vim.g.material_style = "lighter"
-require('material').set()
+vim.cmd[[colorscheme material]]
 
 -- nvim-comp
 require("compe").setup {
