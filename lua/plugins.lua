@@ -5,7 +5,7 @@ require'paq' {
     {'jalvesaq/vimcmdline'};
     'norcalli/nvim-colorizer.lua';
     'hrsh7th/nvim-compe';
-    {'tpope/vim-dadbod', opt=true};
+    {'kristijanhusak/vim-dadbod', branch='async-query', opt=true};
     {'kristijanhusak/vim-dadbod-ui', opt=true};
     {'kristijanhusak/vim-dadbod-completion', opt=true};
     'sindrets/diffview.nvim';
@@ -139,9 +139,6 @@ require'nvim-treesitter.configs'.setup {
 
 -- venn
 vim.api.nvim_set_keymap("v", "<c-m>", ":'<,'>VBox<cr>", {noremap=true, silent=true})
-
--- vimcmdline
-vim.g.cmdline_app = {python='python3 -c "import IPython; IPython.terminal.ipapp.launch_new_instance()" --no-autoindent'}
 
 -- vsnip
 vim.g.vsnip_snippet_dir = "~/.config/nvim/snippets"
