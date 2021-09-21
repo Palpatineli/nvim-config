@@ -2,7 +2,6 @@ require'paq' {
     {'savq/paq-nvim'};
     'akinsho/nvim-bufferline.lua';
     'ojroques/nvim-bufdel';
-    {'jalvesaq/vimcmdline'};
     'norcalli/nvim-colorizer.lua';
     'hrsh7th/nvim-compe';
     {'kristijanhusak/vim-dadbod', branch='async-query', opt=true};
@@ -15,6 +14,7 @@ require'paq' {
     'glepnir/galaxyline.nvim';
     'SmiteshP/nvim-gps';
     'lukas-reineke/indent-blankline.nvim';
+    {"hkupty/iron.nvim", opt=true};
     'b3nj5m1n/kommentary';
     'ggandor/lightspeed.nvim';
     'neovim/nvim-lspconfig';
