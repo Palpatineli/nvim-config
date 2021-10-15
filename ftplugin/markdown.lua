@@ -9,6 +9,7 @@ vim.g.markdown_composer_autostart = false
 
 vim.wo.spell = true
 vim.api.nvim_buf_set_keymap(0, "n", "<F5>", ":ComposerStart<CR>", {noremap = true})
+vim.api.nvim_buf_set_keymap(0, "n", "<F6>", ":!echo % | pulldown-cmark -TSFLP > %<.html<cr>", {noremap = true})
 
 -- bold, italic and super/sub-script
 vim.api.nvim_buf_set_keymap(0, "v", "<c-b>", "<Esc>`>a**<Esc>`<i**<Esc>", {noremap = true})

@@ -3,10 +3,16 @@ require'paq' {
     'akinsho/nvim-bufferline.lua';
     'ojroques/nvim-bufdel';
     'norcalli/nvim-colorizer.lua';
-    'hrsh7th/nvim-compe';
+    'hrsh7th/cmp-buffer';
+    'kdheepak/cmp-latex-symbols';
+    'octaltree/cmp-look';
+    'hrsh7th/cmp-nvim-lsp';
+    'hrsh7th/cmp-path';
+    'ray-x/cmp-treesitter';
+    'hrsh7th/cmp-vsnip';
+    'hrsh7th/nvim-cmp';
     {'kristijanhusak/vim-dadbod', branch='async-query', opt=true};
     {'kristijanhusak/vim-dadbod-ui', opt=true};
-    {'kristijanhusak/vim-dadbod-completion', opt=true};
     'sindrets/diffview.nvim';
     {'mattn/emmet-vim', opt=true};
     'airblade/vim-gitgutter';
@@ -62,22 +68,31 @@ require'colorizer'.setup()
 vim.g.material_style = "lighter"
 vim.cmd[[colorscheme material]]
 
--- nvim-comp
-require("compe").setup {
-    source_timeout = 600;
-    source = {
-        path = true;
-        buffer = true;
-        calc = true;
-        nvim_lsp = true;
-        nvim_lua = false;
-        vsnip = true;
-        ultisnips = false;
-        luasnip = false;
-    };
+-- nvim-cmp
+local cmp = require'cmp'
+cmp.setup {
+    snippet = {
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
+        end,
+    },
+    mapping = {
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = {
+        { name = 'vsnip' },
+        { name = 'latex_symbols' },
+        { name = 'nvim_lsp' },
+        { name = 'path' },
+        { name = 'treesitter' },
+        { name = 'look', keyword_length=2 },
+        { name = 'buffer' },
+    }
 }
-vim.api.nvim_set_keymap("i", "<cr>", "compe#confirm('<CR>')", {silent = true, expr = true, noremap = true})
-vim.api.nvim_set_keymap("i", "<c-e>", "compe#close('<C-e>')", {silent = true, expr = true, noremap = true})
 
 -- kommentary
 vim.g.kommentary_create_default_mappings = false

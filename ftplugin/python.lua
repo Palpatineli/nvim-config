@@ -16,7 +16,8 @@ local iron = require'iron'
 iron.core.set_config {
     preferred = {
         python = "ipython",
-    }
+    },
+    repl_open_cmd = 'rightbelow 30 split'
 }
 
 vim.api.nvim_buf_set_keymap(0, "n", "<F7>", "<cmd>IronRepl<cr>", {noremap=true})

@@ -4,6 +4,7 @@ local util = require("lspconfig/util")
 local lsp_status = require('lsp-status')
 
 lsp_status.register_progress()
+local capabilities = require'cmp_nvim_lsp'.update_capabilities(lsp_status.capabilities)
 
 --- general ---
 vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.definition()<cr>", {silent = true})
@@ -38,7 +39,7 @@ configs.pyright = {
             }
         end,
         on_attach = lsp_status.on_attach,
-        capabilities = lsp_status.capabilities,
+        capabilities = capabilities,
     },
 }
 
@@ -92,7 +93,7 @@ local servers = {
     "html",
 }
 for _, lsp in ipairs(servers) do
-    lspconfig[lsp].setup{on_attach = on_attach, capabilities = lsp_status.capabilities}
+    lspconfig[lsp].setup{on_attach = on_attach, capabilities = capabilities}
 end
 
 local servers_nohl = {
@@ -100,12 +101,12 @@ local servers_nohl = {
     "dotls",
 }
 for _, lsp in ipairs(servers_nohl) do
-    lspconfig[lsp].setup{on_attach = on_attach_nohl, capabilities = lsp_status.capabilities}
+    lspconfig[lsp].setup{on_attach = on_attach_nohl, capabilities = capabilities}
 end
 
 --- vim ---
 lspconfig.vimls.setup {
-    on_attach = on_attach,
+    on_attach = on_attach_nohl,
     init_options = {
         runtimepath = vim.api.nvim_get_option("runtimepath"),
         indexes = {gap = 75, count = 5}
