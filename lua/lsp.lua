@@ -67,46 +67,23 @@ else
 end
 
 --- simple ---
-local on_attach = function(client)
-    vim.cmd [[
-        hi LspReferenceText guibg=#4c566a
-        autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    ]]
-    lsp_status.on_attach(client)
-end
-
-local on_attach_nohl = function(client)
-    vim.cmd [[
-        hi LspReferenceText guibg=#4c566a
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    ]]
-    lsp_status.on_attach(client)
-end
-
 local servers = {
     "bashls",
-    "pyright",
     "rust_analyzer",
     "angularls",
     "tsserver",
     "html",
-}
-for _, lsp in ipairs(servers) do
-    lspconfig[lsp].setup{on_attach = on_attach, capabilities = capabilities}
-end
-
-local servers_nohl = {
+    "pyright",
     "jsonls",
     "dotls",
 }
-for _, lsp in ipairs(servers_nohl) do
-    lspconfig[lsp].setup{on_attach = on_attach_nohl, capabilities = capabilities}
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup{on_attach = lsp_status.on_attach, capabilities = capabilities}
 end
 
 --- vim ---
 lspconfig.vimls.setup {
-    on_attach = on_attach_nohl,
+    on_attach = lsp_status.on_attach,
     init_options = {
         runtimepath = vim.api.nvim_get_option("runtimepath"),
         indexes = {gap = 75, count = 5}
@@ -115,7 +92,7 @@ lspconfig.vimls.setup {
 
 --- yaml ---
 lspconfig.yamlls.setup {
-    on_attach = on_attach_nohl,
+    on_attach = lsp_status.on_attach,
     settings = {
         yaml = {format = {enable = true, singleQuote = true}, validate = true}
     }
@@ -123,6 +100,6 @@ lspconfig.yamlls.setup {
 
 --- cssls ---
 lspconfig.cssls.setup {
-    on_attach = on_attach,
+    on_attach = lsp_status.on_attach,
     cmd = {"css-language-server", "--stdio"},
 }

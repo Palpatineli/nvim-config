@@ -24,7 +24,6 @@ require'paq' {
     'b3nj5m1n/kommentary';
     'ggandor/lightspeed.nvim';
     'neovim/nvim-lspconfig';
-    'glepnir/lspsaga.nvim';
     'nvim-lua/lsp-status.nvim';
     {'euclio/vim-markdown-composer', run='cargo build --release', opt=true};
     'marko-cerovac/material.nvim';
@@ -40,6 +39,7 @@ require'paq' {
     'folke/todo-comments.nvim';
     'kyazdani42/nvim-tree.lua';
     'nvim-treesitter/nvim-treesitter';
+    'nvim-treesitter/nvim-treesitter-refactor';
     'jbyuki/venn.nvim';
     'hrsh7th/vim-vsnip';
     'hrsh7th/vim-vsnip-integ';
@@ -150,6 +150,14 @@ require'nvim-treesitter.configs'.setup {
             "#5E8526"
         }
     },
+    -- refactor
+    refactor = {
+        highlight_definitions = { enable = true },
+        smart_rename = {
+            enable = true,
+            keymaps = { smart_rename = "<leader>r", },
+        }
+    }
 }
 
 -- venn
