@@ -4,12 +4,18 @@ vim.wo.foldnestmax=2
 vim.api.nvim_buf_set_keymap(0, "n", "<F5>", ":w<cr>:!python %<cr>", {noremap = true})
 vim.api.nvim_buf_set_keymap(0, "i", "<F6>", "import pdb; pdb.set_trace()", {noremap = true})
 
--- vimcmdline
 vim.cmd [[
-packadd vim-python-pep8-indent
+packadd nvim-dap
+packadd nvim-dap-python
 packadd iron.nvim
 ]]
 
+-- dap
+require('dap-python').setup('~/.venvs/debugpy/bin/python3')
+require('dap-python').test_runner = 'pytest'
+vim.api.nvim_set_keymap("n", "<leader>df", ":lua require('dap-python').test_method()<cr>", {})
+
+-- vimcmdline
 vim.g.iron_map_defaults = false
 vim.g.iron_map_extended = false
 local iron = require'iron'

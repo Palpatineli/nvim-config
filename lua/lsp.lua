@@ -8,6 +8,7 @@ local capabilities = require'cmp_nvim_lsp'.update_capabilities(lsp_status.capabi
 
 --- general ---
 vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.definition()<cr>", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>h", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", {})
 
 --- handlers ---
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(

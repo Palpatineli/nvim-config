@@ -1,12 +1,3 @@
-" packages
-" " bootstrap packadd somehow not working
-let g:packer_path = expand('~/.local/share/nvim/site/pack/packer/opt/paq-nvim')
-if empty(glob(g:packer_path.'/lua/paq-nvim.lua'))
-    exec 'silent !mkdir -p '.g:packer_path
-    exec '!git clone https://github.com/savq/paq-nvim.git '.g:packer_path
-endif
-exec 'set runtimepath^='.g:packer_path
-
 " speedup
 let g:loaded_matchit           = 0
 let g:loaded_logiPat           = 0
@@ -23,6 +14,7 @@ let g:loaded_remote_plugins    = 0
 " general
 set hidden
 set autochdir " set working directory to file directory
+set relativenumber
 set noswapfile nobackup
 set exrc secure  "allow local rc file but disallow autocmd, shell and write commands in local rc
 set foldmethod=expr
@@ -82,7 +74,15 @@ hi Comment guifg=#aabfc9 guibg=NONE gui=nocombine
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+highlight ColorColumn ctermbg=magenta guibg=Magenta
+call matchadd('ColorColumn', '\%121v', 120)
 
-" " initialize
+" packages
+" " bootstrap packadd somehow not working
+let g:packer_path = expand('~/.local/share/nvim/site/pack/packer/start/packer.nvim')
+if empty(glob(g:packer_path.'/lua/packer.lua'))
+    exec 'silent !mkdir -p '.g:packer_path
+    exec '!git clone https://github.com/wbthomason/packer.nvim '.g:packer_path
+endif
 lua require('plugins')
 lua require('lsp')

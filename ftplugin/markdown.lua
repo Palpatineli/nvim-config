@@ -1,9 +1,3 @@
-vim.cmd [[
-    packadd vim-grammarous
-    packadd vim-markdown-composer
-    packadd nabla.nvim
-]]
-
 -- vim-markdown-composer
 vim.g.markdown_composer_autostart = false
 
