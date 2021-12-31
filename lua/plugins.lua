@@ -48,6 +48,7 @@ local setup_cmp = function()
         },
         sources = {
             { name = 'vsnip' },
+            { name = 'neorg' },
             { name = 'latex_symbols' },
             { name = 'nvim_lsp' },
             { name = 'path' },
@@ -69,9 +70,72 @@ local setup_kommentary = function()
     vim.api.nvim_set_keymap("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
 end
 
+vim.api.nvim_set_keymap("n", "<leader>gv", ":Neorg gtd views<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
+
+local setup_neorg = function()
+    require('neorg').setup {
+        load = {
+            ['core.defaults'] = {},
+            ['core.gtd.base'] = {},
+            ['core.norg.concealer'] = {},
+            ['core.norg.completion'] = {config = {engine = "nvim-cmp"}},
+            ['core.norg.dirman'] = {
+                config = {
+                    workspaces = {
+                        central = "~/Sync/note"
+                    }
+                }
+            },
+            ['core.integrations.telescope'] = {},
+        },
+        hook = function()
+             local neorg_callbacks = require('neorg.callbacks')
+             neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
+                keybinds.map_event_to_mode("norg", {
+                    n = {
+                        { "<leader>gd", "core.norg.qol.todo_items.todo.task_done" },
+                        { "<leader>gu", "core.norg.qol.todo_items.todo.task_undone" },
+                        { "<leader>gp", "core.norg.qol.todo_items.todo.task_pending" },
+                        { "<C-Space>", "core.norg.qol.todo_items.todo.task_cycle" },
+                        { "<leader>gl", "core.integrations.telescope.find_linkable" },
+                    },
+                    i = {
+                        { "<c-l>", "core.integrations.telescope.insert_link" },
+                    },
+                }, { silent = true, noremap = true })
+            end)
+        end
+    }
+end
+
 local setup_treesitter = function()
+    local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+    parser_configs.norg = {
+        install_info = {
+            url = "https://github.com/nvim-neorg/tree-sitter-norg",
+            files = { "src/parser.c", "src/scanner.cc" },
+            branch = "main"
+        },
+    }
+    parser_configs.norg_meta = {
+        install_info = {
+            url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
+            files = { "src/parser.c" },
+            branch = "main"
+        },
+    }
+    parser_configs.norg_table = {
+        install_info = {
+            url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
+            files = { "src/parser.c" },
+            branch = "main"
+        },
+    }
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = {"bash", "c", "css", "dockerfile", "html", "javascript", "json", "lua", "python", "r", "regex", "rust", "scss", "toml", "typescript", "yaml"},
+        ensure_installed = {"bash", "c", "css", "dockerfile", "html", "javascript", "json", "lua", "norg",
+            "norg_meta", "norg_table", "python", "regex", "rust", "scss", "toml", "typescript", "yaml"},
         highlight = { enable = true },
         incremental_selection = {
             enable = true,
@@ -117,6 +181,34 @@ local setup_vsnip = function()
     vim.api.nvim_set_keymap("s", "<C-p>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'", {expr = true})
 end
 
+local setup_indent_blankline = function()
+    vim.cmd [[
+        highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
+        highlight IndentEven guifg=NONE guibg=#f0f0f0 gui=nocombine
+    ]]
+    require'indent_blankline'.setup{
+        char = "",
+        char_highlight_list = {"IndentOdd", "IndentEven"},
+        space_char_highlight_list = {"IndentOdd", "IndentEven"},
+        show_trailing_blankline_indent = false,
+    }
+end
+
+local setup_lsp_spinner = function()
+    require('lsp_spinner').setup{
+        placeholder = ' ✓ ',
+        spinner = { ' ⠋ ', ' ⠙ ', ' ⠹ ', ' ⠸ ', ' ⠼ ', ' ⠴ ', ' ⠦ ', ' ⠧ ', ' ⠇ ', ' ⠏ ', },
+    }
+end
+
+local setup_diffview = function()
+    require'diffview'.setup()
+    vim.api.nvim_set_keymap("n", "<F4>", ":DiffviewOpen -uno master<cr>", {silent=true})
+    vim.api.nvim_set_keymap("n", "<F5>", ":DiffviewOpen -uno HEAD<cr>", {silent=true})
+    vim.api.nvim_set_keymap("n", "<F9>", ":DiffviewClose<cr>", {silent=true})
+    vim.api.nvim_set_keymap("n", "<F2>", ":DiffviewToggleFiles<cr>", {silent=true})
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'akinsho/nvim-bufferline.lua', config=setup_bufferline}
@@ -137,19 +229,19 @@ require('packer').startup(function(use)
     use {'mfussenegger/nvim-dap', ft={'python'}, config=setup_dap}
     use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_telescope}
     use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, ft={'python'}}
-    use {'sindrets/diffview.nvim', config=function() require('diffview').setup() end}
+    use {'sindrets/diffview.nvim', config=setup_diffview}
     use {'mattn/emmet-vim', ft={'html', 'xml', 'svg'}}
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
     use {'glepnir/galaxyline.nvim', requires={'SmiteshP/nvim-gps'}, config=require('statusline').setup}
-    use 'lukas-reineke/indent-blankline.nvim'
+    use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
     use 'ggandor/lightspeed.nvim'
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
-    use 'nvim-lua/lsp-status.nvim'
+    use {'doums/lsp_spinner.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_spinner}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
     use {'marko-cerovac/material.nvim',
          config=function()
@@ -158,6 +250,8 @@ require('packer').startup(function(use)
         end
     }
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
+    use {'nvim-neorg/neorg-telescope'}
+    use {'nvim-neorg/neorg', config=setup_neorg, requires={'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim', 'nvim-neorg/neorg-telescope'}}
     use {'ojroques/vim-oscyank',
         config=function()
             vim.g.oscyank_term = 'tmux'
@@ -166,7 +260,7 @@ require('packer').startup(function(use)
         end
     }
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
-    use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
+    use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim', 'vhyrro/neorg'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
         function()

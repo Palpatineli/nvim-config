@@ -78,11 +78,7 @@ local setup_statusline = function()
         { DiffModified = { provider = 'DiffModified', condition = checkwidth, icon = '  ', highlight = {colors.blue, colors.shade4} }},
         { DiffRemove = { provider = 'DiffRemove', condition = checkwidth, icon = '  ', highlight = {colors.red, colors.shade4} }},
         { GitEnd = { provider = function() return ' ' end, highlight = {colors.shade4, colors.shade3} }},
-        { DiagnosticError = { provider = 'DiagnosticError', icon = '  ', highlight = {colors.red, colors.shade3} }},
-        { Space = { provider = function () return '' end }},
-        { DiagnosticWarn = { provider = 'DiagnosticWarn', icon = '  ', highlight = {colors.purple, colors.shade3} }},
-        { DiagnosticHint = { provider = 'DiagnosticHint', icon = '   ', highlight = {colors.blue, colors.shade3} }},
-        { DiagnosticInfo = { provider = 'DiagnosticInfo', icon = '   ', highlight = {colors.orange, colors.shade3} }},
+        { LspSpinner = { provider = require'lsp_spinner'.status, highlight = {colors.purple, colors.shade3} }},
         { LeftEnd = { provider = function() return ' ' end, highlight = {colors.shade3, colors.bg} }},
     }
     gls.right = {

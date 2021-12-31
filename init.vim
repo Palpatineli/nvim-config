@@ -30,7 +30,7 @@ set list listchars=tab:<+  " highlight hard tab
 set completeopt=menuone,noselect
 set shortmess+=c  " no message when completion is selected
 set expandtab tabstop=4 shiftwidth=4
-set inccommand=split
+set inccommand=nosplit
 
 " filetypes
 au BufNewFile,BufRead *.md,*.txt set filetype=markdown
@@ -58,16 +58,6 @@ noremap <leader>m :message<cr>
 " completion
 inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-
-" indentline - doesnt' work after load
-" " not show characters just change background
-highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-highlight IndentEven guifg=NONE guibg=#F0F0F0 gui=nocombine
-let g:indent_blankline_char_highlight_list = ["IndentOdd", "IndentEven"]
-let g:indent_blankline_space_char_highlight_list = ["IndentOdd", "IndentEven"]
-let g:indent_blankline_char = " "
-let g:indent_blankline_space_char = " "
-let g:indent_blankline_show_trailing_blankline_indent = 0
 
 " extra highlighting
 hi Comment guifg=#aabfc9 guibg=NONE gui=nocombine

@@ -2,7 +2,7 @@ lua require('telescope-setting')
 
 nnoremap <leader>f <cmd>lua require('telescope.builtin').git_files(require('telescope.themes').get_dropdown{previewer = false})<cr>
 nnoremap <leader>B <cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>
-nnoremap <leader>e <cmd>lua require('telescope.builtin').lsp_document_diagnostics()<cr>
+nnoremap <leader>e <cmd>lua require('telescope.builtin').diagnostics{bufnr=0}<cr>
 nnoremap <leader>l <cmd>lua require('telescope.builtin').lsp_workspace_diagnostics()<cr>
 
 nnoremap <leader>F <cmd>lua require('telescope.builtin').lsp_references()<cr>
