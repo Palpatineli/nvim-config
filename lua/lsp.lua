@@ -25,6 +25,13 @@ vim.fn.sign_define( "LspDiagnosticsSignWarning", { text = "", texthl = "LspDi
 vim.fn.sign_define( "LspDiagnosticsSignInformation", { text = "", texthl = "LspDiagnosticsSignInformation" })
 vim.fn.sign_define("LspDiagnosticsSignHint", {text = "➤", texthl = "LspDiagnosticsSignHint"})
 
+-- omnisharp --
+lspconfig.omnisharp.setup {
+    capabilities = capabilities,
+    on_attach = lsp_spinner.on_attach,
+    cmd = {os.getenv('HOME')..'/.local/share/omnisharp/run', '--languageserver'}
+}
+
 --- pyright ---
 configs.pyright = {
     default_config = {
@@ -77,6 +84,7 @@ local servers = {
     "angularls",
     "tsserver",
     "html",
+    "lemminx",
     "pyright",
     "jsonls",
     "dotls",
