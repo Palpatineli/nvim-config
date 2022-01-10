@@ -26,10 +26,16 @@ vim.fn.sign_define( "LspDiagnosticsSignInformation", { text = "", texthl = "L
 vim.fn.sign_define("LspDiagnosticsSignHint", {text = "➤", texthl = "LspDiagnosticsSignHint"})
 
 -- omnisharp --
+local omnisharp_bin
+if vim.loop.os_uname().sysname == "Windows_NT" then
+    omnisharp_bin = '~/.local/share/omnisharp/OmniSharp.exe'
+else
+    omnisharp_bin = '~/.local/share/omnisharp/run'
+end
 lspconfig.omnisharp.setup {
     capabilities = capabilities,
     on_attach = lsp_spinner.on_attach,
-    cmd = {os.getenv('HOME')..'/.local/share/omnisharp/run', '--languageserver'}
+    cmd = {vim.fn.expand(omnisharp_bin), '--languageserver'}
 }
 
 --- pyright ---
@@ -54,28 +60,29 @@ configs.pyright = {
 
 -- sumneko lua --
 local system_name
-if vim.fn.has("unix") == 1 then
-    system_name = "Linux"
-    local runtime_path = vim.split(package.path, ';')
-    local sumneko_root_path = os.getenv('HOME')..'/.local/share/lua-language-server'
-    local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
-    table.insert(runtime_path, "lua/?.lua")
-    table.insert(runtime_path, "lua/?/init.lua")
-    lspconfig.sumneko_lua.setup {
-        on_attach = lsp_spinner.on_attach,
-        capabilities = capabilities,
-        cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
-            settings = {
-                Lua = {
-                runtime = { version = 'LuaJIT', path = runtime_path, },
-                diagnostics = { globals = {'vim'}, },
-                workspace = { library = vim.api.nvim_get_runtime_file("", true), },
-                telemetry = { enable = false, },
-            },
-        },
-    }
+if vim.loop.os_uname().sysname == "Windows_NT" then
+    lua_langserver_bin = "lua-language-server.exe"
 else
+    lua_langserver_bin = "Linux/lua-language-server"
 end
+local runtime_path = vim.split(package.path, ';')
+local sumneko_root_path = vim.fn.expand('~/.local/share/lua-language-server')
+local sumneko_binary = sumneko_root_path.."/bin/"..lua_langserver_bin
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+lspconfig.sumneko_lua.setup {
+    on_attach = lsp_spinner.on_attach,
+    capabilities = capabilities,
+    cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+        settings = {
+            Lua = {
+            runtime = { version = 'LuaJIT', path = runtime_path, },
+            diagnostics = { globals = {'vim'}, },
+            workspace = { library = vim.api.nvim_get_runtime_file("", true), },
+            telemetry = { enable = false, },
+        },
+    },
+}
 
 --- simple ---
 local servers = {

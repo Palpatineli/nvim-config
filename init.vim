@@ -22,8 +22,8 @@ set foldexpr=nvim_treesitter#foldexpr()
 " ui
 set termguicolors
 set background=light
-set guifont=Iosevka\ 9
-set printfont=Iosevka\ 9
+set guifont=Iosevka\ Term:h9
+set printfont=Iosevka\ Term:h9
 set gdefault " substitutions go global by default
 set title " program title shows file name
 set list listchars=tab:<+  " highlight hard tab
@@ -68,11 +68,5 @@ highlight ColorColumn ctermbg=magenta guibg=Magenta
 call matchadd('ColorColumn', '\%121v', 120)
 
 " packages
-" " bootstrap packadd somehow not working
-let g:packer_path = expand('~/.local/share/nvim/site/pack/packer/start/packer.nvim')
-if empty(glob(g:packer_path.'/lua/packer.lua'))
-    exec 'silent !mkdir -p '.g:packer_path
-    exec '!git clone https://github.com/wbthomason/packer.nvim '.g:packer_path
-endif
 lua require('plugins')
 lua require('lsp')
