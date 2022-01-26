@@ -63,7 +63,7 @@ local system_name
 if vim.loop.os_uname().sysname == "Windows_NT" then
     lua_langserver_bin = "lua-language-server.exe"
 else
-    lua_langserver_bin = "Linux/lua-language-server"
+    lua_langserver_bin = "lua-language-server"
 end
 local runtime_path = vim.split(package.path, ';')
 local sumneko_root_path = vim.fn.expand('~/.local/share/lua-language-server')
@@ -87,6 +87,7 @@ lspconfig.sumneko_lua.setup {
 --- simple ---
 local servers = {
     "bashls",
+    "cssls",
     "rust_analyzer",
     "angularls",
     "tsserver",
@@ -117,13 +118,6 @@ lspconfig.yamlls.setup {
     settings = {
         yaml = {format = {enable = true, singleQuote = true}, validate = true}
     }
-}
-
---- cssls ---
-lspconfig.cssls.setup {
-    on_attach = lsp_spinner.on_attach,
-    capabilities = capabilities,
-    cmd = {"css-language-server", "--stdio"},
 }
 
 --- display ---
