@@ -84,7 +84,16 @@ local setup_neorg = function()
     require('neorg').setup {
         load = {
             ['core.defaults'] = {},
-            ['core.gtd.base'] = {},
+            ['core.gtd.base'] = {
+                config ={
+                    workspace = 'central',
+                    default_lists = { inbox = "inbox.norg" },
+                    syntax = { context = "#contexts", start = "#time.start",
+                               due = "#time.due", waiting = "#waiting.for", },
+                    displayers = { projects = { show_completed_projects = false, show_projects_without_tasks = true }},
+                    custom_tag_completion = true
+                }
+            },
             ['core.norg.concealer'] = {},
             ['core.norg.completion'] = {config = {engine = "nvim-cmp"}},
             ['core.norg.dirman'] = {
@@ -229,6 +238,8 @@ require('packer').startup(function(use)
         requires = {'hrsh7th/vim-vsnip', 'hrsh7th/vim-vsnip-integ', 'hrsh7th/nvim-cmp'},
         config=setup_vsnip
     }
+    use 'hrsh7th/vim-vsnip'
+    use {'hrsh7th/vim-vsnip-integ', requires = {'hrsh7th/vim-vsnip'}}
     use {'hrsh7th/nvim-cmp', config=setup_cmp}
     use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
     use {'kristijanhusak/vim-dadbod-ui', ft={'sql'}}
@@ -256,8 +267,9 @@ require('packer').startup(function(use)
         end
     }
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
-    use {'nvim-neorg/neorg-telescope'}
-    use {'nvim-neorg/neorg', config=setup_neorg, requires={'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim', 'nvim-neorg/neorg-telescope'}}
+    use 'nvim-lua/plenary.nvim'
+    use 'nvim-neorg/neorg-telescope'
+    use {'nvim-neorg/neorg', config=setup_neorg}
     use {'ojroques/vim-oscyank',
         config=function()
             vim.g.oscyank_term = 'tmux'
@@ -266,7 +278,7 @@ require('packer').startup(function(use)
         end
     }
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
-    use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim', 'vhyrro/neorg'}}
+    use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
         function()
