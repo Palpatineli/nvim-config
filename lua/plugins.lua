@@ -66,6 +66,8 @@ local setup_cmp = function()
             format = require'lspkind'.cmp_format({with_text = false, maxwidth = 50})
         }
     }
+    cmp.setup.cmdline(':', { sources = {{ name = 'cmdline' }}})
+    cmp.setup.cmdline('/', { sources = {{ name = 'buffer' }}})
 end
 
 local setup_kommentary = function()
@@ -231,7 +233,8 @@ require('packer').startup(function(use)
         config=setup_bufdel
     }
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
-    use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'octaltree/cmp-look', 'hrsh7th/cmp-path', requires={'hrsh7th/nvim-cmp'}}
+    use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'octaltree/cmp-look', 'hrsh7th/cmp-path',
+         'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-vsnip',
