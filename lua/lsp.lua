@@ -1,11 +1,9 @@
 local lspconfig = require("lspconfig")
 local configs = require("lspconfig/configs")
 local util = require("lspconfig/util")
-local lsp_spinner = require('lsp_spinner')
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
-lsp_spinner.init_capabilities(capabilities)
 
 --- general ---
 vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.definition()<cr>", {silent = true})
@@ -34,7 +32,6 @@ else
 end
 lspconfig.omnisharp.setup {
     capabilities = capabilities,
-    on_attach = lsp_spinner.on_attach,
     cmd = {vim.fn.expand(omnisharp_bin), '--languageserver'}
 }
 
@@ -53,7 +50,6 @@ configs.pyright = {
                 {name = "workspace", uri = initialize_params["rootUri"]}
             }
         end,
-        on_attach = lsp_spinner.on_attach,
         capabilities = capabilities,
     },
 }
@@ -71,7 +67,6 @@ local sumneko_binary = sumneko_root_path.."/bin/"..lua_langserver_bin
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 lspconfig.sumneko_lua.setup {
-    on_attach = lsp_spinner.on_attach,
     capabilities = capabilities,
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
         settings = {
@@ -98,12 +93,11 @@ local servers = {
     "dotls",
 }
 for _, lsp in ipairs(servers) do
-    lspconfig[lsp].setup{on_attach = lsp_spinner.on_attach, capabilities = capabilities}
+    lspconfig[lsp].setup{capabilities = capabilities}
 end
 
 --- vim ---
 lspconfig.vimls.setup {
-    on_attach = lsp_spinner.on_attach,
     capabilities = capabilities,
     init_options = {
         runtimepath = vim.api.nvim_get_option("runtimepath"),
@@ -113,7 +107,6 @@ lspconfig.vimls.setup {
 
 --- yaml ---
 lspconfig.yamlls.setup {
-    on_attach = lsp_spinner.on_attach,
     capabilities = capabilities,
     settings = {
         yaml = {format = {enable = true, singleQuote = true}, validate = true}

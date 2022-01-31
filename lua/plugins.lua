@@ -211,11 +211,8 @@ local setup_indent_blankline = function()
     }
 end
 
-local setup_lsp_spinner = function()
-    require('lsp_spinner').setup{
-        placeholder = ' ✓ ',
-        spinner = { ' ⠋ ', ' ⠙ ', ' ⠹ ', ' ⠸ ', ' ⠼ ', ' ⠴ ', ' ⠦ ', ' ⠧ ', ' ⠇ ', ' ⠏ ', },
-    }
+local setup_lsp_fidget = function()
+    require('fidget').setup{ text={spinner='dots' } }
 end
 
 local setup_diffview = function()
@@ -261,7 +258,7 @@ require('packer').startup(function(use)
     use 'ggandor/lightspeed.nvim'
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
-    use {'doums/lsp_spinner.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_spinner}
+    use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
     use {'marko-cerovac/material.nvim',
          config=function()

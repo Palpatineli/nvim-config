@@ -78,7 +78,7 @@ local setup_statusline = function()
         { DiffModified = { provider = 'DiffModified', condition = checkwidth, icon = '  ', highlight = {colors.blue, colors.shade4} }},
         { DiffRemove = { provider = 'DiffRemove', condition = checkwidth, icon = '  ', highlight = {colors.red, colors.shade4} }},
         { GitEnd = { provider = function() return ' ' end, highlight = {colors.shade4, colors.shade3} }},
-        { LspSpinner = { provider = require'lsp_spinner'.status, highlight = {colors.purple, colors.shade3} }},
+        -- { LspSpinner = { provider = require'lsp_spinner'.status, highlight = {colors.purple, colors.shade3} }},
         { LeftEnd = { provider = function() return ' ' end, highlight = {colors.shade3, colors.bg} }},
     }
     gls.right = {
