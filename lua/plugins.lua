@@ -251,7 +251,7 @@ require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
-    use {'glepnir/galaxyline.nvim', requires={'SmiteshP/nvim-gps'}, config=require('statusline').setup}
+    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}

@@ -1,9 +1,5 @@
 local M = {}
 local setup_statusline = function()
-    local gl = require('galaxyline')
-    local gls = gl.section
-    gl.short_line_list = {'LuaTree','vista','dbui'}
-
     local gps = require("nvim-gps")
     gps.setup({
         icons = {
@@ -43,53 +39,61 @@ local setup_statusline = function()
         shade6 = '#CFCEC2'
     }
 
-    local buffer_not_empty = function()
-      if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
-        return true
+    local theme = {
+        normal = {
+            a = { fg = colors.bg, bg = colors.green, },
+            b = { fg = colors.purple, bg = colors.shade6, },
+            c = { fg = colors.lightgrey, bg = colors.bg, },
+            },
+        insert = {
+            a = { fg = colors.bg, bg = colors.yellow },
+        },
+        visual = {
+            a = { fg = colors.bg, bg = colors.blue },
+        },
+        replace = {
+            a = { fg = colors.bg, bg = colors.red },
+        },
+    }
+
+    local search_result = function()
+      if vim.v.hlsearch == 0 then
+        return ''
       end
-      return false
+      local last_search = vim.fn.getreg('/')
+      if not last_search or last_search == '' then
+        return ''
+      end
+      local searchcount = vim.fn.searchcount({ maxcount = 9999 })
+      return last_search .. '(' .. searchcount.current .. '/' .. searchcount.total .. ')'
     end
 
-    local checkwidth = function()
-      local squeeze_width  = vim.fn.winwidth(0) / 2
-      if squeeze_width > 40 then
-        return true
-      end
-      return false
-    end
-    local mode_color = {n = colors.green, i = colors.yellow, v = colors.blue, [''] = colors.blue, V = colors.blue, c = colors.green,
-    no = colors.magenta, s = colors.orange, S = colors.orange, [''] = colors.orange, ic = colors.yellow, R = colors.red, Rv = colors.red,
-    cv = colors.red, ce=colors.red, r = colors.cyan, rm = colors.cyan, ['r?'] = colors.cyan, ['!']  = colors.red, t = colors.red}
-
-    gls.left = {
-        { ViMode = {
-            provider = function()
-                vim.api.nvim_command('hi GalaxyViMode guibg='..mode_color[vim.fn.mode()])
-                return '   '
-            end,
-            separator = ' ',
-            separator_highlight = { colors.shade0, colors.shade6},
-            highlight = {colors.grey, colors.bg, 'bold'},
-        }},
-        { FileName = { provider = {'FileName'}, condition = buffer_not_empty, separator = ' ', separator_highlight = {colors.shade6, colors.shade4}, highlight = {colors.blue, colors.shade6} }},
-        { GitIcon = { provider = function() return ' ' end, condition = buffer_not_empty, highlight = {colors.magenta, colors.shade4} }},
-        { GitBranch = { provider = 'GitBranch', separator = ' ', separator_highlight = {colors.shade4, colors.shade4}, condition = buffer_not_empty, highlight = {colors.magenta, colors.shade4} }},
-        { DiffAdd = { provider = 'DiffAdd', condition = checkwidth, icon = '  ', highlight = {colors.green, colors.shade4} }},
-        { DiffModified = { provider = 'DiffModified', condition = checkwidth, icon = '  ', highlight = {colors.blue, colors.shade4} }},
-        { DiffRemove = { provider = 'DiffRemove', condition = checkwidth, icon = '  ', highlight = {colors.red, colors.shade4} }},
-        { GitEnd = { provider = function() return ' ' end, highlight = {colors.shade4, colors.shade3} }},
-        -- { LspSpinner = { provider = require'lsp_spinner'.status, highlight = {colors.purple, colors.shade3} }},
-        { LeftEnd = { provider = function() return ' ' end, highlight = {colors.shade3, colors.bg} }},
-    }
-    gls.right = {
-        { GPS = { provider = gps.get_location, condition=gps.is_available, highlight = {colors.blue, colors.bg}}},
-        { RightEnd = { provider = function() return ' ' end, highlight = {colors.shade3, colors.bg} }},
-        { FileIcon = { separator = ' ', provider = 'FileIcon', condition = buffer_not_empty, separator_highlight = {colors.shade3, colors.shade3}, highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color, colors.shade3} }},
-        { FileType = { provider = 'FileTypeName', separator = ' ', separator_highlight = {colors.shade3, colors.shade3}, highlight = {colors.blue, colors.shade3} }},
-        { Space2 = { provider = function () return '  ' end, highlight = {colors.shade4, colors.shade3}}},
-        { LineInfo = { provider = 'LineColumn', separator = ' ', separator_highlight = {colors.shade4, colors.shade4}, highlight = {colors.purple, colors.shade4} }},
-        { PerCent = { provider = 'LinePercent', separator = ' ', separator_highlight = {colors.shade6, colors.shade4}, highlight = {colors.cyan, colors.shade6} }},
-    }
+    require('lualine').setup({
+        options = {
+            theme = theme,
+            component_separators = { left = '\\', right = '/' },
+            section_separators = { left = '', right = '' },
+            always_divide_middle = true,
+        },
+        sections = {
+            lualine_a = {'filename'},
+            lualine_b = {'branch', 'diff'},
+            lualine_c = {
+                {
+                    'diagnostics', source={'nvim'}, sections={'error'},
+                    diagnostics_color={error={fg=colors.red}},
+                },
+                {
+                    'diagnostics', source={'nvim'}, sections={'warn'},
+                    diagnostics_color={error={fg=colors.red}},
+                },
+            },
+            lualine_d = {},
+            lualine_x = {{gps.get_location, cond=gps.is_available}},
+            lualine_y = {search_result, 'filetype'},
+            lualine_z = {'location', 'progress'},
+        }
+    })
 end
 
 M.setup = setup_statusline
