@@ -42,17 +42,26 @@ local setup_statusline = function()
     local theme = {
         normal = {
             a = { fg = colors.bg, bg = colors.green, },
-            b = { fg = colors.purple, bg = colors.shade6, },
+            b = { fg = colors.purple, bg = colors.shade3, },
             c = { fg = colors.lightgrey, bg = colors.bg, },
-            },
+            z = { fg = colors.blue, bg = colors.shade6, },
+        },
         insert = {
             a = { fg = colors.bg, bg = colors.yellow },
+            z = { fg = colors.blue, bg = colors.shade6, },
         },
         visual = {
             a = { fg = colors.bg, bg = colors.blue },
+            z = { fg = colors.blue, bg = colors.shade6, },
         },
         replace = {
             a = { fg = colors.bg, bg = colors.red },
+            z = { fg = colors.blue, bg = colors.shade6, },
+        },
+        inactive = {
+            a = { fg = colors.blue, bg = colors.shade6, },
+            b = { fg = colors.blue, bg = colors.shade3, },
+            c = { fg = colors.lightgrey, bg = colors.bg, },
         },
     }
 
@@ -70,6 +79,7 @@ local setup_statusline = function()
 
     require('lualine').setup({
         options = {
+            icons_enabled=true,
             theme = theme,
             component_separators = { left = '\\', right = '/' },
             section_separators = { left = '', right = '' },
@@ -80,19 +90,24 @@ local setup_statusline = function()
             lualine_b = {'branch', 'diff'},
             lualine_c = {
                 {
-                    'diagnostics', source={'nvim'}, sections={'error'},
-                    diagnostics_color={error={fg=colors.red}},
-                },
-                {
-                    'diagnostics', source={'nvim'}, sections={'warn'},
-                    diagnostics_color={error={fg=colors.red}},
+                    'diagnostics', source={'nvim_lsp'}, sections={'error', 'warn', 'info'},
+                    diagnostics_color={error={fg=colors.red}, warn={fg=colors.red}, info={fg=colors.yellow}},
+                    always_visible=true,
                 },
             },
-            lualine_d = {},
             lualine_x = {{gps.get_location, cond=gps.is_available}},
             lualine_y = {search_result, 'filetype'},
             lualine_z = {'location', 'progress'},
-        }
+        },
+        inactive_sections = {
+            lualine_a = {'filename'},
+            lualine_b = {'branch', 'diff'},
+            lualine_c = { },
+            lualine_x = {},
+            lualine_y = {'filetype'},
+            lualine_z = {'location', 'progress'},
+        },
+        extensions = {'fugitive'},
     })
 end
 
