@@ -1,6 +1,6 @@
 local lspconfig = require("lspconfig")
-local configs = require("lspconfig/configs")
-local util = require("lspconfig/util")
+local configs = require("lspconfig.configs")
+local util = require("lspconfig.util")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
@@ -22,6 +22,20 @@ vim.fn.sign_define( "LspDiagnosticsSignError", { text = "", texthl = "LspDiag
 vim.fn.sign_define( "LspDiagnosticsSignWarning", { text = "", texthl = "LspDiagnosticsSignWarning" })
 vim.fn.sign_define( "LspDiagnosticsSignInformation", { text = "", texthl = "LspDiagnosticsSignInformation" })
 vim.fn.sign_define("LspDiagnosticsSignHint", {text = "➤", texthl = "LspDiagnosticsSignHint"})
+
+-- prosemd --
+configs.prosemd = {
+    default_config = {
+        cmd = {"prosemd-lsp", "--stdio"},
+        filetypes = {"markdown"},
+        root_dir = function(fname)
+            return util.find_git_ancestor(fname) or vim.fn.getcwd()
+        end,
+        settings = {},
+        capabilities = capabilities,
+    }
+}
+lspconfig.prosemd.setup{}
 
 -- omnisharp --
 local omnisharp_bin
