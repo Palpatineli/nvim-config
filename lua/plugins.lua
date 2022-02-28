@@ -248,6 +248,7 @@ require('packer').startup(function(use)
     use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, ft={'python'}}
     use {'sindrets/diffview.nvim', config=setup_diffview}
     use {'mattn/emmet-vim', ft={'html', 'xml', 'svg'}}
+    use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
@@ -258,12 +259,17 @@ require('packer').startup(function(use)
     use 'ggandor/lightspeed.nvim'
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
-    use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
     use {'marko-cerovac/material.nvim',
          config=function()
             vim.g.material_style = "lighter"
             vim.cmd[[colorscheme material]]
+        end
+    }
+    use {'mvllow/modes.nvim',
+        config=function()
+            vim.opt.cursorline = true
+            require('modes').setup()
         end
     }
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
