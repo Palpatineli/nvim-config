@@ -55,9 +55,6 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>//<Left>
 " " Insert date time
 iab <expr> dts strftime("%F %T")
 noremap <leader>m :message<cr>
-" completion
-inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 
 " extra highlighting
 hi Comment guifg=#aabfc9 guibg=NONE gui=nocombine
@@ -66,6 +63,10 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 highlight ColorColumn ctermbg=magenta guibg=Magenta
 call matchadd('ColorColumn', '\%121v', 120)
+
+if has('nvim') && executable('nvr')
+    let $GIT_EDITOR = "nvr -cc split --remote-wait + 'set bufhidden=wipe'"
+endif
 
 " packages
 lua require('plugins')

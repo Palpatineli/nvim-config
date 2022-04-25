@@ -98,7 +98,7 @@ local servers = {
     "bashls",
     "cssls",
     "rust_analyzer",
-    "angularls",
+    -- "angularls",
     "tsserver",
     "html",
     "lemminx",

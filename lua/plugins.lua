@@ -8,11 +8,11 @@ end
 vim.g.mapleader = ";"  -- seem to be separate from vim mapleader
 
 local setup_dap = function()
-    vim.api.nvim_set_keymap("n", "<leader>db", ":lua require'dap'.toggle_breakpoint()<cr>", {})
-    vim.api.nvim_set_keymap("n", "<leader>dc", ":lua require'dap'.continue()<cr>", {})
-    vim.api.nvim_set_keymap("n", "<leader>ds", ":lua require'dap'.step_into()<cr>", {})
-    vim.api.nvim_set_keymap("n", "<leader>dn", ":lua require'dap'.step_over()<cr>", {})
-    vim.api.nvim_set_keymap("n", "<leader>du", ":lua require'dap'.repl.open()<cr>", {})
+    vim.api.nvim_set_keymap("n", "<leader>db", "", {callback=require'dap'.toggle_breakpoint})
+    vim.api.nvim_set_keymap("n", "<leader>dc", "", {callback=require'dap'.continue})
+    vim.api.nvim_set_keymap("n", "<leader>ds", "", {callback=require'dap'.step_into})
+    vim.api.nvim_set_keymap("n", "<leader>dn", "", {callback=require'dap'.step_over})
+    vim.api.nvim_set_keymap("n", "<leader>du", "", {callback=require'dap'.repl.open})
     require('dap.ext.vscode').load_launchjs()
 end
 
@@ -37,6 +37,15 @@ local setup_bufdel = function()
     vim.api.nvim_set_keymap("n", "qq", "<cmd>BufDel!<cr>", { silent = true, noremap = true })
 end
 
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+local feedkey = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
 local setup_cmp = function()
     local cmp = require'cmp'
     cmp.setup {
@@ -51,6 +60,23 @@ local setup_cmp = function()
             ['<C-Space>'] = cmp.mapping.complete(),
             ['<C-e>'] = cmp.mapping.close(),
             ['<CR>'] = cmp.mapping.confirm({ select = true }),
+            ['<C-j>'] = cmp.mapping(function(fallback)
+                if vim.fn["vsnip#available"](1) == 1 then
+                    feedkey("<Plug>(vsnip-expand-or-jump)", "")
+                elseif cmp.visible() then
+                    cmp.select_next_item()
+                elseif has_words_before() then
+                    cmp.complete()
+                else fallback()
+                end
+            end, { "i", "s", "c" }),
+            ['<C-k>'] = cmp.mapping(function()
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif vim.fn["vsnip#available"](-1) == 1 then
+                    feedkey("<Plug>(vsnip-jump-prev)", "")
+                end
+            end, { "i", "s", "c" }),
         },
         sources = {
             { name = 'vsnip' },
@@ -190,14 +216,6 @@ local setup_treesitter = function()
     }
 end
 
-local setup_vsnip = function()
-    vim.g.vsnip_snippet_dir = "~/.config/nvim/snippets"
-    vim.api.nvim_set_keymap("i", "<c-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<cmd>call compe#complete()<cr>')", {expr = true})
-    vim.api.nvim_set_keymap("s", "<C-n>", "vsnip#expandable() ? '<Plug>(vsnip-expand)' : (vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<cmd>call compe#complete()<cr>')", {expr = true})
-    vim.api.nvim_set_keymap("i", "<C-p>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'", {expr = true})
-    vim.api.nvim_set_keymap("s", "<C-p>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-p>'", {expr = true})
-end
-
 local setup_indent_blankline = function()
     vim.cmd [[
         highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
@@ -223,6 +241,19 @@ local setup_diffview = function()
     vim.api.nvim_set_keymap("n", "<F2>", ":DiffviewToggleFiles<cr>", {silent=true})
 end
 
+local setup_lazygit = function()
+    vim.api.nvim_set_keymap('n', '<leader>gg', ':LazyGit<cr>', {})
+    require'telescope'.load_extension('lazygit')
+    vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*",
+        callback = function()
+            require'lazygit.utils'.project_root_dir()
+        end,
+        desc = "reload project root for buffer entry"
+    })
+    vim.api.nvim_set_keymap('n', '<leader>go', "", {callback=require'telescope'.extensions.lazygit.lazygit})
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'akinsho/nvim-bufferline.lua', config=setup_bufferline}
@@ -236,7 +267,6 @@ require('packer').startup(function(use)
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-vsnip',
         requires = {'hrsh7th/vim-vsnip', 'hrsh7th/vim-vsnip-integ', 'hrsh7th/nvim-cmp'},
-        config=setup_vsnip
     }
     use 'hrsh7th/vim-vsnip'
     use {'hrsh7th/vim-vsnip-integ', requires = {'hrsh7th/vim-vsnip'}}
@@ -256,9 +286,11 @@ require('packer').startup(function(use)
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
+    use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'ggandor/lightspeed.nvim'
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
+    use {'ray-x/lsp_signature.nvim', config=function() require('lsp_signature').setup({bind=true, handler_opts={border='rounded'}}) end}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
     use {'marko-cerovac/material.nvim',
          config=function()
