@@ -83,6 +83,7 @@ local setup_cmp = function()
             { name = 'neorg' },
             { name = 'latex_symbols' },
             { name = 'nvim_lsp' },
+            { name = 'nvim_lsp_signature_help' },
             { name = 'path' },
             { name = 'treesitter' },
             { name = 'look', keyword_length=2 },
@@ -93,7 +94,14 @@ local setup_cmp = function()
         }
     }
     cmp.setup.cmdline(':', { sources = {{ name = 'cmdline' }}})
-    cmp.setup.cmdline('/', { sources = {{ name = 'buffer' }}})
+    cmp.setup.cmdline('/', {
+        sources = cmp.config.sources({
+            { name = 'nvim_lsp_document_symbol' }
+        },
+        {
+            { name = 'buffer' }
+        })
+    })
 end
 
 local setup_kommentary = function()
@@ -264,6 +272,8 @@ require('packer').startup(function(use)
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'octaltree/cmp-look', 'hrsh7th/cmp-path',
          'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
+    use {'hrsh7th/cmp-nvim-lsp-document-symbol', requires={'hrsh7th/cmp-nvim-lsp'}}
+    use {'hrsh7th/cmp-nvim-lsp-signature-help', requires={'hrsh7th/cmp-nvim-lsp'}}
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-vsnip',
         requires = {'hrsh7th/vim-vsnip', 'hrsh7th/vim-vsnip-integ', 'hrsh7th/nvim-cmp'},
@@ -290,7 +300,6 @@ require('packer').startup(function(use)
     use 'ggandor/lightspeed.nvim'
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
-    use {'ray-x/lsp_signature.nvim', config=function() require('lsp_signature').setup({bind=true, handler_opts={border='rounded'}}) end}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
     use {'marko-cerovac/material.nvim',
          config=function()
