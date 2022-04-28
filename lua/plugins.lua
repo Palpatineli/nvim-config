@@ -44,17 +44,12 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-local feedkey = function(key, mode)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-end
-
 local setup_cmp = function()
+    local luasnip = require'luasnip'
     local cmp = require'cmp'
     cmp.setup {
         snippet = {
-            expand = function(args)
-                vim.fn["vsnip#anonymous"](args.body)
-            end,
+            exapnd = function(args) luasnip.lsp_expand(args.body) end,
         },
         mapping = {
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -63,25 +58,24 @@ local setup_cmp = function()
             ['<C-e>'] = cmp.mapping.close(),
             ['<CR>'] = cmp.mapping.confirm({ select = true }),
             ['<C-j>'] = cmp.mapping(function(fallback)
-                if vim.fn["vsnip#available"](1) == 1 then
-                    feedkey("<Plug>(vsnip-expand-or-jump)", "")
-                elseif cmp.visible() then
+                if cmp.visible() then
                     cmp.select_next_item()
                 elseif has_words_before() then
                     cmp.complete()
-                else fallback()
+                else
+                    fallback()
                 end
             end, { "i", "s", "c" }),
-            ['<C-k>'] = cmp.mapping(function()
+            ['<C-k>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
-                elseif vim.fn["vsnip#available"](-1) == 1 then
-                    feedkey("<Plug>(vsnip-jump-prev)", "")
+                else
+                    fallback()
                 end
             end, { "i", "s", "c" }),
         },
         sources = {
-            { name = 'vsnip' },
+            { name = 'luasnip' },
             { name = 'neorg' },
             { name = 'latex_symbols' },
             { name = 'nvim_lsp' },
@@ -276,12 +270,8 @@ require('packer').startup(function(use)
     use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp-signature-help', requires={'hrsh7th/cmp-nvim-lsp'}}
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
-    use {'hrsh7th/cmp-vsnip',
-        requires = {'hrsh7th/vim-vsnip', 'hrsh7th/vim-vsnip-integ', 'hrsh7th/nvim-cmp'},
-    }
-    use 'hrsh7th/vim-vsnip'
-    use {'hrsh7th/vim-vsnip-integ', requires = {'hrsh7th/vim-vsnip'}}
     use {'hrsh7th/nvim-cmp', config=setup_cmp}
+    use {'L3MON4D3/LuaSnip', config=function() require'luasnippets'.setup() end}
     use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
     use {'kristijanhusak/vim-dadbod-ui', ft={'sql'}}
     use {'mfussenegger/nvim-dap', ft={'python'}, config=setup_dap}
