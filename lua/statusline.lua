@@ -39,32 +39,6 @@ local setup_statusline = function()
         shade6 = '#CFCEC2'
     }
 
-    local theme = {
-        normal = {
-            a = { fg = colors.bg, bg = colors.green, },
-            b = { fg = colors.purple, bg = colors.shade3, },
-            c = { fg = colors.lightgrey, bg = colors.bg, },
-            z = { fg = colors.blue, bg = colors.shade6, },
-        },
-        insert = {
-            a = { fg = colors.bg, bg = colors.yellow },
-            z = { fg = colors.blue, bg = colors.shade6, },
-        },
-        visual = {
-            a = { fg = colors.bg, bg = colors.blue },
-            z = { fg = colors.blue, bg = colors.shade6, },
-        },
-        replace = {
-            a = { fg = colors.bg, bg = colors.red },
-            z = { fg = colors.blue, bg = colors.shade6, },
-        },
-        inactive = {
-            a = { fg = colors.blue, bg = colors.shade6, },
-            b = { fg = colors.blue, bg = colors.shade3, },
-            c = { fg = colors.lightgrey, bg = colors.bg, },
-        },
-    }
-
     local search_result = function()
       if vim.v.hlsearch == 0 then
         return ''
@@ -80,7 +54,7 @@ local setup_statusline = function()
     require('lualine').setup({
         options = {
             icons_enabled=true,
-            theme = theme,
+            theme = 'auto',
             component_separators = { left = '\\', right = '/' },
             section_separators = { left = '', right = '' },
             always_divide_middle = true,

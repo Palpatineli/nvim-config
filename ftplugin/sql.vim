@@ -4,7 +4,7 @@ packadd vim-dadbod-completion
 
 let g:dbs = {
 \ "MACS": "sqlserver://bos-dbrnd01:1433/MACS",
-\ "MACS_PreProd": "sqlserver://bos-dbrnd01.acadian-asset.com:1433/MACS_PreProd"
+\ "MACS_PreProd": "sqlserver://bos-dbrnd01:1433/MACS_PreProd"
 \}
 
 nnoremap <F3> <cmd>DBUIToggle<cr>

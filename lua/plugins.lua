@@ -24,7 +24,9 @@ local setup_dap_telescope = function()
 end
 
 local setup_bufferline = function()
-    require('bufferline').setup()
+    require('bufferline').setup({
+        options = {show_close_icon=false, show_buffer_close_icons=false, separator_style='slant'}
+    })
     vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>BufferLineCycleNext<CR>", {silent = true})
     vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>BufferLineCyclePrev<CR>", {silent = true})
     vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>BufferLinePick<CR>", {silent = true, noremap = true})
@@ -227,7 +229,7 @@ end
 local setup_indent_blankline = function()
     vim.cmd [[
         highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-        highlight IndentEven guifg=NONE guibg=#f0f0f0 gui=nocombine
+        highlight IndentEven guifg=NONE guibg=#fcf1f0 gui=nocombine
     ]]
     require'indent_blankline'.setup{
         char = "",
@@ -245,7 +247,7 @@ local setup_diffview = function()
     require'diffview'.setup()
     vim.api.nvim_set_keymap("n", "<F4>", ":DiffviewOpen -uno master<cr>", {silent=true})
     vim.api.nvim_set_keymap("n", "<F5>", ":DiffviewOpen -uno HEAD<cr>", {silent=true})
-    vim.api.nvim_set_keymap("n", "<F9>", ":DiffviewClose<cr>", {silent=true})
+    vim.api.nvim_set_keymap("n", "<F6>", ":DiffviewClose<cr>", {silent=true})
     vim.api.nvim_set_keymap("n", "<F2>", ":DiffviewToggleFiles<cr>", {silent=true})
 end
 
@@ -272,7 +274,6 @@ require('packer').startup(function(use)
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'octaltree/cmp-look', 'hrsh7th/cmp-path',
          'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
-    use {'hrsh7th/cmp-nvim-lsp-document-symbol', requires={'hrsh7th/cmp-nvim-lsp'}}
     use {'hrsh7th/cmp-nvim-lsp-signature-help', requires={'hrsh7th/cmp-nvim-lsp'}}
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-vsnip',
@@ -292,7 +293,7 @@ require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
-    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, config=require('statusline').setup}
+    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps', "EdenEast/nightfox.nvim"}, config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
@@ -301,10 +302,10 @@ require('packer').startup(function(use)
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
-    use {'marko-cerovac/material.nvim',
+    use {"EdenEast/nightfox.nvim",
          config=function()
             vim.g.material_style = "lighter"
-            vim.cmd[[colorscheme material]]
+            vim.cmd[[colorscheme dawnfox]]
         end
     }
     use {'mvllow/modes.nvim',
@@ -325,6 +326,8 @@ require('packer').startup(function(use)
         end
     }
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
+    use {'simrat39/symbols-outline.nvim', config=
+         function() vim.api.nvim_set_keymap('n', '<F9>', ':SymbolsOutline<cr>', {}) end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
