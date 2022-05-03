@@ -14,7 +14,7 @@ let g:loaded_remote_plugins    = 0
 " general
 set hidden
 set autochdir " set working directory to file directory
-set relativenumber
+set number relativenumber
 set noswapfile nobackup
 set exrc secure  "allow local rc file but disallow autocmd, shell and write commands in local rc
 set foldmethod=expr

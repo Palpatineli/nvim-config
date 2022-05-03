@@ -23,16 +23,6 @@ local setup_dap_telescope = function()
     vim.api.nvim_set_keymap("n", "<leader>tv", ":Telescope dap variables<cr>", {})
 end
 
-local setup_bufferline = function()
-    require('bufferline').setup({
-        options = {show_close_icon=false, show_buffer_close_icons=false, separator_style='slant'}
-    })
-    vim.api.nvim_set_keymap("n", "<leader>j", "<cmd>BufferLineCycleNext<CR>", {silent = true})
-    vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>BufferLineCyclePrev<CR>", {silent = true})
-    vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>BufferLinePick<CR>", {silent = true, noremap = true})
-    vim.api.nvim_set_keymap("n", "<leader>x", "<cmd>BufferLinePickClose<CR>", {silent = true, noremap = true})
-end
-
 local setup_bufdel = function()
     require'bufdel'.setup { next = 'cycle' }
     vim.api.nvim_set_keymap("n", "qw", ":w\\|BufDel<cr>", { silent = true, noremap = true })
@@ -260,7 +250,6 @@ end
 
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
-    use {'akinsho/nvim-bufferline.lua', config=setup_bufferline}
     use {'ojroques/nvim-bufdel',
         config=setup_bufdel
     }
@@ -318,6 +307,7 @@ require('packer').startup(function(use)
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'simrat39/symbols-outline.nvim', config=
          function() vim.api.nvim_set_keymap('n', '<F9>', ':SymbolsOutline<cr>', {}) end}
+    use {'sunjon/shade.nvim', config=function() require'shade'.setup() end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=

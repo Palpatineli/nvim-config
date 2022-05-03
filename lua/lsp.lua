@@ -5,10 +5,6 @@ local util = require("lspconfig.util")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
 
---- general ---
-vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.lsp.buf.definition()<cr>", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>h", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", {})
-
 --- handlers ---
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics,
@@ -128,11 +124,6 @@ lspconfig.yamlls.setup {
 }
 
 --- display ---
-vim.api.nvim_set_keymap(
-    'n', '<Leader>J', ':lua vim.diagnostic.goto_next()<CR>',
-    { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-    'n', '<Leader>K', ':lua vim.diagnostic.goto_prev()<CR>',
-    { noremap = true, silent = true }
-)
+vim.api.nvim_set_keymap("n", "<leader>h", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", {})
+vim.api.nvim_set_keymap( 'n', '<Leader>J', ':lua vim.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap( 'n', '<Leader>K', ':lua vim.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })

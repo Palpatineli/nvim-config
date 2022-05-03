@@ -20,25 +20,6 @@ local setup_statusline = function()
         separator = ' > ',
     })
 
-    local colors = {
-        bg      = '#FAFAFA',
-        yellow  = '#F6A434',
-        cyan    = '#39ADB5',
-        white   = '#FFFFFF',
-        green   = '#91B859',
-        orange  = '#F76D47',
-        purple  = '#7C4DFF',
-        magenta = '#FF5370',
-        grey    = '#717CB4',
-        lightgrey = '#939ED6',
-        blue    = '#6182B8',
-        red     = '#E53935',
-        shade0 = '#EEEEEE',
-        shade3 = '#E7E7E8',
-        shade4 = '#D8DADB',
-        shade6 = '#CFCEC2'
-    }
-
     local search_result = function()
       if vim.v.hlsearch == 0 then
         return ''
@@ -55,9 +36,9 @@ local setup_statusline = function()
         options = {
             icons_enabled=true,
             theme = 'auto',
-            component_separators = { left = '\\', right = '/' },
-            section_separators = { left = '', right = '' },
-            always_divide_middle = true,
+            component_separators = { left = '', right = '' },
+            section_separators = { left = '', right = '' },
+            globalstatus = true,
         },
         sections = {
             lualine_a = {'filename'},
@@ -65,25 +46,31 @@ local setup_statusline = function()
             lualine_c = {
                 {
                     'diagnostics', source={'nvim_lsp'}, sections={'error', 'warn', 'info'},
-                    diagnostics_color={error={fg=colors.red}, warn={fg=colors.red}, info={fg=colors.yellow}},
                     always_visible=true,
                 },
             },
-            lualine_x = {{gps.get_location, cond=gps.is_available}},
-            lualine_y = {search_result, 'filetype'},
-            lualine_z = {'location', 'progress'},
+            lualine_x = {{
+                'buffers',
+                hide_filename_extension = true,
+                buffers_color = {
+                    active= {bg = '#907aa9', fg='#faf4ed'},
+                    inactive = {fg = '#618774'}},
+            }},
+            lualine_y = {{gps.get_location, cond=gps.is_available}, 'filetype'},
+            lualine_z = {'progress'},
         },
-        inactive_sections = {
-            lualine_a = {'filename'},
-            lualine_b = {'branch', 'diff'},
-            lualine_c = { },
-            lualine_x = {},
-            lualine_y = {'filetype'},
-            lualine_z = {'location', 'progress'},
-        },
-        extensions = {'fugitive'},
     })
 end
 
+local setup_keymap = function()
+    vim.api.nvim_set_keymap('n', '<leader>1', ":LualineBuffersJump 1<cr>", {silent=true})
+    vim.api.nvim_set_keymap('n', '<leader>2', ":LualineBuffersJump 2<cr>", {silent=true})
+    vim.api.nvim_set_keymap('n', '<leader>3', ":LualineBuffersJump 3<cr>", {silent=true})
+    vim.api.nvim_set_keymap('n', '<leader>4', ":LualineBuffersJump 4<cr>", {silent=true})
+    vim.api.nvim_set_keymap('n', '<leader>5', ":LualineBuffersJump 5<cr>", {silent=true})
+    vim.api.nvim_set_keymap('n', '<leader>6', ":LualineBuffersJump 6<cr>", {silent=true})
+end
+
+setup_keymap()
 M.setup = setup_statusline
 return M
