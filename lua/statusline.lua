@@ -41,7 +41,8 @@ local setup_statusline = function()
             globalstatus = true,
         },
         sections = {
-            lualine_a = {'filename'},
+            lualine_a = {{ 'buffers', hide_filename_extension = true, buffers_color = {active = {bg = '#575279'}}}
+            },
             lualine_b = {'branch', 'diff'},
             lualine_c = {
                 {
@@ -49,14 +50,8 @@ local setup_statusline = function()
                     always_visible=true,
                 },
             },
-            lualine_x = {{
-                'buffers',
-                hide_filename_extension = true,
-                buffers_color = {
-                    active= {bg = '#907aa9', fg='#faf4ed'},
-                    inactive = {fg = '#618774'}},
-            }},
-            lualine_y = {{gps.get_location, cond=gps.is_available}, 'filetype'},
+            lualine_x = {{gps.get_location, cond=gps.is_available}},
+            lualine_y = {'filetype'},
             lualine_z = {'progress'},
         },
     })

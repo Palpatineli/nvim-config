@@ -39,7 +39,7 @@ local setup_cmp = function()
     local cmp = require'cmp'
     cmp.setup {
         snippet = {
-            exapnd = function(args) luasnip.lsp_expand(args.body) end,
+            expand = function(args) luasnip.lsp_expand(args.body) end,
         },
         mapping = {
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -50,6 +50,8 @@ local setup_cmp = function()
             ['<C-j>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
+                elseif luasnip.expand_or_jumpable() then
+                    luasnip.expand_or_jump()
                 elseif has_words_before() then
                     cmp.complete()
                 else
@@ -59,6 +61,8 @@ local setup_cmp = function()
             ['<C-k>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
+                elseif luasnip.jumpable(-1) then
+                    luasnip.jump(-1)
                 else
                     fallback()
                 end
@@ -261,6 +265,7 @@ require('packer').startup(function(use)
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/nvim-cmp', config=setup_cmp}
     use {'L3MON4D3/LuaSnip', config=function() require'luasnippets'.setup() end}
+    use {'saadparwaiz1/cmp_luasnip'}
     use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
     use {'kristijanhusak/vim-dadbod-ui', ft={'sql'}}
     use {'mfussenegger/nvim-dap', ft={'python'}, config=setup_dap}
