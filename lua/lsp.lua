@@ -124,6 +124,6 @@ lspconfig.yamlls.setup {
 }
 
 --- display ---
-vim.api.nvim_set_keymap("n", "<leader>h", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", {})
-vim.api.nvim_set_keymap( 'n', '<Leader>J', ':lua vim.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap( 'n', '<Leader>K', ':lua vim.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>h", "", {callback = vim.lsp.diagnostic.show_line_diagnostics})
+vim.api.nvim_set_keymap( 'n', '<Leader>J', '', { noremap = true, silent = true, callback = vim.diagnostic.goto_next })
+vim.api.nvim_set_keymap( 'n', '<Leader>K', '', { noremap = true, silent = true, callback = vim.diagnostic.goto_prev })

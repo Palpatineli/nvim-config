@@ -13,7 +13,7 @@ packadd iron.nvim
 -- dap
 require('dap-python').setup('~/.venvs/debugpy/bin/python3')
 require('dap-python').test_runner = 'pytest'
-vim.api.nvim_set_keymap("n", "<leader>df", ":lua require('dap-python').test_method()<cr>", {})
+vim.api.nvim_set_keymap("n", "<leader>df", '', {callback=require('dap-python').test_method})
 
 -- vimcmdline
 vim.g.iron_map_defaults = false

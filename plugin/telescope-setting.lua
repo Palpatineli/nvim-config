@@ -33,15 +33,23 @@ end
 M.get_lsp_client = get_lsp_client
 
 local setup_keymap = function()
-    vim.api.nvim_set_keymap('n', '<leader>f', ':lua require("telescope.builtin").git_files(require("telescope.themes").get_dropdown{previewer = false})<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>b', ':lua require("telescope.builtin").buffers(require("telescope.themes").get_dropdown{previewer = false})<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>e', ':lua require("telescope.builtin").diagnostics{}<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>F', ':lua require("telescope.builtin").lsp_references()<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("telescope.builtin").lsp_definitions()<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>i', ':lua require("telescope.builtin").lsp_implementations()<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>o', ':lua require("telescope.builtin").treesitter()<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>a', ':lua require("telescope.builtin").live_grep{cwd=require"telescope-setting".get_lsp_client().config.root_dir}<cr>', {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>A', ':lua require("telescope.builtin").grep_string{cwd=require"telescope-setting".get_lsp_client().config.root_dir}<cr>', {silent=true})
+    vim.api.nvim_set_keymap('n', '<leader>f', '', {silent=true, callback=function()
+        require("telescope.builtin").git_files(require("telescope.themes").get_dropdown{previewer = false})
+    end})
+    vim.api.nvim_set_keymap('n', '<leader>b', '', {silent=true, callback=function()
+        require("telescope.builtin").buffers(require("telescope.themes").get_dropdown{previewer = false})
+    end})
+    vim.api.nvim_set_keymap('n', '<leader>e', '', {silent=true, callback=require("telescope.builtin").diagnostics})
+    vim.api.nvim_set_keymap('n', '<leader>F', '', {silent=true, callback=require("telescope.builtin").lsp_references})
+    vim.api.nvim_set_keymap('n', '<leader>d', '', {silent=true, callback=require("telescope.builtin").lsp_definitions})
+    vim.api.nvim_set_keymap('n', '<leader>i', '', {silent=true, callback=require("telescope.builtin").lsp_implementations})
+    vim.api.nvim_set_keymap('n', '<leader>o', '', {silent=true, callback=require("telescope.builtin").treesitter})
+    vim.api.nvim_set_keymap('n', '<leader>a', '', {silent=true, callback=function()
+        require("telescope.builtin").live_grep{cwd=get_lsp_client().config.root_dir}
+    end})
+    vim.api.nvim_set_keymap('n', '<leader>A', '', {silent=true, callback=function()
+       require("telescope.builtin").grep_string{cwd=get_lsp_client().config.root_dir}
+    end})
 end
 
 setup_keymap()
