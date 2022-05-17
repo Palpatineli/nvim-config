@@ -102,10 +102,6 @@ local setup_kommentary = function()
     vim.api.nvim_set_keymap("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
 end
 
-vim.api.nvim_set_keymap("n", "<leader>gv", ":Neorg gtd views<CR>", {})
-vim.api.nvim_set_keymap("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
-vim.api.nvim_set_keymap("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
-
 local setup_neorg = function()
     require('neorg').setup {
         load = {
@@ -149,6 +145,9 @@ local setup_neorg = function()
             end)
         end
     }
+    vim.api.nvim_set_keymap("n", "<leader>gv", ":Neorg gtd views<CR>", {})
+    vim.api.nvim_set_keymap("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
+    vim.api.nvim_set_keymap("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
 end
 
 local setup_treesitter = function()
@@ -252,6 +251,25 @@ local setup_lazygit = function()
     vim.api.nvim_set_keymap('n', '<leader>go', "", {callback=require'telescope'.extensions.lazygit.lazygit})
 end
 
+local setup_dadbod_ui = function()
+    vim.g.dbs = {
+        MACS="sqlserver://bos-dbrnd01:1433/MACS",
+        MACS_PreProd="sqlserver://bos-dbrnd01:1433/MACS_PreProd"
+    }
+    vim.api.nvim_set_keymap('n', '<F3>', '<cmd>DBUIToggle<cr>', {silent=true})
+end
+
+local setup_dadbod_comp = function()
+    vim.api.nvim_create_autocmd("FileType", {pattern={"sql", "mysql", "plsql"},
+        callback = function()
+            require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+        end})
+    vim.g.completion_chain_complete_list = { sql = { {complete_items = {'vim-dadbod-completion'}}, }, }
+    vim.g.completion_matching_strategy_list = {'exact', 'substring'}
+    vim.g.completion_matching_ignore_case = 1
+    vim.g.vim_dadbod_completion_mark = ''
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'ojroques/nvim-bufdel',
@@ -267,7 +285,8 @@ require('packer').startup(function(use)
     use {'L3MON4D3/LuaSnip', config=function() require'luasnippets'.setup() end}
     use {'saadparwaiz1/cmp_luasnip'}
     use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
-    use {'kristijanhusak/vim-dadbod-ui', ft={'sql'}}
+    use {'Palpatineli/vim-dadbod-ui', requires={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui}
+    use {'Palpatineli/vim-dadbod-completion', requires={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'}, config=setup_dadbod_comp}
     use {'mfussenegger/nvim-dap', ft={'python'}, config=setup_dap}
     use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_telescope}
     use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, ft={'python'}}
