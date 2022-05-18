@@ -23,6 +23,36 @@ local setup_dap_telescope = function()
     vim.api.nvim_set_keymap("n", "<leader>tv", ":Telescope dap variables<cr>", {})
 end
 
+local setup_dap_python = function()
+    require('dap-python').setup('~/.venvs/debugpy/bin/python3')
+    require('dap-python').test_runner = 'pytest'
+    vim.api.nvim_set_keymap("n", "<leader>df", '', {callback=require('dap-python').test_method})
+end
+
+local setup_iron = function()
+    local iron = require'iron.core'
+    iron.setup {
+        config = {
+            should_map_plug = false,
+            scratch_repl = true,
+            repl_definition = {
+                python = require'iron.fts.python'.ipython
+            },
+            repl_open_cmd = 'rightbelow 30 split'
+        },
+        keymaps = {
+            visual_send = "<leader>ir",
+            send_line = "<leader><space>",
+            cr = "<leader><cr>",
+            interrupt = "<leader><c-c>",
+            exit = "<leader>q",
+            clear = "<leader>c"
+        }
+    }
+    vim.api.nvim_buf_set_keymap(0, "n", "<F7>", "<cmd>IronRepl<cr>", {noremap=true})
+    vim.api.nvim_buf_set_keymap(0, "n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>", {noremap = true, silent = true})
+end
+
 local setup_bufdel = function()
     require'bufdel'.setup { next = 'cycle' }
     vim.api.nvim_set_keymap("n", "qw", ":w\\|BufDel<cr>", { silent = true, noremap = true })
@@ -289,7 +319,7 @@ require('packer').startup(function(use)
     use {'Palpatineli/vim-dadbod-completion', requires={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'}, config=setup_dadbod_comp}
     use {'mfussenegger/nvim-dap', ft={'python'}, config=setup_dap}
     use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_telescope}
-    use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, ft={'python'}}
+    use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_python}
     use {'sindrets/diffview.nvim', config=setup_diffview}
     use {'mattn/emmet-vim', ft={'html', 'xml', 'svg'}}
     use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
@@ -298,7 +328,7 @@ require('packer').startup(function(use)
     use {'rhysd/vim-grammarous', ft={'markdown'}}
     use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps', "EdenEast/nightfox.nvim"}, config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
-    use {"hkupty/iron.nvim", ft={'python'}}
+    use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'ggandor/lightspeed.nvim'
