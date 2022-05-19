@@ -69,6 +69,9 @@ local setup_cmp = function()
     local luasnip = require'luasnip'
     local cmp = require'cmp'
     cmp.setup {
+        enabled = function ()
+            return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or require'cmp_dap'.is_dap_buffer()
+        end,
         snippet = {
             expand = function(args) luasnip.lsp_expand(args.body) end,
         },
@@ -105,6 +108,7 @@ local setup_cmp = function()
             { name = 'latex_symbols' },
             { name = 'nvim_lsp' },
             { name = 'nvim_lsp_signature_help' },
+            { name = 'dap' },
             { name = 'path' },
             { name = 'treesitter' },
             { name = 'look', keyword_length=2 },
@@ -318,9 +322,10 @@ require('packer').startup(function(use)
     use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
     use {'Palpatineli/vim-dadbod-ui', requires={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui}
     use {'Palpatineli/vim-dadbod-completion', requires={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'}, config=setup_dadbod_comp}
-    use {'mfussenegger/nvim-dap', ft={'python'}, config=setup_dap}
-    use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'}, config=setup_dap_telescope}
+    use {'mfussenegger/nvim-dap', config=setup_dap}
+    use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', config=setup_dap_telescope}
     use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'}, config=setup_dap_python}
+    use {'rcarriga/cmp-dap', requires={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}, after='nvim-dap'}
     use {'sindrets/diffview.nvim', config=setup_diffview}
     use {'mattn/emmet-vim', ft={'html', 'xml', 'svg'}}
     use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
@@ -360,6 +365,7 @@ require('packer').startup(function(use)
         end
     }
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
+    use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
          function() vim.api.nvim_set_keymap('n', '<F9>', ':SymbolsOutline<cr>', {}) end}
     use {'sunjon/shade.nvim', config=function() require'shade'.setup() end}
