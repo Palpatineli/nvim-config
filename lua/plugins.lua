@@ -26,7 +26,9 @@ end
 local setup_dap_python = function()
     require('dap-python').setup('~/.venvs/debugpy/bin/python3')
     require('dap-python').test_runner = 'pytest'
-    vim.api.nvim_set_keymap("n", "<leader>df", '', {callback=require('dap-python').test_method})
+    vim.api.nvim_set_keymap("n", "<leader>df", '', {callback=require('dap-python').test_method, silent=true})
+    vim.api.nvim_set_keymap("n", "<leader>dF", '', {callback=require('dap-python').test_class, silent=true})
+    vim.api.nvim_set_keymap("v", "<leader>DS", '<esc>', {callback=require('dap-python').debug_selection, silent=true})
 end
 
 local setup_iron = function()
@@ -41,7 +43,7 @@ local setup_iron = function()
     }
     vim.api.nvim_buf_set_keymap(0, "n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>", {noremap = true, silent = true})
     vim.api.nvim_buf_set_keymap(0, "n", "<F7>", "", {noremap=true, callback=function () iron.core.repl_for(vim.bo.filetype) end})
-    vim.api.nvim_buf_set_keymap(0, "v", "<leader>ir", "ygv", {noremap = true, silent = true, callback=iron.core.visual_send})
+    vim.api.nvim_buf_set_keymap(0, "v", "<leader>ir", "<esc>", {noremap = true, silent = true, callback=iron.core.visual_send})
     vim.api.nvim_buf_set_keymap(0, "n", "<leader><space>", "", {noremap = true, silent = true, callback=iron.core.send_line})
 end
 
