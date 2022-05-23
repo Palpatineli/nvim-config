@@ -33,18 +33,24 @@ end
 
 local setup_iron = function()
     local iron = require'iron'
-    local view = require'iron.view'
-    vim.g.iron_map_defaults = 0
-    vim.g.iron_map_extended = 0
-    iron.core.set_config {
-        preferred = { python = "ipython" },
-        repl_open_cmd = view.openwin('bo 30 split'),
-        buflisted = true
+    iron.core.setup {
+        config = {
+            should_map_plug = false,
+            scratch_repl = false,
+            buflisted = true,
+            repl_definition = {
+                python = require'iron.fts.python'.ipython
+            }
+        },
+        keymaps = {
+            visual_send = "<leader><space>",
+            send_line = "<leader><space>",
+            cr = "<leader>i<cr>",
+            interrupt = "<leader>ic",
+            exit = "<leader>iq"
+        }
     }
     vim.api.nvim_buf_set_keymap(0, "n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>", {noremap = true, silent = true})
-    vim.api.nvim_buf_set_keymap(0, "n", "<F7>", "", {noremap=true, callback=function () iron.core.repl_for(vim.bo.filetype) end})
-    vim.api.nvim_buf_set_keymap(0, "v", "<leader>ir", "<esc>", {noremap = true, silent = true, callback=iron.core.visual_send})
-    vim.api.nvim_buf_set_keymap(0, "n", "<leader><space>", "", {noremap = true, silent = true, callback=iron.core.send_line})
 end
 
 local setup_bufdel = function()
@@ -322,7 +328,7 @@ require('packer').startup(function(use)
     use {'rhysd/vim-grammarous', ft={'markdown'}}
     use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps', "EdenEast/nightfox.nvim"}, config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
-    use {"hkupty/iron.nvim", commit='bc9c596', ft={'python'}, config=setup_iron}
+    use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'ggandor/lightspeed.nvim'
