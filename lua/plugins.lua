@@ -318,8 +318,8 @@ require('packer').startup(function(use)
     use {'Palpatineli/vim-dadbod-ui', requires={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui}
     use {'Palpatineli/vim-dadbod-completion', requires={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'}, config=setup_dadbod_comp}
     use {'mfussenegger/nvim-dap', ft={'python'}, config=setup_dap}
-    use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_telescope}
-    use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_python}
+    use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'}, config=setup_dap_telescope}
+    use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'}, config=setup_dap_python}
     use {'sindrets/diffview.nvim', config=setup_diffview}
     use {'mattn/emmet-vim', ft={'html', 'xml', 'svg'}}
     use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
