@@ -40,7 +40,8 @@ local setup_iron = function()
             buflisted = true,
             repl_definition = {
                 python = require'iron.fts.python'.ipython
-            }
+            },
+            repl_open_cmd = "botright 40 split"
         },
         keymaps = {
             visual_send = "<leader><space>",
