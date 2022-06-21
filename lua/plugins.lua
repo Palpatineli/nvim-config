@@ -305,6 +305,18 @@ local setup_dadbod_comp = function()
     vim.g.vim_dadbod_completion_mark = ''
 end
 
+local setup_ufo = function()
+    vim.wo.foldcolumn = '1'
+    vim.wo.foldlevel = 5
+    vim.wo.foldenable = true
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true
+    }
+    require'ufo'.setup()
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'ojroques/nvim-bufdel',
@@ -380,6 +392,7 @@ require('packer').startup(function(use)
     }
     use {'nvim-treesitter/nvim-treesitter', config=setup_treesitter}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
+    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', config=setup_ufo}
     use 'mg979/vim-visual-multi'
     use 'kyazdani42/nvim-web-devicons'
     if packer_bootstrap then
