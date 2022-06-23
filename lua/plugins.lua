@@ -374,6 +374,7 @@ require('packer').startup(function(use)
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
          function() vim.api.nvim_set_keymap('n', '<F9>', ':SymbolsOutline<cr>', {}) end}
+    use {'sunjon/Shade.nvim', config=function() require'shade'.setup{} end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
@@ -385,11 +386,6 @@ require('packer').startup(function(use)
     }
     use {'nvim-treesitter/nvim-treesitter', config=setup_treesitter}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
-    use {'folke/twilight.nvim', config=function()
-        local twilight = require'twilight'
-        twilight.setup{ dimming = {inactive=true} }
-        twilight.enable()
-    end}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', config=setup_ufo}
     use 'mg979/vim-visual-multi'
     use 'kyazdani42/nvim-web-devicons'
