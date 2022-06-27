@@ -347,6 +347,16 @@ local setup_ufo = function()
     require'ufo'.setFoldVirtTextHandler(bufnr, ufo_handler)
 end
 
+local setup_hop = function()
+    local hop = require'hop'
+    local hint = require'hop.hint'
+    hop.setup()
+    vim.api.nvim_buf_set_keymap(0, 'n', 'f', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'n', 'F', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'n', 's', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'n', 'S', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'ojroques/nvim-bufdel',
@@ -374,12 +384,12 @@ require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
+    use {'phaazon/hop.nvim', config=setup_hop}
     use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps', "EdenEast/nightfox.nvim"}, config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
-    use {'ggandor/leap.nvim', requires={'tpope/vim-repeat'}, config=function() require'leap'.set_default_keymaps(); end}
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
