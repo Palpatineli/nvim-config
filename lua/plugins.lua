@@ -24,7 +24,7 @@ local setup_dap_telescope = function()
 end
 
 local setup_dap_python = function()
-    require('dap-python').setup('~/.venvs/debugpy/bin/python3')
+    require('dap-python').setup('~/.venvs/debugpy/bin/python3', {})
     require('dap-python').test_runner = 'pytest'
     vim.api.nvim_set_keymap("n", "<leader>df", '', {callback=require('dap-python').test_method, silent=true})
     vim.api.nvim_set_keymap("n", "<leader>dF", '', {callback=require('dap-python').test_class, silent=true})
@@ -61,8 +61,8 @@ local setup_bufdel = function()
 end
 
 local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 local setup_cmp = function()
@@ -249,12 +249,8 @@ local setup_treesitter = function()
 end
 
 local setup_indent_blankline = function()
-    vim.cmd [[
-        highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-        highlight IndentEven guifg=NONE guibg=#fcf1f0 gui=nocombine
-    ]]
     require'indent_blankline'.setup{
-        char = "",
+        show_current_context = true,
         char_highlight_list = {"IndentOdd", "IndentEven"},
         space_char_highlight_list = {"IndentOdd", "IndentEven"},
         show_trailing_blankline_indent = false,
@@ -305,16 +301,32 @@ local setup_dadbod_comp = function()
     vim.g.vim_dadbod_completion_mark = ''
 end
 
-local setup_ufo = function()
-    vim.wo.foldcolumn = '1'
-    vim.wo.foldlevel = 5
-    vim.wo.foldenable = true
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true
-    }
-    require'ufo'.setup()
+local setup_hop = function()
+    local hop = require'hop'
+    local hint = require'hop.hint'
+    hop.setup()
+    vim.api.nvim_buf_set_keymap(0, 'n', 'f', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 'f', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'n', 'F', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 'F', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'n', 's', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 's', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'n', 'S', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 'S', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+end
+
+local setup_bufferline = function ()
+    vim.opt.termguicolors = true
+    require'bufferline'.setup({
+        diagnostic = 'nvim_lsp',
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+        enforce_regular_tabs = true,
+        separator_style = 'padded_slant'
+    })
+    vim.api.nvim_set_keymap('n', '<leader>j', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
+    vim.api.nvim_set_keymap('n', '<leader>k', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
+    vim.api.nvim_set_keymap('n', '<leader>b', '', {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
 end
 
 require('packer').startup(function(use)
@@ -322,6 +334,7 @@ require('packer').startup(function(use)
     use {'ojroques/nvim-bufdel',
         config=setup_bufdel
     }
+    use {'akinsho/bufferline.nvim', config=setup_bufferline}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'octaltree/cmp-look', 'hrsh7th/cmp-path',
          'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
@@ -344,25 +357,19 @@ require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
+    use {'phaazon/hop.nvim', config=setup_hop}
     use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps', "EdenEast/nightfox.nvim"}, config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
-    use 'ggandor/lightspeed.nvim'
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
-    use {"EdenEast/nightfox.nvim",
+    use {"rebelot/kanagawa.nvim",
          config=function()
-            vim.g.material_style = "lighter"
-            vim.cmd[[colorscheme dawnfox]]
-        end
-    }
-    use {'mvllow/modes.nvim',
-        config=function()
-            vim.opt.cursorline = true
-            require('modes').setup()
+            require'kanagawa'.setup({dimInactive=true})
+            vim.cmd[[colorscheme kanagawa]]
         end
     }
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
@@ -380,7 +387,6 @@ require('packer').startup(function(use)
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
          function() vim.api.nvim_set_keymap('n', '<F9>', ':SymbolsOutline<cr>', {}) end}
-    use {'sunjon/shade.nvim', config=function() require'shade'.setup() end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
