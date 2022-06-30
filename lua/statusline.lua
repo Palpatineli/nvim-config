@@ -29,8 +29,7 @@ local setup_statusline = function()
             globalstatus = true,
         },
         sections = {
-            lualine_a = {{ 'buffers', hide_filename_extension = true, buffers_color = {active = {bg = '#575279'}}}
-            },
+            lualine_a = {'filename'},
             lualine_b = {'branch', 'diff'},
             lualine_c = {
                 {
@@ -86,18 +85,6 @@ local cycle = function(x)
     end
 end
 
-local setup_keymap = function()
-    vim.api.nvim_set_keymap('n', '<leader>1', ":LualineBuffersJump 1<cr>", {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>2', ":LualineBuffersJump 2<cr>", {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>3', ":LualineBuffersJump 3<cr>", {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>4', ":LualineBuffersJump 4<cr>", {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>5', ":LualineBuffersJump 5<cr>", {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>6', ":LualineBuffersJump 6<cr>", {silent=true})
-    vim.api.nvim_set_keymap('n', '<leader>k', '', {silent=true, callback=function() require'statusline'.cycle(-1) end})
-    vim.api.nvim_set_keymap('n', '<leader>j', '', {silent=true, callback=function() require'statusline'.cycle(1) end})
-end
-
-setup_keymap()
 M.setup = setup_statusline
 M.cycle = cycle
 return M
