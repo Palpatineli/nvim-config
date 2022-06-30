@@ -61,8 +61,8 @@ local setup_bufdel = function()
 end
 
 local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 local setup_cmp = function()
@@ -249,12 +249,8 @@ local setup_treesitter = function()
 end
 
 local setup_indent_blankline = function()
-    vim.cmd [[
-        highlight IndentOdd guifg=NONE guibg=NONE gui=nocombine
-        highlight IndentEven guifg=NONE guibg=#fcf1f0 gui=nocombine
-    ]]
     require'indent_blankline'.setup{
-        char = "",
+        show_current_context = true,
         char_highlight_list = {"IndentOdd", "IndentEven"},
         space_char_highlight_list = {"IndentOdd", "IndentEven"},
         show_trailing_blankline_indent = false,
@@ -305,56 +301,32 @@ local setup_dadbod_comp = function()
     vim.g.vim_dadbod_completion_mark = ''
 end
 
-local ufo_handler = function(virtText, lnum, endLnum, width, truncate)
-   local newVirtText = {}
-   local suffix = ('  %d '):format(endLnum - lnum)
-   local sufWidth = vim.fn.strdisplaywidth(suffix)
-   local targetWidth = width - sufWidth
-   local curWidth = 0
-   for _, chunk in ipairs(virtText) do
-       local chunkText = chunk[1]
-       local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-       if targetWidth > curWidth + chunkWidth then
-           table.insert(newVirtText, chunk)
-       else
-           chunkText = truncate(chunkText, targetWidth - curWidth)
-           local hlGroup = chunk[2]
-           table.insert(newVirtText, {chunkText, hlGroup})
-           chunkWidth = vim.fn.strdisplaywidth(chunkText)
-           -- str width returned from truncate() may less than 2nd argument, need padding
-            if curWidth + chunkWidth < targetWidth then
-                suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
-            end
-            break
-        end
-        curWidth = curWidth + chunkWidth
-    end
-    table.insert(newVirtText, {suffix, 'MoreMsg'})
-    return newVirtText
-end
-
-local setup_ufo = function()
-    vim.wo.foldcolumn = '1'
-    vim.wo.foldlevel = 5
-    vim.wo.foldenable = true
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true
-    }
-    require'ufo'.setup({fold_virt_text_handler = ufo_handler})
-    local bufnr = vim.api.nvim_get_current_buf()
-    require'ufo'.setFoldVirtTextHandler(bufnr, ufo_handler)
-end
-
 local setup_hop = function()
     local hop = require'hop'
     local hint = require'hop.hint'
     hop.setup()
     vim.api.nvim_buf_set_keymap(0, 'n', 'f', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 'f', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.AFTER_CURSOR }) end})
     vim.api.nvim_buf_set_keymap(0, 'n', 'F', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 'F', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
     vim.api.nvim_buf_set_keymap(0, 'n', 's', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.AFTER_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 's', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.AFTER_CURSOR }) end})
     vim.api.nvim_buf_set_keymap(0, 'n', 'S', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+    vim.api.nvim_buf_set_keymap(0, 'v', 'S', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
+end
+
+local setup_bufferline = function ()
+    vim.opt.termguicolors = true
+    require'bufferline'.setup({
+        diagnostic = 'nvim_lsp',
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+        enforce_regular_tabs = true,
+        separator_style = 'padded_slant'
+    })
+    vim.api.nvim_set_keymap('n', '<leader>j', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
+    vim.api.nvim_set_keymap('n', '<leader>k', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
+    vim.api.nvim_set_keymap('n', '<leader>b', '', {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
 end
 
 require('packer').startup(function(use)
@@ -362,6 +334,7 @@ require('packer').startup(function(use)
     use {'ojroques/nvim-bufdel',
         config=setup_bufdel
     }
+    use {'akinsho/bufferline.nvim', config=setup_bufferline}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'octaltree/cmp-look', 'hrsh7th/cmp-path',
          'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
@@ -393,10 +366,10 @@ require('packer').startup(function(use)
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
-    use {"EdenEast/nightfox.nvim",
+    use {"rebelot/kanagawa.nvim",
          config=function()
-            vim.g.material_style = "lighter"
-            vim.cmd[[colorscheme dawnfox]]
+            require'kanagawa'.setup({dimInactive=true})
+            vim.cmd[[colorscheme kanagawa]]
         end
     }
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
@@ -414,7 +387,6 @@ require('packer').startup(function(use)
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
          function() vim.api.nvim_set_keymap('n', '<F9>', ':SymbolsOutline<cr>', {}) end}
-    use {'sunjon/Shade.nvim', config=function() require'shade'.setup{} end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
@@ -426,7 +398,6 @@ require('packer').startup(function(use)
     }
     use {'nvim-treesitter/nvim-treesitter', config=setup_treesitter}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
-    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', config=setup_ufo}
     use 'mg979/vim-visual-multi'
     use 'kyazdani42/nvim-web-devicons'
     if packer_bootstrap then
