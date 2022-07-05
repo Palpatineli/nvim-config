@@ -29,8 +29,7 @@ local setup_statusline = function()
             globalstatus = true,
         },
         sections = {
-            lualine_a = {{ 'buffers', hide_filename_extension = true, buffers_color = {active = {bg = '#575279'}}}
-            },
+            lualine_a = {'filename'},
             lualine_b = {'branch', 'diff'},
             lualine_c = {
                 {

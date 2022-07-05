@@ -301,20 +301,6 @@ local setup_dadbod_comp = function()
     vim.g.vim_dadbod_completion_mark = ''
 end
 
-local setup_hop = function()
-    local hop = require'hop'
-    local hint = require'hop.hint'
-    hop.setup()
-    vim.api.nvim_buf_set_keymap(0, 'n', 'f', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.AFTER_CURSOR }) end})
-    vim.api.nvim_buf_set_keymap(0, 'v', 'f', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.AFTER_CURSOR }) end})
-    vim.api.nvim_buf_set_keymap(0, 'n', 'F', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
-    vim.api.nvim_buf_set_keymap(0, 'v', 'F', '', {noremap=true, silent=true, callback=function() hop.hint_char1({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
-    vim.api.nvim_buf_set_keymap(0, 'n', 's', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.AFTER_CURSOR }) end})
-    vim.api.nvim_buf_set_keymap(0, 'v', 's', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.AFTER_CURSOR }) end})
-    vim.api.nvim_buf_set_keymap(0, 'n', 'S', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
-    vim.api.nvim_buf_set_keymap(0, 'v', 'S', '', {noremap=true, silent=true, callback=function() hop.hint_char2({ direction = hint.HintDirection.BEFORE_CURSOR }) end})
-end
-
 local setup_bufferline = function ()
     vim.opt.termguicolors = true
     require'bufferline'.setup({
@@ -327,6 +313,10 @@ local setup_bufferline = function ()
     vim.api.nvim_set_keymap('n', '<leader>j', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
     vim.api.nvim_set_keymap('n', '<leader>k', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
     vim.api.nvim_set_keymap('n', '<leader>b', '', {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
+end
+
+local setup_lightspeed = function()
+    require'lightspeed'.setup({})
 end
 
 require('packer').startup(function(use)
@@ -357,7 +347,7 @@ require('packer').startup(function(use)
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
-    use {'phaazon/hop.nvim', config=setup_hop}
+    use {'ggandor/lightspeed.nvim', requires={'tpope/vim-repeat'}, config=setup_lightspeed}
     use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps', "EdenEast/nightfox.nvim"}, config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
@@ -398,7 +388,6 @@ require('packer').startup(function(use)
     }
     use {'nvim-treesitter/nvim-treesitter', config=setup_treesitter}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
-    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', config=setup_ufo}
     use 'mg979/vim-visual-multi'
     use 'kyazdani42/nvim-web-devicons'
     if packer_bootstrap then
