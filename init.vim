@@ -22,8 +22,8 @@ set foldexpr=nvim_treesitter#foldexpr()
 " ui
 set termguicolors
 set background=light
-set guifont=Iosevka\ Term:h9
-set printfont=Iosevka\ Term:h9
+set guifont=FiraCode\ NF:h8
+set printfont=FiraCode\ NF:h8
 set gdefault " substitutions go global by default
 set title " program title shows file name
 set list listchars=tab:<+  " highlight hard tab
