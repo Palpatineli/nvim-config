@@ -304,11 +304,13 @@ end
 local setup_bufferline = function ()
     vim.opt.termguicolors = true
     require'bufferline'.setup({
-        diagnostic = 'nvim_lsp',
-        show_buffer_close_icons = false,
-        show_close_icon = false,
-        enforce_regular_tabs = true,
-        separator_style = 'padded_slant'
+        options = {
+            diagnostic = 'nvim_lsp',
+            show_buffer_close_icons = false,
+            show_close_icon = false,
+            enforce_regular_tabs = true,
+            separator_style = 'slant'
+        }
     })
     vim.api.nvim_set_keymap('n', '<leader>j', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
     vim.api.nvim_set_keymap('n', '<leader>k', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
