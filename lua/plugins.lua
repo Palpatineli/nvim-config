@@ -358,10 +358,11 @@ require('packer').startup(function(use)
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
-    use {"rebelot/kanagawa.nvim",
+    use {"sainnhe/edge",
          config=function()
-            require'kanagawa'.setup({dimInactive=true})
-            vim.cmd[[colorscheme kanagawa]]
+            vim.g.edge_style = 'light'
+            vim.g.edge_better_performance = 1
+            vim.cmd[[colorscheme edge]]
         end
     }
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
