@@ -13,7 +13,7 @@ vim.api.nvim_buf_set_keymap(0, "v", "<c-u>", "<Esc>`>a~<Esc>`<i~<Esc>", {noremap
 vim.cmd [["command! SSplit :s/\([\.!?]['"]\?\) /\1\r"]]
 
 -- nabla
-vim.api.nvim_set_keymap("n", "<F5>", "", {noremap = true, callback = require('nabla').action})
+vim.api.nvim_set_keymap("n", "<F5>", "", {noremap = true, callback = function() require('nabla').action() end})
 
 -- note taking
 vim.g.note_root = vim.fn.expand("~/note")
