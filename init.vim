@@ -10,6 +10,7 @@ let g:loaded_netrw             = 0
 let g:loaded_netrwPlugin       = 0
 let g:loaded_tutor_mode_plugin = 0
 let g:loaded_remote_plugins    = 0
+let g:do_filetype_lua          = 1
 
 " general
 set hidden

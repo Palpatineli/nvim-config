@@ -3,6 +3,7 @@ local configs = require("lspconfig.configs")
 local util = require("lspconfig.util")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
 
 --- handlers ---
@@ -65,7 +66,6 @@ configs.pyright = {
 }
 
 -- sumneko lua --
-local system_name
 if vim.loop.os_uname().sysname == "Windows_NT" then
     lua_langserver_bin = "lua-language-server.exe"
 else
@@ -105,6 +105,11 @@ local servers = {
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup{capabilities = capabilities}
 end
+--- emmet ---
+lspconfig.emmet_ls.setup({
+    capabilities = capabilities,
+    filetypes = {'html', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less'}
+})
 
 --- vim ---
 lspconfig.vimls.setup {

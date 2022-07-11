@@ -344,7 +344,6 @@ require('packer').startup(function(use)
     use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'}, config=setup_dap_python}
     use {'rcarriga/cmp-dap', requires={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}, after='nvim-dap'}
     use {'sindrets/diffview.nvim', config=setup_diffview}
-    use {'mattn/emmet-vim', ft={'html', 'xml', 'svg'}}
     use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
