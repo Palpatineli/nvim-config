@@ -28,6 +28,7 @@ set printfont=FiraCode\ NF:h8
 set gdefault " substitutions go global by default
 set title " program title shows file name
 set list listchars=tab:<+  " highlight hard tab
+set nohlsearch
 set completeopt=menuone,noselect
 set shortmess+=c  " no message when completion is selected
 set expandtab tabstop=4 shiftwidth=4
