@@ -103,16 +103,15 @@ local setup_cmp = function()
             end, { "i", "s", "c" }),
         },
         sources = {
-            { name = 'luasnip' },
-            { name = 'neorg' },
             { name = 'latex_symbols' },
+            { name = 'luasnip' },
             { name = 'nvim_lsp' },
             { name = 'nvim_lsp_signature_help' },
             { name = 'dap' },
             { name = 'path' },
+            { name = 'neorg' },
             { name = 'treesitter' },
-            { name = 'look', keyword_length=2 },
-            { name = 'buffer' },
+            { name = 'buffer', keyword_length = 4},
         },
         formatting = {
             format = require'lspkind'.cmp_format({with_text = false, maxwidth = 50})
@@ -328,7 +327,7 @@ require('packer').startup(function(use)
     }
     use {'akinsho/bufferline.nvim', config=setup_bufferline}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
-    use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'octaltree/cmp-look', 'hrsh7th/cmp-path',
+    use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path',
          'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp-signature-help', requires={'hrsh7th/cmp-nvim-lsp'}}
