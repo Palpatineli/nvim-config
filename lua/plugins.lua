@@ -320,6 +320,49 @@ local setup_lightspeed = function()
     require'lightspeed'.setup({})
 end
 
+local handler = function(virtText, lnum, endLnum, width, truncate)
+    local newVirtText = {}
+    local suffix = ('  %d '):format(endLnum - lnum)
+    local sufWidth = vim.fn.strdisplaywidth(suffix)
+    local targetWidth = width - sufWidth
+    local curWidth = 0
+    for _, chunk in ipairs(virtText) do
+        local chunkText = chunk[1]
+        local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+        if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+        else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, {chunkText, hlGroup})
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+                suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+        end
+        curWidth = curWidth + chunkWidth
+    end
+    table.insert(newVirtText, {suffix, 'MoreMsg'})
+    return newVirtText
+end
+
+local setup_ufo = function()
+    vim.o.foldcolumn = '0'
+    vim.o.foldlevel = 99
+    vim.o.foldlevelstart = -1
+    vim.o.foldenable = true
+    local ufo = require'ufo'
+    vim.keymap.set('n', 'zR', ufo.openAllFolds)
+    vim.keymap.set('n', 'zM', ufo.closeAllFolds)
+    ufo.setup({
+        provider_selector = function(bufnr, filetype, buftype) return {'treesitter', 'indent'} end,
+        fold_virt_text_handler = handler,
+        enable_fold_end_virt_text = true
+    })
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'ojroques/nvim-bufdel',
@@ -395,6 +438,7 @@ require('packer').startup(function(use)
     }
     use {'nvim-treesitter/nvim-treesitter', config=setup_treesitter}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
+    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'}, config=setup_ufo}
     use 'mg979/vim-visual-multi'
     use 'kyazdani42/nvim-web-devicons'
     if packer_bootstrap then
