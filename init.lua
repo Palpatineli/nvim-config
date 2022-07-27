@@ -1,43 +1,44 @@
 require'speedup'.setup()
 
 -- general
-vim.api.nvim_set_option('hidden', true)
+vim.opt.hidden = true
 ---- set working directory to file directory
-vim.api.nvim_set_option('autochdir', true)
-vim.api.nvim_set_option('number', true)
-vim.api.nvim_set_option('relativenumber', true)
-vim.api.nvim_set_option('backup', false)
-vim.api.nvim_set_option('swapfile', false)
-vim.api.nvim_set_option('foldmethod', 'expr')
-vim.api.nvim_set_option('foldexpr', 'nvim_treesitter#foldexpr()')
+vim.opt.autochdir = true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 -- ui
-vim.api.nvim_set_option('termguicolors', true)
-vim.api.nvim_set_option('background', 'light')
-vim.api.nvim_set_option('guifont', 'FiraCode NF:h8')
-vim.api.nvim_set_option('printfont', 'FiraCode NF:h8')
+vim.opt.termguicolors = true
+vim.opt.background = 'light'
+vim.opt.guifont = 'FiraCode NF:h8'
+vim.opt.printfont = 'FiraCode NF:h8'
 ---- substitutions go global by default
-vim.api.nvim_set_option('gdefault', true)
+vim.opt.gdefault = true
 ---- program title shows file name
-vim.api.nvim_set_option('title', true)
+vim.opt.title = true
 ---- highlight hard tab
-vim.api.nvim_set_option('list', true)
-vim.api.nvim_set_option('listchars', 'tab:<+')
-vim.api.nvim_set_option('hlsearch', false)
-vim.api.nvim_set_option('completeopt', 'menuone,noselect')
+vim.opt.list = true
+vim.opt.listchars = 'tab:<+'
+vim.opt.hlsearch = false
+vim.opt.completeopt = 'menuone,noselect'
 vim.opt.shortmess = vim.opt.shortmess + 'c'
 -- no message when completion is selected
-vim.api.nvim_set_option('expandtab', true)
-vim.api.nvim_set_option('tabstop', 4)
-vim.api.nvim_set_option('shiftwidth', 4)
-vim.api.nvim_set_option('inccommand', 'nosplit')
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.inccommand = 'nosplit'
 
 -- filetypes
-vim.api.nvim_create_autocmd('BufNewFile,BufRead', {pattern='*.md,*.txt', callback=function() vim.bo.filetype = 'markdown' end})
-vim.api.nvim_create_autocmd('BufNewFile,BufRead', {pattern='*.qml', callback=function() vim.bo.filetype = 'javascript' end}) -- qtquick
-vim.api.nvim_create_autocmd('BufNewFile,BufRead', {pattern='*.msc', callback=function() vim.bo.filetype = 'mscgen' end})
+vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.md", "*.txt"}, callback=function() vim.bo.filetype = 'markdown' end})
+vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern='*.qml', callback=function() vim.bo.filetype = 'javascript' end}) -- qtquick
+vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern='*.msc', callback=function() vim.bo.filetype = 'mscgen' end})
 
 -- mapping
-vim.o.mapleader = ';'
+vim.g.mapleader = ';'
+vim.g.maplocalleader = ';'
 vim.cmd[[ca w!! w !sudo tee "%"]]
 ---- Move around between windows
 vim.keymap.set('n', '<c-j>', '<c-w>j', {silent=true})
