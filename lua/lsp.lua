@@ -129,8 +129,6 @@ lspconfig.yamlls.setup {
 }
 
 --- display ---
-vim.api.nvim_set_keymap("n", "<leader>h", "", {callback = vim.lsp.diagnostic.open_float})
-vim.api.nvim_set_keymap( 'n', '<Leader>J', '', { noremap = true, silent = true, callback = vim.diagnostic.goto_next })
-vim.api.nvim_set_keymap( 'n', '<Leader>K', '', { noremap = true, silent = true, callback = vim.diagnostic.goto_prev })
-vim.api.nvim_set_keymap( 'n', 'K', '', { noremap = true, silent = true, callback = vim.lsp.buf.hover })
-
+vim.keymap.set("n", "<Leader>J", vim.diagnostic.goto_next, {noremap=true, silent=true})
+vim.keymap.set("n", "<Leader>K", vim.diagnostic.goto_prev, {noremap=true, silent=true})
+vim.keymap.set("n", "K", vim.lsp.buf.hover, {noremap=true, silent=true})

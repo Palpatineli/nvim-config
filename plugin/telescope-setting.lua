@@ -33,23 +33,23 @@ end
 M.get_lsp_client = get_lsp_client
 
 local setup_keymap = function()
-    vim.api.nvim_set_keymap('n', '<leader>f', '', {silent=true, callback=function()
-        require("telescope.builtin").git_files(require("telescope.themes").get_dropdown{previewer = false})
-    end})
-    vim.api.nvim_set_keymap('n', '<leader>b', '', {silent=true, callback=function()
-        require("telescope.builtin").buffers(require("telescope.themes").get_dropdown{previewer = false})
-    end})
-    vim.api.nvim_set_keymap('n', '<leader>e', '', {silent=true, callback=require("telescope.builtin").diagnostics})
-    vim.api.nvim_set_keymap('n', '<leader>F', '', {silent=true, callback=require("telescope.builtin").lsp_references})
-    vim.api.nvim_set_keymap('n', '<leader>d', '', {silent=true, callback=require("telescope.builtin").lsp_definitions})
-    vim.api.nvim_set_keymap('n', '<leader>i', '', {silent=true, callback=require("telescope.builtin").lsp_implementations})
-    vim.api.nvim_set_keymap('n', '<leader>o', '', {silent=true, callback=require("telescope.builtin").treesitter})
-    vim.api.nvim_set_keymap('n', '<leader>a', '', {silent=true, callback=function()
+    vim.keymap.set('n', '<leader>f', function()
+        require("telescope.builtin").git_files(require("telescope.themes").get_dropdown{previewer=false})
+    end, {silent=true})
+    vim.keymap.set('n', '<leader>b', function()
+        require("telescope.builtin").buffers(require("telescope.themes").get_dropdown{previewer=false})
+    end, {silent=true})
+    vim.keymap.set('n', '<leader>e', require("telescope.builtin").diagnostics, {silent=true})
+    vim.keymap.set('n', '<leader>F', require("telescope.builtin").lsp_references, {silent=true})
+    vim.keymap.set('n', '<leader>d', require("telescope.builtin").lsp_definitions, {silent=true})
+    vim.keymap.set('n', '<leader>i', require("telescope.builtin").lsp_implementations, {silent=true})
+    vim.keymap.set('n', '<leader>o', require("telescope.builtin").treesitter, {silent=true})
+    vim.keymap.set('n', '<leader>a', function()
         require("telescope.builtin").live_grep{cwd=get_lsp_client().config.root_dir}
-    end})
-    vim.api.nvim_set_keymap('n', '<leader>A', '', {silent=true, callback=function()
+    end, {silent=true})
+    vim.keymap.set('n', '<leader>A', function()
        require("telescope.builtin").grep_string{cwd=get_lsp_client().config.root_dir}
-    end})
+    end, {silent=true})
 end
 
 setup_keymap()

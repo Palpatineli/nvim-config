@@ -3,32 +3,32 @@
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 vim.g.mapleader = ";"  -- seem to be separate from vim mapleader
 
 local setup_dap = function()
-    vim.api.nvim_set_keymap("n", "<leader>db", "", {callback=require'dap'.toggle_breakpoint})
-    vim.api.nvim_set_keymap("n", "<leader>dc", "", {callback=require'dap'.continue})
-    vim.api.nvim_set_keymap("n", "<leader>ds", "", {callback=require'dap'.step_into})
-    vim.api.nvim_set_keymap("n", "<leader>dn", "", {callback=require'dap'.step_over})
-    vim.api.nvim_set_keymap("n", "<leader>du", "", {callback=require'dap'.repl.open})
+    vim.keymap.set("n", "<leader>db", require'dap'.toggle_breakpoint, {})
+    vim.keymap.set("n", "<leader>dc", require'dap'.continue, {})
+    vim.keymap.set("n", "<leader>ds", require'dap'.step_into, {})
+    vim.keymap.set("n", "<leader>dn", require'dap'.step_over, {})
+    vim.keymap.set("n", "<leader>du", require'dap'.repl.open, {})
     require('dap.ext.vscode').load_launchjs()
 end
 
 local setup_dap_telescope = function()
-    vim.api.nvim_set_keymap("n", "<leader>tC", ":Telescope dap commands<cr>", {})
-    vim.api.nvim_set_keymap("n", "<leader>tc", ":Telescope dap configurations<cr>", {})
-    vim.api.nvim_set_keymap("n", "<leader>tb", ":Telescope dap list_breakpoints<cr>", {})
-    vim.api.nvim_set_keymap("n", "<leader>tv", ":Telescope dap variables<cr>", {})
+    vim.keymap.set("n", "<leader>tC", ":Telescope dap commands<cr>", {})
+    vim.keymap.set("n", "<leader>tc", ":Telescope dap configurations<cr>", {})
+    vim.keymap.set("n", "<leader>tb", ":Telescope dap list_breakpoints<cr>", {})
+    vim.keymap.set("n", "<leader>tv", ":Telescope dap variables<cr>", {})
 end
 
 local setup_dap_python = function()
     require('dap-python').setup('~/.venvs/debugpy/bin/python3', {})
     require('dap-python').test_runner = 'pytest'
-    vim.api.nvim_set_keymap("n", "<leader>df", '', {callback=require('dap-python').test_method, silent=true})
-    vim.api.nvim_set_keymap("n", "<leader>dF", '', {callback=require('dap-python').test_class, silent=true})
-    vim.api.nvim_set_keymap("v", "<leader>DS", '<esc>', {callback=require('dap-python').debug_selection, silent=true})
+    vim.keymap.set("n", "<leader>df", require('dap-python').test_method, {silent=true})
+    vim.keymap.set("n", "<leader>dF", require('dap-python').test_class, {silent=true})
+    vim.keymap.set("v", "<leader>DS", require('dap-python').debug_selection, {silent=true})
 end
 
 local setup_iron = function()
@@ -56,8 +56,8 @@ end
 
 local setup_bufdel = function()
     require'bufdel'.setup { next = 'cycle' }
-    vim.api.nvim_set_keymap("n", "qw", ":w\\|BufDel<cr>", { silent = true, noremap = true })
-    vim.api.nvim_set_keymap("n", "qq", "<cmd>BufDel!<cr>", { silent = true, noremap = true })
+    vim.keymap.set("n", "qw", ":w\\|BufDel<cr>", { silent = true, noremap = true })
+    vim.keymap.set("n", "qq", "<cmd>BufDel!<cr>", { silent = true, noremap = true })
 end
 
 local has_words_before = function()
@@ -130,10 +130,10 @@ end
 
 local setup_kommentary = function()
     vim.g.kommentary_create_default_mappings = false
-    vim.api.nvim_set_keymap("n", "<leader>ci", "<Plug>kommentary_line_increase", {})
-    vim.api.nvim_set_keymap("n", "<leader>cd", "<Plug>kommentary_line_decrease", {})
-    vim.api.nvim_set_keymap("x", "<leader>ci", "<Plug>kommentary_visual_increase", {})
-    vim.api.nvim_set_keymap("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
+    vim.keymap.set("n", "<leader>ci", "<Plug>kommentary_line_increase", {})
+    vim.keymap.set("n", "<leader>cd", "<Plug>kommentary_line_decrease", {})
+    vim.keymap.set("x", "<leader>ci", "<Plug>kommentary_visual_increase", {})
+    vim.keymap.set("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
 end
 
 local setup_neorg = function()
@@ -179,9 +179,9 @@ local setup_neorg = function()
             end)
         end
     }
-    vim.api.nvim_set_keymap("n", "<leader>gv", ":Neorg gtd views<CR>", {})
-    vim.api.nvim_set_keymap("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
-    vim.api.nvim_set_keymap("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
+    vim.keymap.set("n", "<leader>gv", ":Neorg gtd views<CR>", {})
+    vim.keymap.set("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
+    vim.keymap.set("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
 end
 
 local setup_treesitter = function()
@@ -262,14 +262,14 @@ end
 
 local setup_diffview = function()
     require'diffview'.setup()
-    vim.api.nvim_set_keymap("n", "<F4>", ":DiffviewOpen -uno master<cr>", {silent=true})
-    vim.api.nvim_set_keymap("n", "<F5>", ":DiffviewOpen -uno HEAD<cr>", {silent=true})
-    vim.api.nvim_set_keymap("n", "<F6>", ":DiffviewClose<cr>", {silent=true})
-    vim.api.nvim_set_keymap("n", "<F2>", ":DiffviewToggleFiles<cr>", {silent=true})
+    vim.keymap.set("n", "<F4>", ":DiffviewOpen -uno master<cr>", {silent=true})
+    vim.keymap.set("n", "<F5>", ":DiffviewOpen -uno HEAD<cr>", {silent=true})
+    vim.keymap.set("n", "<F6>", ":DiffviewClose<cr>", {silent=true})
+    vim.keymap.set("n", "<F2>", ":DiffviewToggleFiles<cr>", {silent=true})
 end
 
 local setup_lazygit = function()
-    vim.api.nvim_set_keymap('n', '<leader>gg', ':LazyGit<cr>', {})
+    vim.keymap.set("n", "<leader>gg", ":LazyGit<cr>", {})
     require'telescope'.load_extension('lazygit')
     vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "*",
@@ -278,7 +278,7 @@ local setup_lazygit = function()
         end,
         desc = "reload project root for buffer entry"
     })
-    vim.api.nvim_set_keymap('n', '<leader>go', "", {callback=require'telescope'.extensions.lazygit.lazygit})
+    vim.keymap.set("n", "<leader>go", require'telescope'.extensions.lazygit.lazygit, {})
 end
 
 local setup_dadbod_ui = function()
@@ -286,7 +286,7 @@ local setup_dadbod_ui = function()
         MACS="sqlserver://bos-dbrnd01:1433/MACS",
         MACS_PreProd="sqlserver://bos-dbrnd01:1433/MACS_PreProd"
     }
-    vim.api.nvim_set_keymap('n', '<F3>', '<cmd>DBUIToggle<cr>', {silent=true})
+    vim.keymap.set("n", "<F3>", "<cmd>DBUIToggle<cr>", {silent=true})
 end
 
 local setup_dadbod_comp = function()
@@ -311,9 +311,9 @@ local setup_bufferline = function ()
             separator_style = 'slant'
         }
     })
-    vim.api.nvim_set_keymap('n', '<leader>j', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
-    vim.api.nvim_set_keymap('n', '<leader>k', '', {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
-    vim.api.nvim_set_keymap('n', '<leader>b', '', {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
+    vim.keymap.set("n", "<leader>j", "", {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
+    vim.keymap.set("n", "<leader>k", "", {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
+    vim.keymap.set("n", "<leader>b", "", {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
 end
 
 local setup_lightspeed = function()
@@ -426,13 +426,13 @@ require('packer').startup(function(use)
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
-         function() vim.api.nvim_set_keymap('n', '<F9>', ':SymbolsOutline<cr>', {}) end}
+         function() vim.keymap.set("n", "<F9>", ":SymbolsOutline<cr>", {}) end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
         function()
             require("todo-comments").setup()
-            vim.api.nvim_set_keymap("n", "<leader>T", ":TodoTelescope<cr>", {})
+            vim.keymap.set("n", "<leader>T", ":TodoTelescope<cr>", {})
         end,
         requires={'nvim-telescope/telescope.nvim'}
     }
