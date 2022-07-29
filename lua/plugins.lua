@@ -360,20 +360,6 @@ local setup_ufo = function()
     })
 end
 
-local setup_catppuccin = function()
-    local catppuccin = require'catppuccin'
-    catppuccin.setup({
-        dim_inactive = {enabled = true},
-        integrations = {
-            lightspeed = true,
-            ts_rainbow = true
-        },
-        compile = {enabled = true}
-    })
-    vim.g.catppuccin_flavour = 'frappe'
-    vim.cmd[[colorscheme catppuccin]]
-end
-
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'ojroques/nvim-bufdel',
@@ -402,7 +388,7 @@ require('packer').startup(function(use)
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
     use {'ggandor/lightspeed.nvim', requires={'tpope/vim-repeat'}, config=setup_lightspeed}
-    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps', "EdenEast/nightfox.nvim"}, config=require('statusline').setup}
+    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="nightfox.nvim", config=require('statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
@@ -410,7 +396,7 @@ require('packer').startup(function(use)
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
-    use {"catppuccin/nvim", as="catppuccin", config=setup_catppuccin }
+    use {'EdenEast/nightfox.nvim', config=function() require'colorschemes'.nightfox('dawnfox') end}
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
     use 'nvim-lua/plenary.nvim'
     use 'nvim-neorg/neorg-telescope'
