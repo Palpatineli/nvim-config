@@ -64,4 +64,3 @@ vim.api.nvim_set_hl(0, 'ColorColumn', {bg="magenta"})
 vim.fn.matchadd('ColorColumn', [[\%121v]], 120)
 
 require'plugins'
-require'lsp'

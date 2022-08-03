@@ -66,69 +66,6 @@ local setup_kommentary = function()
     vim.keymap.set("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
 end
 
-local setup_treesitter = function()
-    local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-    parser_configs.norg = {
-        install_info = {
-            url = "https://github.com/nvim-neorg/tree-sitter-norg",
-            files = { "src/parser.c", "src/scanner.cc" },
-            branch = "main"
-        },
-    }
-    parser_configs.norg_meta = {
-        install_info = {
-            url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
-            files = { "src/parser.c" },
-            branch = "main"
-        },
-    }
-    parser_configs.norg_table = {
-        install_info = {
-            url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
-            files = { "src/parser.c" },
-            branch = "main"
-        },
-    }
-    require'nvim-treesitter.configs'.setup {
-        ensure_installed = {"bash", "c", "css", "dockerfile", "html", "javascript", "json", "lua", "norg",
-            "norg_meta", "norg_table", "python", "regex", "rust", "scss", "toml", "typescript", "yaml"},
-        highlight = { enable = true },
-        incremental_selection = {
-            enable = true,
-            keymaps = {
-                init_selection = ";tn",
-                node_incremental = ";tk",
-                node_decremental = ";tj",
-                scope_incremental = ";tl"
-            },
-        },
-        indent = { enable = true, disable = {"python"}, },
-        -- nvim-ts-rainbow
-        rainbow = {
-            enable = true,
-            extended_mode = true,
-            max_file_lines = 10000,
-            colors = {
-                "#39ADB5",
-                "#FF5370",
-                "#6182B8",
-                "#F6A434",
-                "#91B859",
-                "#E53935",
-                "#5E8526"
-            }
-        },
-        -- refactor
-        refactor = {
-            highlight_definitions = { enable = true },
-            smart_rename = {
-                enable = true,
-                keymaps = { smart_rename = "<leader>r", },
-            }
-        }
-    }
-end
-
 local setup_indent_blankline = function()
     require'indent_blankline'.setup{
         show_current_context = true,
@@ -202,47 +139,6 @@ local setup_lightspeed = function()
     require'lightspeed'.setup({})
 end
 
-local setup_ufo = function()
-    vim.o.foldcolumn = '0'
-    vim.o.foldlevel = 99
-    vim.o.foldlevelstart = -1
-    vim.o.foldenable = true
-    local ufo = require'ufo'
-    vim.keymap.set('n', 'zR', ufo.openAllFolds)
-    vim.keymap.set('n', 'zM', ufo.closeAllFolds)
-    local handler = function(virtText, lnum, endLnum, width, truncate)
-        local newVirtText = {}
-        local suffix = ('  %d '):format(endLnum - lnum)
-        local sufWidth = vim.fn.strdisplaywidth(suffix)
-        local targetWidth = width - sufWidth
-        local curWidth = 0
-        for _, chunk in ipairs(virtText) do
-            local chunkText = chunk[1]
-            local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-            if targetWidth > curWidth + chunkWidth then
-                table.insert(newVirtText, chunk)
-            else
-                chunkText = truncate(chunkText, targetWidth - curWidth)
-                local hlGroup = chunk[2]
-                table.insert(newVirtText, {chunkText, hlGroup})
-                chunkWidth = vim.fn.strdisplaywidth(chunkText)
-                -- str width returned from truncate() may less than 2nd argument, need padding
-                if curWidth + chunkWidth < targetWidth then
-                    suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
-                end
-                break
-            end
-            curWidth = curWidth + chunkWidth
-        end
-        table.insert(newVirtText, {suffix, 'MoreMsg'})
-        return newVirtText
-    end
-    ufo.setup({
-        provider_selector = function(bufnr, filetype, buftype) return {'treesitter', 'indent'} end,
-        fold_virt_text_handler = handler
-    })
-end
-
 local setup_osc = function()
     vim.g.oscyank_term = 'tmux'
     vim.g.oscyank_silent = true
@@ -259,24 +155,29 @@ require('packer').startup(function(use)
     use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp-signature-help', requires={'hrsh7th/cmp-nvim-lsp'}}
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
-    use {'hrsh7th/nvim-cmp', config=require'setup/cmp'.setup}
-    use {'L3MON4D3/LuaSnip', config=require'setup/luasnippets'.setup()}
+    use {'hrsh7th/nvim-cmp'}
+    use {'L3MON4D3/LuaSnip', config=require'setup_luasnip'.setup}
     use {'saadparwaiz1/cmp_luasnip'}
     use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
     use {'Palpatineli/vim-dadbod-ui', requires={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui}
-    use {'Palpatineli/vim-dadbod-completion', requires={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'}, config=setup_dadbod_comp}
+    use {'Palpatineli/vim-dadbod-completion', requires={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'},
+        config=setup_dadbod_comp}
     use {'mfussenegger/nvim-dap', config=setup_dap}
-    use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', config=setup_dap_telescope}
-    use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'}, config=setup_dap_python}
+    use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, after='nvim-dap',
+        config=setup_dap_telescope}
+    use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'},
+        config=setup_dap_python}
     use {'rcarriga/cmp-dap', requires={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}, after='nvim-dap'}
     use {'sindrets/diffview.nvim', config=setup_diffview}
-    use {'j-hui/fidget.nvim', requires={'neovim/nvim-lspconfig'}, config=setup_lsp_fidget}
+    use {'j-hui/fidget.nvim', after={'lsp-zero.nvim'}, config=setup_lsp_fidget}
     use 'tpope/vim-fugitive'
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
     use {'ggandor/lightspeed.nvim', requires={'tpope/vim-repeat'}, config=setup_lightspeed}
+    use {'VonHeikemen/lsp-zero.nvim', after={'mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp', 'LuaSnip',
+        'lspkind-nvim', 'telescope.nvim'}, config=require'setup_lsp'.setup}
     use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="nightfox.nvim",
-        config=require('setup/statusline').setup}
+        config=require('setup_lualine').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
@@ -284,17 +185,20 @@ require('packer').startup(function(use)
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
-    use {'EdenEast/nightfox.nvim', config=function() require'setup/colorschemes'.nightfox('dawnfox') end}
+    use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
+    use {"williamboman/mason-lspconfig.nvim"}
+    use {'EdenEast/nightfox.nvim', config=function() require'colorschemes'.nightfox('dawnfox') end}
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
     use 'nvim-lua/plenary.nvim'
     use 'nvim-neorg/neorg-telescope'
-    use {'nvim-neorg/neorg', config=require'setup/note'.neorg}
+    use {'nvim-neorg/neorg', config=require'setup_note'.neorg}
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
          function() vim.keymap.set("n", "<F9>", ":SymbolsOutline<cr>", {}) end}
-    use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
+    use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
+        config=require'setup_telescope'.setup}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=
         function()
@@ -303,9 +207,10 @@ require('packer').startup(function(use)
         end,
         requires={'nvim-telescope/telescope.nvim'}
     }
-    use {'nvim-treesitter/nvim-treesitter', config=setup_treesitter}
+    use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
-    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'}, config=setup_ufo}
+    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},
+        config=require'setup_ufo'.setup}
     use 'mg979/vim-visual-multi'
     use 'kyazdani42/nvim-web-devicons'
     if packer_bootstrap then

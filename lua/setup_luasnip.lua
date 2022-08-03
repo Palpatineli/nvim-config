@@ -1,14 +1,14 @@
 local M = {}
-local ls = require'luasnip'
-local s = ls.snippet
-local i = ls.insert_node
-local sn = ls.snippet_node
-local t = ls.text_node
-local c = ls.choice_node
-local d = ls.dynamic_node
-local r = ls.restore_node
-local fmt = require'luasnip.extras.fmt'.fmt
-local setup = function()
+M.setup = function()
+    local ls = require'luasnip'
+    local s = ls.snippet
+    local i = ls.insert_node
+    local sn = ls.snippet_node
+    local t = ls.text_node
+    local c = ls.choice_node
+    local d = ls.dynamic_node
+    local r = ls.restore_node
+    local fmt = require'luasnip.extras.fmt'.fmt
     local function py_init()
         return c(1, { t(""), sn(1, { t(", "), i(1), d(2, py_init) }) })
     end
@@ -44,5 +44,4 @@ local setup = function()
                         { d(1, py_init), d(2, to_init_assign, {1}) })),
     })
 end
-M.setup = setup
 return M
