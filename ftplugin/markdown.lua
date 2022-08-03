@@ -17,7 +17,7 @@ vim.keymap.set("n", "<F5>", function() require('nabla').action() end, {noremap =
 
 -- note taking
 vim.g.note_root = vim.fn.expand("~/note")
-vim.api.nvim_buf_set_keymap(0, "n", "<cr>", "", {noremap = true, callback=require'note'.follow_link})
+vim.api.nvim_buf_set_keymap(0, "n", "<cr>", "", {noremap = true, callback=require'setup/note'.follow_link})
 
 local grep_file_tag = function()
     local tag = vim.fn.expand('%<')  -- needs the escape as [ is special in telescope

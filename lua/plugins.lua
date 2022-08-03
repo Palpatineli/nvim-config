@@ -58,128 +58,12 @@ local setup_bufdel = function()
     vim.keymap.set("n", "qq", function() require'bufdelete'.bufwipeout(0, true) end, { silent = true, noremap = true })
 end
 
-local has_words_before = function()
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
-local setup_cmp = function()
-    local luasnip = require'luasnip'
-    local cmp = require'cmp'
-    cmp.setup {
-        enabled = function ()
-            return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or require'cmp_dap'.is_dap_buffer()
-        end,
-        snippet = {
-            expand = function(args) luasnip.lsp_expand(args.body) end,
-        },
-        mapping = {
-            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete(),
-            ['<C-e>'] = cmp.mapping.close(),
-            ['<CR>'] = cmp.mapping.confirm({ select = true }),
-            ['<C-j>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                elseif luasnip.expand_or_jumpable() then
-                    luasnip.expand_or_jump()
-                elseif has_words_before() then
-                    cmp.complete()
-                else
-                    fallback()
-                end
-            end, { "i", "s", "c" }),
-            ['<C-k>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                elseif luasnip.jumpable(-1) then
-                    luasnip.jump(-1)
-                else
-                    fallback()
-                end
-            end, { "i", "s", "c" }),
-        },
-        sources = {
-            { name = 'latex_symbols' },
-            { name = 'luasnip' },
-            { name = 'nvim_lsp' },
-            { name = 'nvim_lsp_signature_help' },
-            { name = 'dap' },
-            { name = 'path' },
-            { name = 'neorg' },
-            { name = 'treesitter' },
-            { name = 'buffer', keyword_length = 4},
-        },
-        formatting = {
-            format = require'lspkind'.cmp_format({with_text = false, maxwidth = 50})
-        }
-    }
-    cmp.setup.cmdline(':', { sources = {{ name = 'cmdline' }}})
-    cmp.setup.cmdline('/', {
-        sources = cmp.config.sources({
-            { name = 'nvim_lsp_document_symbol' }
-        },
-        {
-            { name = 'buffer' }
-        })
-    })
-end
-
 local setup_kommentary = function()
     vim.g.kommentary_create_default_mappings = false
     vim.keymap.set("n", "<leader>ci", "<Plug>kommentary_line_increase", {})
     vim.keymap.set("n", "<leader>cd", "<Plug>kommentary_line_decrease", {})
     vim.keymap.set("x", "<leader>ci", "<Plug>kommentary_visual_increase", {})
     vim.keymap.set("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
-end
-
-local setup_neorg = function()
-    require('neorg').setup {
-        load = {
-            ['core.defaults'] = {},
-            ['core.gtd.base'] = {
-                config ={
-                    workspace = 'central',
-                    default_lists = { inbox = "inbox.norg" },
-                    syntax = { context = "#contexts", start = "#time.start",
-                               due = "#time.due", waiting = "#waiting.for", },
-                    displayers = { projects = { show_completed_projects = false, show_projects_without_tasks = true }},
-                    custom_tag_completion = true
-                }
-            },
-            ['core.norg.concealer'] = {},
-            ['core.norg.completion'] = {config = {engine = "nvim-cmp"}},
-            ['core.norg.dirman'] = {
-                config = {
-                    workspaces = {
-                        central = "~/Sync/note"
-                    }
-                }
-            },
-            ['core.integrations.telescope'] = {},
-        },
-        hook = function()
-             local neorg_callbacks = require('neorg.callbacks')
-             neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
-                keybinds.map_event_to_mode("norg", {
-                    n = {
-                        { "<leader>gd", "core.norg.qol.todo_items.todo.task_done" },
-                        { "<leader>gu", "core.norg.qol.todo_items.todo.task_undone" },
-                        { "<leader>gp", "core.norg.qol.todo_items.todo.task_pending" },
-                        { "<C-Space>", "core.norg.qol.todo_items.todo.task_cycle" },
-                        { "<leader>gl", "core.integrations.telescope.find_linkable" },
-                    },
-                    i = {
-                        { "<c-l>", "core.integrations.telescope.insert_link" },
-                    },
-                }, { silent = true, noremap = true })
-            end)
-        end
-    }
-    vim.keymap.set("n", "<leader>gv", ":Neorg gtd views<CR>", {})
-    vim.keymap.set("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
-    vim.keymap.set("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
 end
 
 local setup_treesitter = function()
@@ -360,8 +244,8 @@ local setup_ufo = function()
 end
 
 local setup_osc = function()
-    vim.g.oscyank_term = 'tmux'                                                                                  
-    vim.g.oscyank_silent = true                                                                                  
+    vim.g.oscyank_term = 'tmux'
+    vim.g.oscyank_silent = true
     vim.cmd[[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYankReg + | endif]]
 end
 
@@ -375,8 +259,8 @@ require('packer').startup(function(use)
     use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
     use {'hrsh7th/cmp-nvim-lsp-signature-help', requires={'hrsh7th/cmp-nvim-lsp'}}
     use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
-    use {'hrsh7th/nvim-cmp', config=setup_cmp}
-    use {'L3MON4D3/LuaSnip', config=function() require'luasnippets'.setup() end}
+    use {'hrsh7th/nvim-cmp', config=require'setup/cmp'.setup}
+    use {'L3MON4D3/LuaSnip', config=require'setup/luasnippets'.setup()}
     use {'saadparwaiz1/cmp_luasnip'}
     use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
     use {'Palpatineli/vim-dadbod-ui', requires={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui}
@@ -391,7 +275,8 @@ require('packer').startup(function(use)
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
     use {'ggandor/lightspeed.nvim', requires={'tpope/vim-repeat'}, config=setup_lightspeed}
-    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="nightfox.nvim", config=require('statusline').setup}
+    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="nightfox.nvim",
+        config=require('setup/statusline').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'b3nj5m1n/kommentary', config=setup_kommentary}
@@ -399,11 +284,11 @@ require('packer').startup(function(use)
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
-    use {'EdenEast/nightfox.nvim', config=function() require'colorschemes'.nightfox('dawnfox') end}
+    use {'EdenEast/nightfox.nvim', config=function() require'setup/colorschemes'.nightfox('dawnfox') end}
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
     use 'nvim-lua/plenary.nvim'
     use 'nvim-neorg/neorg-telescope'
-    use {'nvim-neorg/neorg', config=setup_neorg}
+    use {'nvim-neorg/neorg', config=require'setup/note'.neorg}
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
