@@ -50,13 +50,12 @@ local setup_iron = function()
             exit = "<leader>iq"
         }
     }
-    vim.api.nvim_buf_set_keymap(0, "n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>", {noremap = true, silent = true})
+    vim.keymap.set("n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>", {noremap = true, silent = true})
 end
 
 local setup_bufdel = function()
-    require'bufdel'.setup { next = 'cycle' }
-    vim.keymap.set("n", "qw", ":w\\|BufDel<cr>", { silent = true, noremap = true })
-    vim.keymap.set("n", "qq", "<cmd>BufDel!<cr>", { silent = true, noremap = true })
+    vim.keymap.set("n", "qw", [[:w<cr>:lua require'bufdelete'.bufwipeout(0)<cr>]], { silent = true, noremap = true })
+    vim.keymap.set("n", "qq", function() require'bufdelete'.bufwipeout(0, true) end, { silent = true, noremap = true })
 end
 
 local has_words_before = function()
@@ -320,7 +319,7 @@ local setup_lightspeed = function()
 end
 
 local setup_ufo = function()
-    vim.o.foldcolumn = '2'
+    vim.o.foldcolumn = '0'
     vim.o.foldlevel = 99
     vim.o.foldlevelstart = -1
     vim.o.foldenable = true
@@ -360,11 +359,15 @@ local setup_ufo = function()
     })
 end
 
+local setup_osc = function()
+    vim.g.oscyank_term = 'tmux'                                                                                  
+    vim.g.oscyank_silent = true                                                                                  
+    vim.cmd[[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYankReg + | endif]]
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
-    use {'ojroques/nvim-bufdel',
-        config=setup_bufdel
-    }
+    use {'famiu/bufdelete.nvim', config=setup_bufdel }
     use {'akinsho/bufferline.nvim', config=setup_bufferline}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path',
@@ -401,13 +404,7 @@ require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'
     use 'nvim-neorg/neorg-telescope'
     use {'nvim-neorg/neorg', config=setup_neorg}
-    use {'ojroques/vim-oscyank',
-        config=function()
-            vim.g.oscyank_term = 'tmux'
-            vim.g.oscyank_silent = true
-            vim.cmd[[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYankReg + | endif]]
-        end
-    }
+    use {'ojroques/vim-oscyank', config=setup_osc}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
