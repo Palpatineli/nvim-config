@@ -157,8 +157,16 @@ local setup_yanky = function()
     vim.keymap.set("n", "<leader>y", "<cmd>Telescope yank_history<cr>")
 end
 
+local setup_autopairs = function()
+    require'nvim-autopairs'.setup{
+        disable_filetype = {'TelescopePrompt', 'Outline'},
+    }
+    require'cmp'.event:on('confirm_done', require'nvim-autopairs.completion.cmp'.on_confirm_done())
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
+    use {'windwp/nvim-autopairs', after='nvim-cmp', config=setup_autopairs}
     use {'famiu/bufdelete.nvim', config=setup_bufdel }
     use {'akinsho/bufferline.nvim', config=setup_bufferline}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
@@ -228,5 +236,5 @@ require('packer').startup(function(use)
     if packer_bootstrap then
         require('packer').sync()
     end
-    use {'gbprod/yanky.nvim', after='telescope', config=setup_yanky}
+    use {'gbprod/yanky.nvim', after='telescope.nvim', config=setup_yanky}
 end)
