@@ -145,6 +145,18 @@ local setup_osc = function()
     vim.cmd[[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYankReg + | endif]]
 end
 
+local setup_yanky = function()
+    require'yanky'.setup{}
+    vim.keymap.set({"n","x"}, "p", "<Plug>(YankyPutAfter)")
+    vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
+    vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
+    vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
+    vim.keymap.set("n", "<c-j>", "<Plug>(YankyCycleForward)")
+    vim.keymap.set("n", "<c-k>", "<Plug>(YankyCycleBackward)")
+    require'telescope'.load_extension('yank_history')
+    vim.keymap.set("n", "<leader>y", "<cmd>Telescope yank_history<cr>")
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'famiu/bufdelete.nvim', config=setup_bufdel }
@@ -216,4 +228,5 @@ require('packer').startup(function(use)
     if packer_bootstrap then
         require('packer').sync()
     end
+    use {'gbprod/yanky.nvim', after='telescope', config=setup_yanky}
 end)
