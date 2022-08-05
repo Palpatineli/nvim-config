@@ -1,23 +1,4 @@
 local M = {}
-
-local get_lsp_client = function()
-    -- Get lsp client for current buffer
-    local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-    local clients = vim.lsp.buf_get_clients()
-    if next(clients) == nil then
-        return nil
-    end
-    for _, client in pairs(clients) do
-        local filetypes = client.config.filetypes
-        if filetypes and vim.fn.index(filetypes,buf_ft) ~= -1 then
-            return client
-        end
-    end
-    return nil
-end
-
-M.get_lsp_client = get_lsp_client
-
 M.setup = function()
     local actions = require('telescope.actions')
     local setup_keymap = function()
@@ -30,10 +11,10 @@ M.setup = function()
         vim.keymap.set('n', '<leader>i', require("telescope.builtin").lsp_implementations, {silent=true})
         vim.keymap.set('n', '<leader>o', require("telescope.builtin").treesitter, {silent=true})
         vim.keymap.set('n', '<leader>a', function()
-            require("telescope.builtin").live_grep{cwd=get_lsp_client().config.root_dir}
+            require("telescope.builtin").live_grep{cwd=vim.lsp.buf.list_workspace_folders()[1]}
         end, {silent=true})
         vim.keymap.set('n', '<leader>A', function()
-           require("telescope.builtin").grep_string{cwd=get_lsp_client().config.root_dir}
+           require("telescope.builtin").grep_string{cwd=vim.lsp.buf.list_workspace_folders()[1]}
         end, {silent=true})
     end
 
