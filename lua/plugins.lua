@@ -151,8 +151,8 @@ local setup_yanky = function()
     vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
     vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
     vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
-    vim.keymap.set("n", "<c-n>", "<Plug>(YankyCycleForward)")
-    vim.keymap.set("n", "<c-p>", "<Plug>(YankyCycleBackward)")
+    vim.keymap.set("n", "<c-H>", "<Plug>(YankyCycleForward)")
+    vim.keymap.set("n", "<c-L>", "<Plug>(YankyCycleBackward)")
     require'telescope'.load_extension('yank_history')
     vim.keymap.set("n", "<leader>y", "<cmd>Telescope yank_history<cr>")
 end
@@ -196,7 +196,7 @@ require('packer').startup(function(use)
     use {'ggandor/lightspeed.nvim', requires={'tpope/vim-repeat'}, config=setup_lightspeed}
     use {'VonHeikemen/lsp-zero.nvim', after={'mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp', 'LuaSnip',
         'lspkind-nvim', 'telescope.nvim'}, config=require'setup_lsp'.setup}
-    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="nightfox.nvim",
+    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="everforest",
         config=require('setup_lualine').setup}
     use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
@@ -207,7 +207,7 @@ require('packer').startup(function(use)
     use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
-    use {'EdenEast/nightfox.nvim', config=function() require'colorschemes'.nightfox('dawnfox') end}
+    use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
     use 'nvim-lua/plenary.nvim'
     use 'nvim-neorg/neorg-telescope'
