@@ -59,12 +59,20 @@ M.neorg = function()
                         { "<c-l>", "core.integrations.telescope.insert_link" },
                     },
                 }, { silent = true, noremap = true })
-            end)
+            end, {})
         end
     }
     vim.keymap.set("n", "<leader>gv", ":Neorg gtd views<CR>", {})
     vim.keymap.set("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
     vim.keymap.set("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
 end
+
+local grep_file_tag = function()
+    local tag = vim.fn.expand('%<')  -- needs the escape as [ is special in telescope
+    local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+    require("telescope.builtin").grep_string{cwd=root_dir, search=tag}
+end
+
+vim.keymap.set('n', '<leader>z', grep_file_tag, {noremap = true})
 
 return M

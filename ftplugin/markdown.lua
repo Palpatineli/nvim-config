@@ -16,7 +16,7 @@ vim.cmd [["command! SSplit :s/\([\.!?]['"]\?\) /\1\r"]]
 vim.keymap.set("n", "<F5>", function() require('nabla').action() end, {noremap = true})
 
 -- note taking
-vim.g.note_root = vim.fn.expand("~/note")
+vim.g.note_root = vim.fn.expand("~/Sync/note")
 vim.api.nvim_buf_set_keymap(0, "n", "<cr>", "", {noremap = true, callback=require'setup_note'.follow_link})
 
 local grep_file_tag = function()
