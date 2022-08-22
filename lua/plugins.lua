@@ -220,7 +220,7 @@ require('packer').startup(function(use)
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
-    use {'folke/todo-comments.nvim', config=
+    use {'B4mbus/todo-comments.nvim', config=
         function()
             require("todo-comments").setup()
             vim.keymap.set("n", "<leader>T", ":TodoTelescope<cr>", {})
