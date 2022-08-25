@@ -204,14 +204,11 @@ require('packer').startup(function(use)
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
-    use {'euclio/vim-markdown-composer', run='cargo build --release', opt={'markdown'}}
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
     use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
     use 'nvim-lua/plenary.nvim'
-    use 'nvim-neorg/neorg-telescope'
-    use {'nvim-neorg/neorg', config=require'setup_note'.neorg}
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
@@ -227,6 +224,7 @@ require('packer').startup(function(use)
         end,
         requires={'nvim-telescope/telescope.nvim'}
     }
+    use {'arnarg/todotxt.nvim', requires = {'MunifTanjim/nui.nvim'}, config=require'setup_note'.todo}
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},
@@ -237,4 +235,5 @@ require('packer').startup(function(use)
         require('packer').sync()
     end
     use {'gbprod/yanky.nvim', after='telescope.nvim', config=setup_yanky}
+    use {'mickael-menu/zk-nvim', config=require'setup_note'.zk}
 end)

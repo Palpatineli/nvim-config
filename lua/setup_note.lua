@@ -19,54 +19,6 @@ M.follow_link = function()
     vim.cmd("edit " .. file_path)
 end
 
-M.neorg = function()
-    require('neorg').setup {
-        load = {
-            ['core.defaults'] = {},
-            ['core.gtd.base'] = {
-                config ={
-                    workspace = 'central',
-                    default_lists = { inbox = "inbox.norg" },
-                    syntax = { context = "#contexts", start = "#time.start",
-                               due = "#time.due", waiting = "#waiting.for", },
-                    displayers = { projects = { show_completed_projects = false, show_projects_without_tasks = true }},
-                    custom_tag_completion = true
-                }
-            },
-            ['core.norg.concealer'] = {},
-            ['core.norg.completion'] = {config = {engine = "nvim-cmp"}},
-            ['core.norg.dirman'] = {
-                config = {
-                    workspaces = {
-                        central = "~/Sync/note"
-                    }
-                }
-            },
-            ['core.integrations.telescope'] = {},
-        },
-        hook = function()
-             local neorg_callbacks = require('neorg.callbacks')
-             neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
-                keybinds.map_event_to_mode("norg", {
-                    n = {
-                        { "<leader>gd", "core.norg.qol.todo_items.todo.task_done" },
-                        { "<leader>gu", "core.norg.qol.todo_items.todo.task_undone" },
-                        { "<leader>gp", "core.norg.qol.todo_items.todo.task_pending" },
-                        { "<C-Space>", "core.norg.qol.todo_items.todo.task_cycle" },
-                        { "<leader>gl", "core.integrations.telescope.find_linkable" },
-                    },
-                    i = {
-                        { "<c-l>", "core.integrations.telescope.insert_link" },
-                    },
-                }, { silent = true, noremap = true })
-            end, {})
-        end
-    }
-    vim.keymap.set("n", "<leader>gv", ":Neorg gtd views<CR>", {})
-    vim.keymap.set("n", "<leader>gc", ":Neorg gtd capture<CR>", {})
-    vim.keymap.set("n", "<leader>ge", ":Neorg gtd edit<CR>", {})
-end
-
 local grep_file_tag = function()
     local tag = vim.fn.expand('%<')  -- needs the escape as [ is special in telescope
     local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
@@ -74,5 +26,18 @@ local grep_file_tag = function()
 end
 
 vim.keymap.set('n', '<leader>z', grep_file_tag, {noremap = true})
+
+M.zk = function()
+    require'zk'.setup{
+        picker='telescope',
+    }
+end
+
+M.todo = function()
+    local todo = require'todotxt-nvim'
+    todo.setup{todo_file='~/Sync/note/todo.txt'}
+    vim.keymap.set('n', '<leader>to', todo.toggle_task_pane)
+    vim.keymap.set('n', '<leader>ta', todo.capture)
+end
 
 return M

@@ -59,7 +59,6 @@ M.setup = function()
             { name = 'nvim_lsp_signature_help' },
             { name = 'dap' },
             { name = 'path' },
-            { name = 'neorg' },
             { name = 'treesitter' },
             { name = 'buffer', keyword_length = 4},
         },
