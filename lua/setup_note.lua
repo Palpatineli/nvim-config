@@ -33,11 +33,38 @@ M.zk = function()
     }
 end
 
+-- todotxt
 M.todo = function()
     local todo = require'todotxt-nvim'
     todo.setup{todo_file='~/Sync/note/todo.txt'}
     vim.keymap.set('n', '<leader>to', todo.toggle_task_pane)
     vim.keymap.set('n', '<leader>ta', todo.capture)
+end
+
+local open_local_mind = function ()
+    local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+    if root_dir:find('^fatal') then
+        local old_path = vim.fn.getcwd()
+        os.execute('cd '..root_dir)
+        require'mind'.open_project(false)
+        os.execute('cd '..old_path)
+    else
+    end
+end
+
+M.mind = function()
+    local mind = require'mind'
+    mind.setup{
+        persistence = {
+            state_path = "~/Sync/note/mind.json",
+            data_dir = "~/Sync/note/"
+        },
+        edit={
+            data_extension=".txt"
+        }
+    }
+    vim.keymap.set('n', '<leader>tm', mind.open_main, {})
+    vim.keymap.set('n', '<leader>tp', open_local_mind, {})
 end
 
 return M

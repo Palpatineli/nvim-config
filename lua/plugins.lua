@@ -206,6 +206,7 @@ require('packer').startup(function(use)
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
+    use {"phaazon/mind.nvim", config=require'setup_note'.mind}
     use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
     use {'jbyuki/nabla.nvim', ft={'markdown'}}
     use 'nvim-lua/plenary.nvim'
