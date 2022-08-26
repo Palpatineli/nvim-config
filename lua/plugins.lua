@@ -224,7 +224,6 @@ require('packer').startup(function(use)
         end,
         requires={'nvim-telescope/telescope.nvim'}
     }
-    use {'arnarg/todotxt.nvim', requires = {'MunifTanjim/nui.nvim'}, config=require'setup_note'.todo}
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},
@@ -235,5 +234,4 @@ require('packer').startup(function(use)
         require('packer').sync()
     end
     use {'gbprod/yanky.nvim', after='telescope.nvim', config=setup_yanky}
-    use {'mickael-menu/zk-nvim', config=require'setup_note'.zk}
 end)
