@@ -35,13 +35,13 @@ M.setup = function()
     ls.add_snippets('python', {
         s('doc', fmt('"""{}\nArgs:\n\t{}: {}\nReturns:\n\t{}\n"""', {
             i(1, 'name'), i(2, 'arg'), i(3, 'arg_doc'), i(4, 'return')
-        })
-        ),
+        })),
         s('np', {t('import numpy as np')}),
         s('pd', {t('import pandas as pd')}),
         s('plt', {t('from matplotlib import pyplot as plt')}),
         s("pyinit", fmt([[def __init__(self{}):{}]],
                         { d(1, py_init), d(2, to_init_assign, {1}) })),
+        s('ifmain', fmt('if __name__ == "__main__":\n\t{}()', {i(1,'main')}))
     })
 end
 return M
