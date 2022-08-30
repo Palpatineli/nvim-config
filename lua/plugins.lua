@@ -53,38 +53,8 @@ local setup_iron = function()
     vim.keymap.set("n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>", {noremap = true, silent = true})
 end
 
-local setup_bufdel = function()
-    vim.keymap.set("n", "qw", [[:w<cr>:lua require'bufdelete'.bufwipeout(0)<cr>]], { silent = true, noremap = true })
-    vim.keymap.set("n", "qq", function() require'bufdelete'.bufwipeout(0, true) end, { silent = true, noremap = true })
-end
-
-local setup_kommentary = function()
-    vim.g.kommentary_create_default_mappings = false
-    vim.keymap.set("n", "<leader>ci", "<Plug>kommentary_line_increase", {})
-    vim.keymap.set("n", "<leader>cd", "<Plug>kommentary_line_decrease", {})
-    vim.keymap.set("x", "<leader>ci", "<Plug>kommentary_visual_increase", {})
-    vim.keymap.set("x", "<leader>cd", "<Plug>kommentary_visual_decrease", {})
-end
-
-local setup_indent_blankline = function()
-    require'indent_blankline'.setup{
-        show_current_context = true,
-        char_highlight_list = {"IndentOdd", "IndentEven"},
-        space_char_highlight_list = {"IndentOdd", "IndentEven"},
-        show_trailing_blankline_indent = false,
-    }
-end
-
 local setup_lsp_fidget = function()
     require('fidget').setup{ text={spinner='dots' } }
-end
-
-local setup_diffview = function()
-    require'diffview'.setup()
-    vim.keymap.set("n", "<F4>", ":DiffviewOpen -uno master<cr>", {silent=true})
-    vim.keymap.set("n", "<F5>", ":DiffviewOpen -uno HEAD<cr>", {silent=true})
-    vim.keymap.set("n", "<F6>", ":DiffviewClose<cr>", {silent=true})
-    vim.keymap.set("n", "<F2>", ":DiffviewToggleFiles<cr>", {silent=true})
 end
 
 local setup_lazygit = function()
@@ -135,10 +105,6 @@ local setup_bufferline = function ()
     vim.keymap.set("n", "<leader>b", "", {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
 end
 
-local setup_lightspeed = function()
-    require'lightspeed'.setup({})
-end
-
 local setup_osc = function()
     vim.g.oscyank_term = 'tmux'
     vim.g.oscyank_silent = true
@@ -157,17 +123,30 @@ local setup_yanky = function()
     vim.keymap.set("n", "<leader>y", "<cmd>Telescope yank_history<cr>")
 end
 
-local setup_autopairs = function()
-    require'nvim-autopairs'.setup{
-        disable_filetype = {'TelescopePrompt', 'Outline'},
+local setup_mini = function ()
+    local mini_bufremove = require('mini.bufremove')
+    mini_bufremove.setup({})
+    vim.keymap.set("n", "qw", [[:w<cr>:lua require'mini.bufremove'.wipeout(0)<cr>]], { silent = true, noremap = true })
+    vim.keymap.set("n", "qq", function() mini_bufremove.wipeout(0, true) end, { silent = true, noremap = true })
+    require'mini.comment'.setup{
+        mappings={
+            comment='ci',
+            textobject='ci'
+        }
     }
-    require'cmp'.event:on('confirm_done', require'nvim-autopairs.completion.cmp'.on_confirm_done())
+    -- wait for mini.snippet to switch to mini.completion
+    require'mini.cursorword'.setup({})
+    require'mini.indentscope'.setup({})
+    require'mini.jump'.setup({delay={highlight=10000000, idle_stop=500}})
+    require'mini.jump2d'.setup({labels='asdfghjkl', allowed_windows={not_current=false},mappings={start_jumping="''"}})
+    vim.keymap.set('n', 's', function() MiniJump2d.start(MiniJump2d.builtin_opts.query) end)
+    require'mini.pairs'.setup({})
+    require'setup_statusline'.miniline()
+    require'mini.trailspace'.setup({})
 end
 
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
-    use {'windwp/nvim-autopairs', after='nvim-cmp', config=setup_autopairs}
-    use {'famiu/bufdelete.nvim', config=setup_bufdel }
     use {'akinsho/bufferline.nvim', config=setup_bufferline}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path',
@@ -188,29 +167,26 @@ require('packer').startup(function(use)
     use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'},
         config=setup_dap_python}
     use {'rcarriga/cmp-dap', requires={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}, after='nvim-dap'}
-    use {'sindrets/diffview.nvim', config=setup_diffview}
     use {'j-hui/fidget.nvim', after={'lsp-zero.nvim'}, config=setup_lsp_fidget}
-    use 'tpope/vim-fugitive'
+    use {'lewis6991/gitsigns.nvim', config=function() require'gitsigns'.setup() end}
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
-    use {'ggandor/lightspeed.nvim', requires={'tpope/vim-repeat'}, config=setup_lightspeed}
     use {'VonHeikemen/lsp-zero.nvim', after={'mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp', 'LuaSnip',
         'lspkind-nvim', 'telescope.nvim'}, config=require'setup_lsp'.setup}
     use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="everforest",
-        config=require('setup_lualine').setup}
-    use {'lukas-reineke/indent-blankline.nvim', config=setup_indent_blankline}
+        config=require('setup_statusline').lua}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
-    use {'b3nj5m1n/kommentary', config=setup_kommentary}
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
     use {"phaazon/mind.nvim", ft={'markdown'}, config=require'setup_note'.mind}
+    use {"echasnovski/mini.nvim", config=setup_mini, after='gitsigns.nvim'}
     use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
-    use {'jbyuki/nabla.nvim', ft={'markdown'}}
     use 'nvim-lua/plenary.nvim'
     use {'ojroques/vim-oscyank', config=setup_osc}
+    use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
