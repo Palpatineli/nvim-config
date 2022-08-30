@@ -63,8 +63,8 @@ M.mind = function()
             data_extension=".txt"
         }
     }
-    vim.keymap.set('n', '<leader>tm', mind.open_main, {})
-    vim.keymap.set('n', '<leader>tp', open_local_mind, {})
+    vim.keymap.set('n', '<leader>tm', mind.open_main)
+    vim.keymap.set('n', '<leader>tp', open_local_mind)
 end
 
 return M

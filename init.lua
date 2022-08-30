@@ -60,7 +60,4 @@ if vim.fn.executable('nvr') == 1 then
     vim.fn.setenv("GIT_EDITOR", "nvr -cc split --remote-wait +'set bufhidden=wipe'")
 end
 
-vim.api.nvim_set_hl(0, 'ColorColumn', {bg="magenta"})
-vim.fn.matchadd('ColorColumn', [[\%121v]], 120)
-
 require'plugins'
