@@ -93,19 +93,20 @@ M.miniline = function()
     local gps = setup_gps()
     local mini = require'mini.statusline'
     local mini_active = function ()
-        local git = mini.section_git({ trunc_width = 25 })
-        local diagnostics = mini.section_diagnostics({ trunc_width = 25 })
-        local filename = mini.section_filename({ trunc_width = 15 })
-        local fileinfo = mini.section_fileinfo({ trunc_width = 10 })
-        local location = mini.section_location({ trunc_width = 25 })
+        local git = mini.section_git({ trunc_width = 100 })
+        local diagnostics = mini.section_diagnostics({ trunc_width = 100 })
+        local filename = mini.section_filename({ trunc_width = 250 })
+        local fileinfo = mini.section_fileinfo({ trunc_width = 200 })
+        local location = mini.section_location({ trunc_width = 100 })
         local _, mode_hl = mini.section_mode({ trunc_width = 120 })
         return mini.combine_groups({
             {hl=mode_hl, strings={ filename }},
             '%<',
-            {hl='MiniStatuslineFilename', strings={git, ' | ', diagnostics}},
+            {hl='TabLine', strings={git}},
+            {hl='WinBarNC', strings={diagnostics}},
             '%=',
-            {strings={gps.get_location(), ' | '}},
-            {hl='MiniStatuslineDevInfo', strings={fileinfo}},
+            {hl='WinBarNC', strings={gps.get_location()}},
+            {hl='TabLine', strings={fileinfo}},
             {hl=mode_hl, strings={location}},
         })
     end
@@ -116,9 +117,9 @@ M.miniline = function()
         return mini.combine_groups({
             {hl='MiniStatuslineInactive', strings={ filename }},
             '%<',
-            {hl='FoldColumn', strings={git}},
+            {hl='Folded', strings={git}},
             '%=',
-            {hl='FoldColumn', strings={fileinfo}},
+            {hl='Folded', strings={fileinfo}},
         })
     end
     mini.setup({
