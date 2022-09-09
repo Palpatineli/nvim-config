@@ -117,8 +117,6 @@ local setup_yanky = function()
     vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
     vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
     vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
-    vim.keymap.set("n", "<leader>n", "<Plug>(YankyCycleForward)")
-    vim.keymap.set("n", "<leader>N", "<Plug>(YankyCycleBackward)")
     require'telescope'.load_extension('yank_history')
     vim.keymap.set("n", "<leader>y", "<cmd>Telescope yank_history<cr>")
 end
@@ -137,12 +135,19 @@ local setup_mini = function ()
     -- wait for mini.snippet to switch to mini.completion
     require'mini.cursorword'.setup({})
     require'mini.indentscope'.setup({})
-    require'mini.jump'.setup({mappings={forward_till='', backward_till=''}, delay={highlight=10000000, idle_stop=500}})
-    require'mini.jump2d'.setup({labels='asdfghjkl', allowed_windows={not_current=false},mappings={start_jumping=''}})
-    vim.keymap.set('n', 's', function() MiniJump2d.start(MiniJump2d.builtin_opts.query) end)
+    require'mini.jump'.setup({mappings={forward='f', backward='F', forward_till='', backward_till='', repeat_jump='.'}, delay={highlight=10000000, idle_stop=500}})
     require'mini.pairs'.setup({})
     require'setup_statusline'.miniline()
     require'mini.trailspace'.setup({})
+end
+
+local setup_todo_comments = function()
+    require("todo-comments").setup({
+        keywords={
+            DEBUG = {icon=" ", color="warning"}
+        }
+    })
+    vim.keymap.set("n", "<leader>T", ":TodoTelescope<cr>", {})
 end
 
 require('packer').startup(function(use)
@@ -194,13 +199,7 @@ require('packer').startup(function(use)
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
-    use {'B4mbus/todo-comments.nvim', config=
-        function()
-            require("todo-comments").setup()
-            vim.keymap.set("n", "<leader>T", ":TodoTelescope<cr>", {})
-        end,
-        requires={'nvim-telescope/telescope.nvim'}
-    }
+    use {'B4mbus/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},

@@ -41,19 +41,18 @@ M.todo = function()
     vim.keymap.set('n', '<leader>ta', todo.capture)
 end
 
-local open_local_mind = function ()
-    local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
-    if root_dir:find('^fatal') then
-        local old_path = vim.fn.getcwd()
-        os.execute('cd '..root_dir)
-        require'mind'.open_project(false)
-        os.execute('cd '..old_path)
-    else
-    end
-end
-
 M.mind = function()
     local mind = require'mind'
+    local open_local_mind = function()
+        local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+        if root_dir:find('^fatal') then
+            local old_path = vim.fn.getcwd()
+            os.execute('cd '..root_dir)
+            require'mind'.open_project(false)
+            os.execute('cd '..old_path)
+        else
+        end
+    end
     mind.setup{
         persistence = {
             state_path = "~/Sync/note/mind.json",
