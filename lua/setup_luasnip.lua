@@ -43,5 +43,9 @@ M.setup = function()
                         { d(1, py_init), d(2, to_init_assign, {1}) })),
         s('ifmain', fmt('if __name__ == "__main__":\n\t{}()', {i(1,'main')}))
     })
+    ls.add_snippets('markdown', {
+        s({trig='-', name='task: todo'}, {t('- [ ] ')}),
+        s({trig='-x', name='task: finished'}, {t('- [x] ')}),
+    })
 end
 return M

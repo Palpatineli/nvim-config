@@ -193,13 +193,12 @@ require('packer').startup(function(use)
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
-    use {'lewis6991/spellsitter.nvim', config=function() require'spellsitter'.setup(); vim.opt.spell = true end}
     use {'simrat39/symbols-outline.nvim', config=
          function() vim.keymap.set("n", "<F9>", ":SymbolsOutline<cr>", {}) end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
-    use {'B4mbus/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
+    use {'folke/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
     use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},

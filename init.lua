@@ -11,6 +11,7 @@ vim.opt.swapfile = false
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 -- ui
+vim.opt.cmdheight = 0
 vim.opt.termguicolors = true
 vim.opt.background = 'light'
 vim.opt.guifont = 'FiraCode NF:h8'
