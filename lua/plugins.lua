@@ -136,7 +136,6 @@ local setup_mini = function ()
     require'mini.cursorword'.setup({})
     require'mini.indentscope'.setup({})
     require'mini.jump'.setup({mappings={forward='f', backward='F', forward_till='', backward_till='', repeat_jump='.'}, delay={highlight=10000000, idle_stop=500}})
-    require'mini.pairs'.setup({})
     require'setup_statusline'.miniline()
     require'mini.trailspace'.setup({})
 end
