@@ -28,14 +28,6 @@ M.setup = function()
                 "#E53935",
                 "#5E8526"
             }
-        },
-        -- refactor
-        refactor = {
-            highlight_definitions = { enable = true },
-            smart_rename = {
-                enable = true,
-                keymaps = { smart_rename = "<leader>r", },
-            }
         }
     }
 end

@@ -199,7 +199,6 @@ require('packer').startup(function(use)
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
-    use {'nvim-treesitter/nvim-treesitter-refactor', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},
         config=require'setup_ufo'.setup}
     use 'mg979/vim-visual-multi'

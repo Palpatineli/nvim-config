@@ -12,6 +12,7 @@ M.setup = function()
         vim.keymap.set("n", "<Leader>J", vim.diagnostic.goto_next, {noremap=true, silent=true})
         vim.keymap.set("n", "<Leader>K", vim.diagnostic.goto_prev, {noremap=true, silent=true})
         vim.keymap.set("n", "K", vim.lsp.buf.hover, {noremap=true, silent=true})
+        vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, {noremap=true})
     end
     local has_words_before = function()
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
