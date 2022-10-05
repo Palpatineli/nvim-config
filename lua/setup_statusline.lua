@@ -123,8 +123,7 @@ M.miniline = function()
         })
     end
     mini.setup({
-        content = {active=mini_active, inactive=mini_inactive},
-        set_vim_settings=false,
+        content = {active=mini_active, inactive=mini_inactive}
     })
 end
 return M

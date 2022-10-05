@@ -177,8 +177,6 @@ require('packer').startup(function(use)
     use {'rhysd/vim-grammarous', ft={'markdown'}}
     use {'VonHeikemen/lsp-zero.nvim', after={'mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp', 'LuaSnip',
         'lspkind-nvim', 'telescope.nvim'}, config=require'setup_lsp'.setup}
-    use {'nvim-lualine/lualine.nvim', requires={'SmiteshP/nvim-gps'}, after="everforest",
-        config=require('setup_statusline').lua}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'neovim/nvim-lspconfig'
