@@ -54,7 +54,7 @@ local setup_iron = function()
 end
 
 local setup_lsp_fidget = function()
-    require('fidget').setup{ text={spinner='dots' } }
+    require('fidget').setup{ text={spinner='dots' }, window={blend=0} }
 end
 
 local setup_lazygit = function()
@@ -92,17 +92,25 @@ end
 local setup_bufferline = function ()
     vim.opt.termguicolors = true
     require'bufferline'.setup({
+        highlights = {},
         options = {
             diagnostic = 'nvim_lsp',
             show_buffer_close_icons = false,
             show_close_icon = false,
-            enforce_regular_tabs = true,
             separator_style = 'slant'
         }
     })
     vim.keymap.set("n", "<leader>j", "", {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
     vim.keymap.set("n", "<leader>k", "", {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
     vim.keymap.set("n", "<leader>b", "", {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
+end
+
+local setup_barbar = function()
+    local opts = {noremap=true, silent=true}
+    local api = require'bufferline.api'
+    vim.keymap.set('n', "<leader>j", function() api.goto_buffer_relative(1) end, opts)
+    vim.keymap.set('n', "<leader>k", function() api.goto_buffer_relative(-1) end, opts)
+    vim.keymap.set('n', "<leader>b", api.pick_buffer, opts)
 end
 
 local setup_osc = function()
@@ -151,7 +159,7 @@ end
 
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
-    use {'akinsho/bufferline.nvim', config=setup_bufferline}
+    use {'romgrk/barbar.nvim', requires={'kyazdani42/nvim-web-devicons'}, config=setup_barbar}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path',
          'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
@@ -185,7 +193,7 @@ require('packer').startup(function(use)
     use {"williamboman/mason-lspconfig.nvim"}
     use {"phaazon/mind.nvim", ft={'markdown'}, config=require'setup_note'.mind, after='plenary.nvim'}
     use {"echasnovski/mini.nvim", config=setup_mini, after='gitsigns.nvim'}
-    use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
+    use {'EdenEast/nightfox.nvim', config=function() require'colorschemes'.nightfox('dawnfox') end}
     use 'nvim-lua/plenary.nvim'
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
