@@ -133,7 +133,7 @@ local setup_mini = function ()
     local mini_bufremove = require('mini.bufremove')
     mini_bufremove.setup({})
     vim.keymap.set("n", "qw", [[:w<cr>:lua require'mini.bufremove'.wipeout(0)<cr>]], { silent = true, noremap = true })
-    vim.keymap.set("n", "qq", function() mini_bufremove.wipeout(0, true) end, { silent = true, noremap = true })
+    vim.keymap.set("n", "qq", function() mini_bufremove.wipeout(0, true); require'bufferline.ui'.refresh() end, { silent = true, noremap = true })
     require'mini.comment'.setup{
         mappings={
             comment='ci',
