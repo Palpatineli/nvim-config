@@ -89,51 +89,24 @@ local setup_dadbod_comp = function()
     vim.g.vim_dadbod_completion_mark = ''
 end
 
-local setup_bufferline = function ()
-    vim.opt.termguicolors = true
-    require'bufferline'.setup({
-        highlights = {},
-        options = {
-            diagnostic = 'nvim_lsp',
-            show_buffer_close_icons = false,
-            show_close_icon = false,
-            separator_style = 'slant'
-        }
-    })
-    vim.keymap.set("n", "<leader>j", "", {noremap=true, silent=true, callback=function() require'bufferline'.cycle(1) end})
-    vim.keymap.set("n", "<leader>k", "", {noremap=true, silent=true, callback=function() require'bufferline'.cycle(-1) end})
-    vim.keymap.set("n", "<leader>b", "", {noremap=true, silent=true, callback=function() require'bufferline'.pick_buffer() end})
-end
-
-local setup_barbar = function()
-    local opts = {noremap=true, silent=true}
-    local api = require'bufferline.api'
-    vim.keymap.set('n', "<leader>j", function() api.goto_buffer_relative(1) end, opts)
-    vim.keymap.set('n', "<leader>k", function() api.goto_buffer_relative(-1) end, opts)
-    vim.keymap.set('n', "<leader>b", api.pick_buffer, opts)
-end
-
 local setup_osc = function()
     vim.g.oscyank_term = 'tmux'
     vim.g.oscyank_silent = true
     vim.cmd[[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYankReg + | endif]]
 end
 
-local setup_yanky = function()
-    require'yanky'.setup{}
-    vim.keymap.set({"n","x"}, "p", "<Plug>(YankyPutAfter)")
-    vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
-    vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
-    vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
-    require'telescope'.load_extension('yank_history')
-    vim.keymap.set("n", "<leader>y", "<cmd>Telescope yank_history<cr>")
+local setup_barbar = function()
+    local api = require'bufferline.api'
+    vim.keymap.set('n', '<leader>j', function() api.goto_buffer_relative(1) end, {silent=true, noremap=true})
+    vim.keymap.set('n', '<leader>k', function() api.goto_buffer_relative(-1) end, {silent=true, noremap=true})
+    vim.keymap.set('n', '<leader>b', api.pick_buffer, {silent=true, noremap=true})
 end
 
 local setup_mini = function ()
     local mini_bufremove = require('mini.bufremove')
     mini_bufremove.setup({})
     vim.keymap.set("n", "qw", [[:w<cr>:lua require'mini.bufremove'.wipeout(0)<cr>]], { silent = true, noremap = true })
-    vim.keymap.set("n", "qq", function() mini_bufremove.wipeout(0, true); require'bufferline.ui'.refresh() end, { silent = true, noremap = true })
+    vim.keymap.set("n", "qq", function() mini_bufremove.wipeout(0, true) end, { silent = true, noremap = true })
     require'mini.comment'.setup{
         mappings={
             comment='ci',
@@ -192,14 +165,12 @@ require('packer').startup(function(use)
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
     use {"phaazon/mind.nvim", ft={'markdown'}, config=require'setup_note'.mind, after='plenary.nvim'}
-    use {"echasnovski/mini.nvim", config=setup_mini, after='gitsigns.nvim'}
+    use {"echasnovski/mini.nvim", config=setup_mini, after={'gitsigns.nvim', 'telescope.nvim'}}
     use {'EdenEast/nightfox.nvim', config=function() require'colorschemes'.nightfox('dawnfox') end}
     use 'nvim-lua/plenary.nvim'
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
-    use {'simrat39/symbols-outline.nvim', config=
-         function() vim.keymap.set("n", "<F9>", ":SymbolsOutline<cr>", {}) end}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup}
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
@@ -212,5 +183,4 @@ require('packer').startup(function(use)
     if packer_bootstrap then
         require('packer').sync()
     end
-    use {'gbprod/yanky.nvim', after='telescope.nvim', config=setup_yanky}
 end)
