@@ -52,4 +52,12 @@ M.everforest = function(bw, flavor)
     vim.g.everforest_better_performance = 1
     vim.cmd[[colorscheme everforest]]
 end
+
+M.tundra = function()
+    vim.opt.background = 'dark'
+    vim.cmd[[colorscheme tundra]]
+    require'nvim-tundra'.setup{
+        dim_inactive_windows = {enabled=true}
+    }
+end
 return M

@@ -166,7 +166,6 @@ require('packer').startup(function(use)
     use {"williamboman/mason-lspconfig.nvim"}
     use {"phaazon/mind.nvim", ft={'markdown'}, config=require'setup_note'.mind, after='plenary.nvim'}
     use {"echasnovski/mini.nvim", config=setup_mini, after={'gitsigns.nvim', 'telescope.nvim'}}
-    use {'EdenEast/nightfox.nvim', config=function() require'colorschemes'.nightfox('dawnfox') end}
     use 'nvim-lua/plenary.nvim'
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
@@ -176,6 +175,7 @@ require('packer').startup(function(use)
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
+    use {'sam4llis/nvim-tundra', config=require'colorschemes'.tundra}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},
         config=require'setup_ufo'.setup}
     use 'mg979/vim-visual-multi'
