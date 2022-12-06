@@ -102,11 +102,11 @@ M.miniline = function()
         return mini.combine_groups({
             {hl=mode_hl, strings={ filename }},
             '%<',
-            {hl='TabLine', strings={git}},
+            {hl='Todo', strings={git}},
             {hl='WinBarNC', strings={diagnostics}},
             '%=',
             {hl='WinBarNC', strings={gps.get_location()}},
-            {hl='TabLine', strings={fileinfo}},
+            {hl='Todo', strings={fileinfo}},
             {hl=mode_hl, strings={location}},
         })
     end

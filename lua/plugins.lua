@@ -96,10 +96,18 @@ local setup_osc = function()
 end
 
 local setup_barbar = function()
-    local api = require'bufferline.api'
+    local api = require'bufferline.api'  -- this is a barbar module, not that of the plugin bufferline
     vim.keymap.set('n', '<leader>j', function() api.goto_buffer_relative(1) end, {silent=true, noremap=true})
     vim.keymap.set('n', '<leader>k', function() api.goto_buffer_relative(-1) end, {silent=true, noremap=true})
     vim.keymap.set('n', '<leader>b', api.pick_buffer, {silent=true, noremap=true})
+end
+
+local setup_trouble = function()
+    require'trouble'.setup{
+        mode = "document_diagnostics"
+    }
+    vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", {silent=true, noremap=true})
+    vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent=true, noremap=true})
 end
 
 local setup_mini = function ()
@@ -168,6 +176,7 @@ require('packer').startup(function(use)
     use {"echasnovski/mini.nvim", config=setup_mini, after={'gitsigns.nvim', 'telescope.nvim'}}
     use 'nvim-lua/plenary.nvim'
     use {'ojroques/vim-oscyank', config=setup_osc}
+    use {'rmehri01/onenord.nvim', config=function() require'onenord'.setup{theme='light', fade_nc=true} end}
     use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
@@ -175,7 +184,7 @@ require('packer').startup(function(use)
     use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
-    use {'sam4llis/nvim-tundra', config=require'colorschemes'.tundra}
+    use {'folke/trouble.nvim', requires='kyazdani42/nvim-web-devicons', config=setup_trouble}
     use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},
         config=require'setup_ufo'.setup}
     use 'mg979/vim-visual-multi'

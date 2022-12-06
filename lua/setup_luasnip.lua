@@ -33,8 +33,8 @@ M.setup = function()
         sn(nil, tab)
     end
     ls.add_snippets('python', {
-        s('doc', fmt('"""{}\nArgs:\n\t{}: {}\nReturns:\n\t{}\n"""', {
-            i(1, 'name'), i(2, 'arg'), i(3, 'arg_doc'), i(4, 'return')
+        s('doc', fmt('"""{}\n\nParameters\n----------\n{}\n\t{}\n\nReturns\n-------\n{}\n\t{}\n"""', {
+            i(1, 'name'), i(2, 'arg'), i(3, 'arg_doc'), i(4, 'return'), i(5, 'return_doc')
         })),
         s('np', {t('import numpy as np')}),
         s('pd', {t('import pandas as pd')}),
