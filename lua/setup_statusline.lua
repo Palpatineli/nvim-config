@@ -63,12 +63,12 @@ M.cycle = function(x)
     end
 end
 
-M.lualine = function()
+M.lualine = function(theme)
     local gps = setup_gps()
     require('lualine').setup({
         options = {
             icons_enabled=true,
-            theme = 'auto',
+            theme = theme,
             component_separators = { left = '', right = '' },
             section_separators = { left = '', right = '' },
             globalstatus = true,
@@ -86,6 +86,14 @@ M.lualine = function()
             lualine_y = {'filetype'},
             lualine_z = {'progress'},
         },
+        inactive_sections = {
+            lualine_a = {},
+            lualine_b = {},
+            lualine_c = {'filename'},
+            lualine_x = {'location'},
+            lualine_y = {},
+            lualine_z = {}
+        }
     })
 end
 

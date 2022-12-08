@@ -125,7 +125,6 @@ local setup_mini = function ()
     require'mini.cursorword'.setup({})
     require'mini.indentscope'.setup({})
     require'mini.jump'.setup({mappings={forward='f', backward='F', forward_till='', backward_till='', repeat_jump='.'}, delay={highlight=10000000, idle_stop=500}})
-    require'setup_statusline'.miniline()
     require'mini.trailspace'.setup({})
 end
 
@@ -170,6 +169,7 @@ require('packer').startup(function(use)
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
+    use {'nvim-lualine/lualine.nvim', config=function() require'setup_statusline'.lualine('onenord') end}
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
     use {"phaazon/mind.nvim", ft={'markdown'}, config=require'setup_note'.mind, after='plenary.nvim'}
