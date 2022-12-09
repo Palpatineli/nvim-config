@@ -66,4 +66,35 @@ M.mind = function()
     vim.keymap.set('n', '<leader>tp', open_local_mind)
 end
 
+M.neorg = function()
+    require'neorg'.setup{
+        load = {
+            ["core.defaults"] = {},
+            ["core.export"] = {},
+            ["core.norg.dirman"] = {
+                config = {
+                    workspaces = {
+                        work = "~/Sync/note/work",
+                        home = "~/Sync/note/home",
+                    }
+                }
+            },
+            ["core.gtd.base"] = {
+                config = {
+                    workspace = 'work'
+                }
+            },
+            ["core.norg.completion"] = { config = { engine = "nvim-cmp" } },
+            ["core.norg.concealer"] = {},
+            ["core.integrations.telescope"] = {},
+            ["external.gtd-project-tags"] = { config = {
+                show_completed = false,
+                show_future = true,
+                show_extra = true,
+            } }
+        }
+    }
+    require('cmp').setup.buffer({ sources = {{ name = 'neorg' }} })
+end
+
 return M
