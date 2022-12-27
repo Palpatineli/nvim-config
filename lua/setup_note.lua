@@ -94,7 +94,27 @@ M.neorg = function()
             } }
         }
     }
-    require('cmp').setup.buffer({ sources = {{ name = 'neorg' }} })
+    -- require('cmp').setup.buffer({ sources = {{ name = 'neorg' }} })
+end
+
+local follow_link = function()
+    if require'obsidian'.util.cursor_on_markdown_link() then
+        return '<cmd>ObsidianFollowLink<CR>'
+    else
+        return 'gf'
+    end
+end
+
+M.obsidian = function()
+    require'obsidian'.setup{
+        dir="~/Sync/note",
+        daily_notes = { folder = "dailies" },
+        completion={nvim_cmp = true}
+    }
+    vim.keymap.set('n', 'gf', follow_link, {noremap=false, expr=true})
+    vim.keymap.set('n', '<leader>ob', '<cmd>ObsidianBacklinks<cr>', {noremap=false})
+    vim.keymap.set('n', '<leader>os', '<cmd>ObsidianSearch<cr>', {noremap=false})
+    vim.keymap.set('v', '<leader>ol', '<cmd>ObsidianLink<cr>', {noremap=false})
 end
 
 return M

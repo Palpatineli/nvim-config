@@ -3,7 +3,10 @@ M.setup = function()
     require'nvim-treesitter.configs'.setup {
         ensure_installed = {"bash", "c", "css", "dockerfile", "html", "javascript", "json", "lua","markdown",
             "python", "regex", "rust", "scss", "toml", "typescript", "yaml"},
-        highlight = { enable = true, },
+        highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = { 'markdown' },
+        },
         incremental_selection = {
             enable = true,
             keymaps = {

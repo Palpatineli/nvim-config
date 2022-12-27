@@ -173,10 +173,8 @@ require('packer').startup(function(use)
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
     use {"echasnovski/mini.nvim", config=setup_mini, after={'gitsigns.nvim', 'telescope.nvim'}}
-    use {'nvim-neorg/neorg', requires='hrsh7th/nvim-cmp', run=":Neorg sync-parsers", config=require"setup_note".neorg}
-    use {'nvim-neorg/neorg-telescope', requires={'nvim-neorg/neorg', 'nvim-telescope/telescope.nvim'}}
-    use {'esquires/neorg-gtd-project-tags', requires='nvim-neorg/neorg'}
     use 'nvim-lua/plenary.nvim'
+    use {'epwalsh/obsidian.nvim', requires={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end}
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'rmehri01/onenord.nvim', config=function() require'onenord'.setup{theme='light', fade_nc=true} end}
     use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
