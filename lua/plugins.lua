@@ -163,25 +163,26 @@ require('packer').startup(function(use)
     use {'lewis6991/gitsigns.nvim', config=function() require'gitsigns'.setup() end}
     use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
     use {'rhysd/vim-grammarous', ft={'markdown'}}
+    use {"asiryk/auto-hlsearch.nvim", config=function() require'auto-hlsearch'.setup() end}
     use {'VonHeikemen/lsp-zero.nvim', after={'mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp', 'LuaSnip',
         'lspkind-nvim', 'telescope.nvim'}, config=require'setup_lsp'.setup}
     use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
     use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
     use 'neovim/nvim-lspconfig'
     use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
-    use {'nvim-lualine/lualine.nvim', config=function() require'setup_statusline'.lualine('onenord') end}
+    use {'nvim-lualine/lualine.nvim', config=function() require'setup_statusline'.lualine('everforest') end}
     use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
     use {"williamboman/mason-lspconfig.nvim"}
     use {"echasnovski/mini.nvim", config=setup_mini, after={'gitsigns.nvim', 'telescope.nvim'}}
     use 'nvim-lua/plenary.nvim'
     use {'epwalsh/obsidian.nvim', requires={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end}
     use {'ojroques/vim-oscyank', config=setup_osc}
-    use {'rmehri01/onenord.nvim', config=function() require'onenord'.setup{theme='light', fade_nc=true} end}
+    use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
     use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup}
-    use {'p00f/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
+    use {'mrjones2014/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
     use {'folke/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
     use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
     use {'folke/trouble.nvim', requires='kyazdani42/nvim-web-devicons', config=setup_trouble}

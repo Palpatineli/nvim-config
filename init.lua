@@ -15,7 +15,6 @@ vim.opt.cmdheight = 0
 vim.opt.termguicolors = true
 vim.opt.background = 'light'
 vim.opt.guifont = 'FiraCode NF:h8'
-vim.opt.printfont = 'FiraCode NF:h8'
 ---- substitutions go global by default
 vim.opt.gdefault = true
 ---- program title shows file name
