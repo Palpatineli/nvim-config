@@ -98,7 +98,10 @@ M.setup = function()
         default_config = {
             root_dir = util.root_pattern(".git", "setup.py", "setup.cfg", "pyproject.toml", "requirement.txt", "Makefile"),
             settings = {
-                analysis = {autoSearchPaths = true},
+                analysis = {
+                    autoSearchPaths = true,
+                    diagnosticMode = 'openFileOnly'
+                },
                 pyright = {useLibraryCodeForTypes = true}
             },
             before_init = function(initialize_params)

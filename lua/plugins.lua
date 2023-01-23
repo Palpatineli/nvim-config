@@ -6,6 +6,12 @@ if fn.empty(fn.glob(install_path)) > 0 then
     packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
+local setup_aerial = function()
+    require'aerial'.setup{
+    }
+    vim.keymap.set('n', '<F9>', '<cmd>AerialToggle!<CR>')
+end
+
 local setup_dap = function()
     vim.keymap.set("n", "<leader>db", require'dap'.toggle_breakpoint, {})
     vim.keymap.set("n", "<leader>dc", require'dap'.continue, {})
@@ -38,7 +44,8 @@ local setup_iron = function()
             scratch_repl = false,
             buflisted = true,
             repl_definition = {
-                python = require'iron.fts.python'.ipython
+                python = require'iron.fts.python'.ipython,
+                sh = { command = {"bash"} }
             },
             repl_open_cmd = "botright 40 split"
         },
@@ -139,6 +146,7 @@ end
 
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
+    use {'stevearc/aerial.nvim', config=setup_aerial}
     use {'romgrk/barbar.nvim', requires={'kyazdani42/nvim-web-devicons'}, config=setup_barbar}
     use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
     use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path',
