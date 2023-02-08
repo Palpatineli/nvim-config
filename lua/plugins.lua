@@ -1,10 +1,16 @@
--- general
----- bootstrap packadd somehow not working
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+-- bootstrap lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
 local setup_aerial = function()
     require'aerial'.setup{
@@ -149,65 +155,54 @@ local setup_overlength = function()
         default_overlength=120,
         textwidth_mode=0,
         bg='#E59E9F',
-        disable_ft={ 'qf', 'help', 'man', 'packer', 'NvimTree', 'Telescope', 'WhichKey', 'lazygit'}
+        disable_ft={ 'qf', 'help', 'man', 'packer', 'NvimTree', 'Telescope', 'WhichKey', 'lazygit', 'lazy', 'mason', 'ipython'}
     })
 end
 
-require('packer').startup(function(use)
-    use 'wbthomason/packer.nvim'
-    use {'stevearc/aerial.nvim', config=setup_aerial}
-    use {'romgrk/barbar.nvim', requires={'kyazdani42/nvim-web-devicons'}, config=setup_barbar}
-    use {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end}
-    use {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path',
-         'hrsh7th/cmp-cmdline', requires={'hrsh7th/nvim-cmp'}}
-    use {'hrsh7th/cmp-nvim-lsp', requires={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}}
-    use {'hrsh7th/cmp-nvim-lsp-signature-help', requires={'hrsh7th/cmp-nvim-lsp'}}
-    use {'ray-x/cmp-treesitter', requires={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}}
-    use {'hrsh7th/nvim-cmp'}
-    use {'L3MON4D3/LuaSnip', config=require'setup_luasnip'.setup}
-    use {'saadparwaiz1/cmp_luasnip'}
-    use {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}}
-    use {'Palpatineli/vim-dadbod-ui', requires={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui}
-    use {'Palpatineli/vim-dadbod-completion', requires={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'},
-        config=setup_dadbod_comp}
-    use {'mfussenegger/nvim-dap', config=setup_dap}
-    use {'nvim-telescope/telescope-dap.nvim', requires={'mfussenegger/nvim-dap'}, after='nvim-dap',
-        config=setup_dap_telescope}
-    use {'mfussenegger/nvim-dap-python', requires={'mfussenegger/nvim-dap'}, after='nvim-dap', ft={'python'},
-        config=setup_dap_python}
-    use {'rcarriga/cmp-dap', requires={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}, after='nvim-dap'}
-    use {'j-hui/fidget.nvim', after={'lsp-zero.nvim'}, config=setup_lsp_fidget}
-    use {'lewis6991/gitsigns.nvim', config=function() require'gitsigns'.setup() end}
-    use {'SmiteshP/nvim-gps', requires={'nvim-treesitter/nvim-treesitter'}}
-    use {'rhysd/vim-grammarous', ft={'markdown'}}
-    use {"asiryk/auto-hlsearch.nvim", config=function() require'auto-hlsearch'.setup() end}
-    use {'VonHeikemen/lsp-zero.nvim', after={'mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp', 'LuaSnip',
-        'lspkind-nvim', 'telescope.nvim'}, config=require'setup_lsp'.setup}
-    use {"hkupty/iron.nvim", ft={'python'}, config=setup_iron}
-    use {'kdheepak/lazygit.nvim', requires={'nvim-telescope/telescope.nvim'}, config=setup_lazygit}
-    use 'neovim/nvim-lspconfig'
-    use {'onsails/lspkind-nvim', requires={'hrsh7th/nvim-cmp'}}
-    use {'nvim-lualine/lualine.nvim', config=function() require'setup_statusline'.lualine('everforest') end}
-    use {"williamboman/mason.nvim", config=function() require'mason'.setup() end}
-    use {"williamboman/mason-lspconfig.nvim"}
-    use {"echasnovski/mini.nvim", config=setup_mini, after={'gitsigns.nvim', 'telescope.nvim'}}
-    use 'nvim-lua/plenary.nvim'
-    use {'epwalsh/obsidian.nvim', requires={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end}
-    use {'ojroques/vim-oscyank', config=setup_osc}
-    use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
-    use {'lcheylus/overlength.nvim', config=setup_overlength}
-    use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
-    use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
-        config=require'setup_telescope'.setup}
-    use {'mrjones2014/nvim-ts-rainbow', requires='nvim-treesitter/nvim-treesitter'}
-    use {'folke/todo-comments.nvim', config=setup_todo_comments, requires={'nvim-telescope/telescope.nvim'} }
-    use {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup}
-    use {'folke/trouble.nvim', requires='kyazdani42/nvim-web-devicons', config=setup_trouble}
-    use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async', after={'nvim-treesitter'},
-        config=require'setup_ufo'.setup}
-    use 'mg979/vim-visual-multi'
-    use 'kyazdani42/nvim-web-devicons'
-    if packer_bootstrap then
-        require('packer').sync()
-    end
-end)
+require('lazy').setup({
+    {'stevearc/aerial.nvim', config=setup_aerial},
+    {'romgrk/barbar.nvim', dependencies={'kyazdani42/nvim-web-devicons'}, config=setup_barbar},
+    {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end},
+    {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline', dependencies={'hrsh7th/nvim-cmp'}},
+    {'hrsh7th/cmp-nvim-lsp', dependencies={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}},
+    {'hrsh7th/cmp-nvim-lsp-signature-help', dependencies={'hrsh7th/cmp-nvim-lsp'}},
+    {'ray-x/cmp-treesitter', dependencies={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}},
+    'hrsh7th/nvim-cmp',
+    {'L3MON4D3/LuaSnip', config=require'setup_luasnip'.setup},
+    {'saadparwaiz1/cmp_luasnip'},
+    {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}},
+    {'Palpatineli/vim-dadbod-ui', dependencies={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui},
+    {'Palpatineli/vim-dadbod-completion', dependencies={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'}, config=setup_dadbod_comp},
+    {'mfussenegger/nvim-dap', config=setup_dap},
+    {'nvim-telescope/telescope-dap.nvim', dependencies={'mfussenegger/nvim-dap'}, config=setup_dap_telescope},
+    {'mfussenegger/nvim-dap-python', dependencies={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_python},
+    {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
+    {'j-hui/fidget.nvim', dependencies={'VonHeikemen/lsp-zero.nvim'}, config=setup_lsp_fidget},
+    {'lewis6991/gitsigns.nvim', config=function() require'gitsigns'.setup() end},
+    {'SmiteshP/nvim-gps', dependencies={'nvim-treesitter/nvim-treesitter'}},
+    {'rhysd/vim-grammarous', ft={'markdown'}},
+    {"asiryk/auto-hlsearch.nvim", config=function() require'auto-hlsearch'.setup() end},
+    {'VonHeikemen/lsp-zero.nvim', dependencies={'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'hrsh7th/nvim-cmp', 'L3MON4D3/LuaSnip', 'onsails/lspkind-nvim', 'nvim-telescope/telescope.nvim'}, config=require'setup_lsp'.setup},
+    {"hkupty/iron.nvim", ft={'python'}, config=setup_iron},
+    {'kdheepak/lazygit.nvim', dependencies={'nvim-telescope/telescope.nvim'}, config=setup_lazygit},
+    'neovim/nvim-lspconfig',
+    {'onsails/lspkind-nvim', dependencies={'hrsh7th/nvim-cmp'}},
+    {'nvim-lualine/lualine.nvim', config=function() require'setup_statusline'.lualine('everforest') end},
+    {"williamboman/mason.nvim", config=function() require'mason'.setup() end},
+    {"williamboman/mason-lspconfig.nvim"},
+    {"echasnovski/mini.nvim", config=setup_mini, dependencies={'lewis6991/gitsigns.nvim', 'nvim-telescope/telescope.nvim'}},
+    'nvim-lua/plenary.nvim',
+    {'epwalsh/obsidian.nvim', dependencies={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end},
+    {'ojroques/vim-oscyank', config=setup_osc},
+    {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
+    {'lcheylus/overlength.nvim', config=setup_overlength},
+    {'Vimjas/vim-python-pep8-indent', ft={'python'}},
+    {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}, config=require'setup_telescope'.setup},
+    {'mrjones2014/nvim-ts-rainbow', dependencies='nvim-treesitter/nvim-treesitter'},
+    {'folke/todo-comments.nvim', config=setup_todo_comments, dependencies={'nvim-telescope/telescope.nvim'} },
+    {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup},
+    {'folke/trouble.nvim', dependencies='kyazdani42/nvim-web-devicons', config=setup_trouble},
+    {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'}, config=require'setup_ufo'.setup},
+    'mg979/vim-visual-multi',
+    'kyazdani42/nvim-web-devicons'
+})
