@@ -78,7 +78,7 @@ M.setup = function()
     })
     zero.ensure_installed{
         "prosemd_lsp", "pyright", "sumneko_lua", "bashls", "cssls", "rust_analyzer", "tsserver", "html", "lemminx",
-        "jsonls", "dotls", "vimls", "yamlls"
+        "jsonls", "dotls", "vimls", "yamlls", "marksman"
     }
     local runtime_path = vim.split(package.path, ';')
     table.insert(runtime_path, "lua/?.lua")
@@ -114,6 +114,7 @@ M.setup = function()
         init_options = { runtimepath = vim.api.nvim_get_option("runtimepath"), indexes = {gap = 75, count = 5} }
     })
     zero.configure('yamlls', { settings = { yaml = {format = {enable = true, singleQuote = true}, validate = true} } })
+    zero.configure('marksman', {filetypes = {'markdown'}})
 
     zero.setup()
 end

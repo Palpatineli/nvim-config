@@ -144,6 +144,15 @@ local setup_todo_comments = function()
     vim.keymap.set("n", "<leader>T", ":TodoTelescope<cr>", {})
 end
 
+local setup_overlength = function()
+    require'overlength'.setup({
+        default_overlength=120,
+        textwidth_mode=0,
+        bg='#E59E9F',
+        disable_ft={ 'qf', 'help', 'man', 'packer', 'NvimTree', 'Telescope', 'WhichKey', 'lazygit'}
+    })
+end
+
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use {'stevearc/aerial.nvim', config=setup_aerial}
@@ -186,7 +195,7 @@ require('packer').startup(function(use)
     use {'epwalsh/obsidian.nvim', requires={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end}
     use {'ojroques/vim-oscyank', config=setup_osc}
     use {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end}
-    use {'lcheylus/overlength.nvim', config=function() require'overlength'.setup{default_overlength=120} end}
+    use {'lcheylus/overlength.nvim', config=setup_overlength}
     use {'Vimjas/vim-python-pep8-indent', ft={'python'}}
     use {'nvim-telescope/telescope.nvim', requires={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup}
