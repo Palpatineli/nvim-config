@@ -77,13 +77,13 @@ M.setup = function()
         })
     })
     zero.ensure_installed{
-        "prosemd_lsp", "pyright", "sumneko_lua", "bashls", "cssls", "rust_analyzer", "tsserver", "html", "lemminx",
+        "prosemd_lsp", "pyright", "lua_ls", "bashls", "cssls", "rust_analyzer", "tsserver", "html", "lemminx",
         "jsonls", "dotls", "vimls", "yamlls", "marksman"
     }
     local runtime_path = vim.split(package.path, ';')
     table.insert(runtime_path, "lua/?.lua")
     table.insert(runtime_path, "lua/?/init.lua")
-    zero.configure('sumneko_lua', {
+    zero.configure('lua_ls', {
         settings = {
             Lua = {
                 runtime = { version = 'LuaJIT', path = runtime_path, },
