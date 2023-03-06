@@ -110,14 +110,8 @@ local get_path = function(str)
 end
 
 M.obsidian = function()
-    local note_dir = ""
-    if vim.fn.has('win32') then
-        note_dir = get_path(get_path(get_path(vim.fn.stdpath('config'))))..'Sync\note'
-    else
-        note_dir = "~/Sync/note"
-    end
     require'obsidian'.setup{
-        dir=note_dir,
+        dir="~/Sync/note",
         daily_notes = { folder = "dailies" },
         completion={nvim_cmp = true}
     }

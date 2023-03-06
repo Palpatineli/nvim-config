@@ -63,7 +63,8 @@ local setup_iron = function()
             exit = "<leader>iq"
         }
     }
-    vim.keymap.set("n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>", {noremap = true, silent = true})
+    vim.keymap.set("n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>",
+        {noremap = true, silent = true})
 end
 
 local setup_lsp_fidget = function()
@@ -137,7 +138,8 @@ local setup_mini = function ()
     -- wait for mini.snippet to switch to mini.completion
     require'mini.cursorword'.setup({})
     require'mini.indentscope'.setup({})
-    require'mini.jump'.setup({mappings={forward='f', backward='F', forward_till='', backward_till='', repeat_jump='.'}, delay={highlight=10000000, idle_stop=500}})
+    require'mini.jump'.setup({mappings={forward='f', backward='F', forward_till='', backward_till='', repeat_jump='.'},
+        delay={highlight=10000000, idle_stop=500}})
     require'mini.trailspace'.setup({})
 end
 
@@ -155,7 +157,8 @@ local setup_overlength = function()
         default_overlength=120,
         textwidth_mode=0,
         bg='#E59E9F',
-        disable_ft={ 'qf', 'help', 'man', 'packer', 'NvimTree', 'Telescope', 'WhichKey', 'lazygit', 'lazy', 'mason', 'ipython'}
+        disable_ft={ 'qf', 'help', 'man', 'packer', 'NvimTree', 'Telescope', 'WhichKey', 'lazygit', 'lazy', 'mason',
+            'ipython'}
     })
 end
 
@@ -163,7 +166,8 @@ require('lazy').setup({
     {'stevearc/aerial.nvim', config=setup_aerial},
     {'romgrk/barbar.nvim', dependencies={'kyazdani42/nvim-web-devicons'}, config=setup_barbar},
     {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end},
-    {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline', dependencies={'hrsh7th/nvim-cmp'}},
+    {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline',
+        dependencies={'hrsh7th/nvim-cmp'}},
     {'hrsh7th/cmp-nvim-lsp', dependencies={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}},
     {'hrsh7th/cmp-nvim-lsp-signature-help', dependencies={'hrsh7th/cmp-nvim-lsp'}},
     {'ray-x/cmp-treesitter', dependencies={'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp'}},
@@ -172,7 +176,8 @@ require('lazy').setup({
     {'saadparwaiz1/cmp_luasnip'},
     {'kristijanhusak/vim-dadbod', branch='async-query', ft={'sql'}},
     {'Palpatineli/vim-dadbod-ui', dependencies={'kristijanhusak/vim-dadbod'}, ft={'sql'}, config=setup_dadbod_ui},
-    {'Palpatineli/vim-dadbod-completion', dependencies={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'}, config=setup_dadbod_comp},
+    {'Palpatineli/vim-dadbod-completion', dependencies={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'},
+        config=setup_dadbod_comp},
     {'mfussenegger/nvim-dap', config=setup_dap},
     {'nvim-telescope/telescope-dap.nvim', dependencies={'mfussenegger/nvim-dap'}, config=setup_dap_telescope},
     {'mfussenegger/nvim-dap-python', dependencies={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_python},
@@ -183,7 +188,9 @@ require('lazy').setup({
     {'SmiteshP/nvim-gps', dependencies={'nvim-treesitter/nvim-treesitter'}},
     {'rhysd/vim-grammarous', ft={'markdown'}},
     {"asiryk/auto-hlsearch.nvim", config=function() require'auto-hlsearch'.setup() end},
-    {'VonHeikemen/lsp-zero.nvim', dependencies={'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'hrsh7th/nvim-cmp', 'L3MON4D3/LuaSnip', 'onsails/lspkind-nvim', 'nvim-telescope/telescope.nvim'}, config=require'setup_lsp'.setup},
+    {'VonHeikemen/lsp-zero.nvim', config=require'setup_lsp'.setup,
+        dependencies={'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'hrsh7th/nvim-cmp',
+            'L3MON4D3/LuaSnip', 'onsails/lspkind-nvim', 'nvim-telescope/telescope.nvim'}},
     {"hkupty/iron.nvim", ft={'python'}, config=setup_iron},
     {'kdheepak/lazygit.nvim', dependencies={'nvim-telescope/telescope.nvim'}, config=setup_lazygit},
     'neovim/nvim-lspconfig',
@@ -192,19 +199,23 @@ require('lazy').setup({
         config=function() require'setup_statusline'.lualine_power('everforest') end},
     {"williamboman/mason.nvim", config=function() require'mason'.setup() end},
     {"williamboman/mason-lspconfig.nvim"},
-    {"echasnovski/mini.nvim", config=setup_mini, dependencies={'lewis6991/gitsigns.nvim', 'nvim-telescope/telescope.nvim'}},
+    {"echasnovski/mini.nvim", config=setup_mini,
+        dependencies={'lewis6991/gitsigns.nvim', 'nvim-telescope/telescope.nvim'}},
     'nvim-lua/plenary.nvim',
-    {'epwalsh/obsidian.nvim', tag='v1.6.0', dependencies={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end},
+    {'epwalsh/obsidian.nvim', enabled=function() return jit.os == 'Linux' end,
+        dependencies={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end},
     {'ojroques/vim-oscyank', config=setup_osc},
     {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
     {'lcheylus/overlength.nvim', config=setup_overlength},
     {'Vimjas/vim-python-pep8-indent', ft={'python'}},
-    {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}, config=require'setup_telescope'.setup},
+    {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
+        config=require'setup_telescope'.setup},
     {'mrjones2014/nvim-ts-rainbow', dependencies='nvim-treesitter/nvim-treesitter'},
     {'folke/todo-comments.nvim', config=setup_todo_comments, dependencies={'nvim-telescope/telescope.nvim'} },
     {'nvim-treesitter/nvim-treesitter', config=require'setup_treesitter'.setup},
     {'folke/trouble.nvim', dependencies='kyazdani42/nvim-web-devicons', config=setup_trouble},
-    {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'}, config=require'setup_ufo'.setup},
+    {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'},
+        config=require'setup_ufo'.setup},
     'mg979/vim-visual-multi',
     'kyazdani42/nvim-web-devicons'
 })
