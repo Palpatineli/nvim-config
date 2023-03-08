@@ -162,10 +162,18 @@ local setup_overlength = function()
     })
 end
 
+local setup_copilot = function()
+    require'copilot'.setup{}
+    vim.keymap.set('n', '<leader>c', [[<cmd>Copilot panel<cr>]], {silent=true, noremap=true})
+end
+
 require('lazy').setup({
     {'stevearc/aerial.nvim', config=setup_aerial},
     {'romgrk/barbar.nvim', dependencies={'kyazdani42/nvim-web-devicons'}, config=setup_barbar},
     {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end},
+    {'jackMort/ChatGPT.nvim', dependencies={"MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope.nvim"}, config=function() require'chatgpt'.setup{} end},
+    {'zbirenbaum/copilot.lua', ft={'python'}, config=setup_copilot, cmd='Copilot', event='InsertEnter'},
     {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline',
         dependencies={'hrsh7th/nvim-cmp'}},
     {'hrsh7th/cmp-nvim-lsp', dependencies={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}},
