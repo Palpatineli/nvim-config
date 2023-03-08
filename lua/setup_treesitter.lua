@@ -20,17 +20,8 @@ M.setup = function()
         -- nvim-ts-rainbow
         rainbow = {
             enable = true,
-            extended_mode = true,
-            max_file_lines = 10000,
-            colors = {
-                "#39ADB5",
-                "#FF5370",
-                "#6182B8",
-                "#F6A434",
-                "#91B859",
-                "#E53935",
-                "#5E8526"
-            }
+            query='rainbow-parens',
+            strategy=require'ts-rainbow.strategy.global',
         }
     }
 end
