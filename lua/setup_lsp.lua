@@ -27,6 +27,21 @@ M.setup = function()
         snippet = {
             expand = function(args) luasnip.lsp_expand(args.body) end,
         },
+        sorting = {
+            priority_weight = 2,
+            comparators = {
+                require("copilot_cmp.comparators").prioritize,
+                cmp.config.compare.offset,
+                cmp.config.compare.exact,
+                cmp.config.compare.score,
+                cmp.config.compare.recently_used,
+                cmp.config.compare.locality,
+                cmp.config.compare.kind,
+                cmp.config.compare.sort_text,
+                cmp.config.compare.length,
+                cmp.config.compare.order,
+            },
+        },
         mapping = {
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
             ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -55,6 +70,7 @@ M.setup = function()
             end, { "i", "s", "c" }),
         },
         sources = {
+            { name = 'copilot', group_index = 2},
             { name = 'latex_symbols' },
             { name = 'luasnip' },
             { name = 'nvim_lsp' },
@@ -65,7 +81,11 @@ M.setup = function()
             { name = 'buffer', keyword_length = 4},
         },
         formatting = {
-            format = require'lspkind'.cmp_format({with_text = false, maxwidth = 50})
+            format = require'lspkind'.cmp_format({
+                mode = 'symbol',
+                maxwidth = 50,
+                symbol_map = { Copilot = '' },
+            })
         }
     })
     cmp.setup.cmdline(':', { sources = {{ name = 'cmdline' }}})

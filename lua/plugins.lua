@@ -163,8 +163,11 @@ local setup_overlength = function()
 end
 
 local setup_copilot = function()
-    require'copilot'.setup{}
-    vim.keymap.set('n', '<leader>c', [[<cmd>Copilot panel<cr>]], {silent=true, noremap=true})
+    require'copilot'.setup{
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+    }
+    -- vim.keymap.set('n', '<leader>co', [[<cmd>Copilot panel<cr>]], {silent=true, noremap=true})
 end
 
 require('lazy').setup({
@@ -174,6 +177,8 @@ require('lazy').setup({
     {'jackMort/ChatGPT.nvim', dependencies={"MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope.nvim"}, config=function() require'chatgpt'.setup{} end},
     {'zbirenbaum/copilot.lua', ft={'python'}, config=setup_copilot, cmd='Copilot', event='InsertEnter'},
+    {'zbirenbaum/copilot-cmp', dependencies={'zbirenbaum/copilot.lua'},
+        config = function() require'copilot_cmp'.setup() end},
     {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline',
         dependencies={'hrsh7th/nvim-cmp'}},
     {'hrsh7th/cmp-nvim-lsp', dependencies={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}},
