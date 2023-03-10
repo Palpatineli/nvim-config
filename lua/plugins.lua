@@ -167,7 +167,7 @@ local setup_copilot = function()
         suggestion = { enabled = false },
         panel = { enabled = false },
     }
-    -- vim.keymap.set('n', '<leader>co', [[<cmd>Copilot panel<cr>]], {silent=true, noremap=true})
+    vim.keymap.set('n', '<leader>co', [[<cmd>Copilot panel<cr>]], {silent=true, noremap=true})
 end
 
 require('lazy').setup({
@@ -198,7 +198,7 @@ require('lazy').setup({
     {'sindrets/diffview.nvim', dependencies={'nvim-lua/plenary.nvim'}},
     {'j-hui/fidget.nvim', dependencies={'VonHeikemen/lsp-zero.nvim'}, config=setup_lsp_fidget},
     {'lewis6991/gitsigns.nvim', config=function() require'gitsigns'.setup() end},
-    {'SmiteshP/nvim-gps', dependencies={'nvim-treesitter/nvim-treesitter'}},
+    {'SmiteshP/nvim-navic', dependencies={'neovim/nvim-lspconfig'}},
     {'rhysd/vim-grammarous', ft={'markdown'}},
     {"asiryk/auto-hlsearch.nvim", config=function() require'auto-hlsearch'.setup() end},
     {'VonHeikemen/lsp-zero.nvim', config=require'setup_lsp'.setup,

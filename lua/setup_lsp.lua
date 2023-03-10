@@ -4,6 +4,7 @@ M.setup = function()
     local zero = require'lsp-zero'
     local luasnip = require'luasnip'
     local cmp = require'cmp'
+    local navic = require'nvim-navic'
     zero.preset('lsp-compe')
     zero.set_preferences{
         set_lsp_keymaps = false
@@ -13,13 +14,16 @@ M.setup = function()
         vim.keymap.set("n", "<Leader>K", vim.diagnostic.goto_prev, {noremap=true, silent=true})
         vim.keymap.set("n", "K", vim.lsp.buf.hover, {noremap=true, silent=true})
         vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, {noremap=true})
-        vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action, {noremap=true})
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {noremap=true})
     end
     local has_words_before = function()
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
     end
-    zero.on_attach(function(client, bufnr) keymap() end)
+    zero.on_attach(function(client, bufnr)
+        keymap()
+        navic.attach(client, bufnr)
+    end)
     cmp.setup({
         enabled = function ()
             return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or require'cmp_dap'.is_dap_buffer()

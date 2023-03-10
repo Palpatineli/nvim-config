@@ -126,6 +126,7 @@ M.lualine_power = function(theme)
       return sections
     end
 
+    local navic = require'nvim-navic'
     require('lualine').setup {
       options = {
         theme = theme,
@@ -170,7 +171,7 @@ M.lualine_power = function(theme)
           },
         },
         lualine_c = {},
-        lualine_x = {},
+        lualine_x = { {navic.get_location, cond = navic.is_available} },
         lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
         lualine_z = { {'%l:%c', color={bg = custom_theme.command.a.bg} }, '%p%%/%L' },
       },
