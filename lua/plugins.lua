@@ -221,6 +221,8 @@ require('lazy').setup({
     {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
     {'lcheylus/overlength.nvim', config=setup_overlength},
     {'Vimjas/vim-python-pep8-indent', ft={'python'}},
+    {'cameron-wags/rainbow_csv.nvim', ft={'csv', 'tsv'}, config=true,
+        cmd={'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim'}},
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup},
     {'HiPhish/nvim-ts-rainbow2'},
