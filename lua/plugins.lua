@@ -104,9 +104,12 @@ local setup_dadbod_comp = function()
 end
 
 local setup_osc = function()
-    vim.g.oscyank_term = 'tmux'
-    vim.g.oscyank_silent = true
-    vim.cmd[[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYankReg + | endif]]
+    function copy()
+      if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
+        require('osc52').copy_register('+')
+      end
+    end
+    vim.api.nvim_create_autocmd('TextYankPost', {callback = copy})
 end
 
 local setup_barbar = function()
@@ -217,7 +220,7 @@ require('lazy').setup({
     'nvim-lua/plenary.nvim',
     {'epwalsh/obsidian.nvim', enabled=function() return jit.os == 'Linux' end,
         dependencies={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end},
-    {'ojroques/vim-oscyank', config=setup_osc},
+    {'ojroques/nvim-osc52', config=setup_osc},
     {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
     {'lcheylus/overlength.nvim', config=setup_overlength},
     {'Vimjas/vim-python-pep8-indent', ft={'python'}},
