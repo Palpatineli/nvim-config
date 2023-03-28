@@ -217,6 +217,9 @@ require('lazy').setup({
     {"williamboman/mason-lspconfig.nvim"},
     {"echasnovski/mini.nvim", config=setup_mini,
         dependencies={'lewis6991/gitsigns.nvim', 'nvim-telescope/telescope.nvim'}},
+    {"prichrd/netrw.nvim", config=function()
+        require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
+    end},
     'nvim-lua/plenary.nvim',
     {'epwalsh/obsidian.nvim', enabled=function() return jit.os == 'Linux' end,
         dependencies={'nvim-telescope/telescope-dap.nvim'}, config=function() require'setup_note'.obsidian() end},
@@ -236,5 +239,6 @@ require('lazy').setup({
     {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'},
         config=require'setup_ufo'.setup},
     'mg979/vim-visual-multi',
-    'kyazdani42/nvim-web-devicons'
+    'kyazdani42/nvim-web-devicons',
+    "nanotee/zoxide.vim",
 })
