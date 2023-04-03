@@ -102,7 +102,7 @@ M.setup = function()
         })
     })
     zero.ensure_installed{
-        "prosemd_lsp", "pyright", "lua_ls", "bashls", "cssls", "rust_analyzer", "tsserver", "html", "lemminx",
+        "pyright", "lua_ls", "bashls", "cssls", "rust_analyzer", "tsserver", "html", "lemminx",
         "jsonls", "dotls", "vimls", "yamlls", "marksman"
     }
     local runtime_path = vim.split(package.path, ';')
