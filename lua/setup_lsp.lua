@@ -22,7 +22,9 @@ M.setup = function()
     end
     zero.on_attach(function(client, bufnr)
         keymap()
-        navic.attach(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+            navic.attach(client, bufnr)
+        end
     end)
     cmp.setup({
         enabled = function ()
@@ -34,7 +36,6 @@ M.setup = function()
         sorting = {
             priority_weight = 2,
             comparators = {
-                require("copilot_cmp.comparators").prioritize,
                 cmp.config.compare.offset,
                 cmp.config.compare.exact,
                 cmp.config.compare.score,
@@ -74,7 +75,6 @@ M.setup = function()
             end, { "i", "s", "c" }),
         },
         sources = {
-            { name = 'copilot', group_index = 2},
             { name = 'latex_symbols' },
             { name = 'luasnip' },
             { name = 'nvim_lsp' },
@@ -88,7 +88,6 @@ M.setup = function()
             format = require'lspkind'.cmp_format({
                 mode = 'symbol',
                 maxwidth = 50,
-                symbol_map = { Copilot = '' },
             })
         }
     })

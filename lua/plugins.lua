@@ -165,23 +165,17 @@ local setup_overlength = function()
     })
 end
 
-local setup_copilot = function()
-    require'copilot'.setup{
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-    }
-    vim.keymap.set('n', '<leader>co', [[<cmd>Copilot panel<cr>]], {silent=true, noremap=true})
+local setup_codegpt = function ()
+    require("codegpt.config")
+    vim.g['max_tokens'] = 1024
+    vim.keymap.set("i", "<c-c>", [[<cmd>Chat<cr>]], {noremap=true})
 end
 
 require('lazy').setup({
     {'stevearc/aerial.nvim', config=setup_aerial},
     {'romgrk/barbar.nvim', dependencies={'kyazdani42/nvim-web-devicons'}, config=setup_barbar},
+    {"dpayne/CodeGPT.nvim", dependencies={'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim'}, config=setup_codegpt},
     {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end},
-    {'jackMort/ChatGPT.nvim', dependencies={"MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim"}, config=function() require'chatgpt'.setup{} end},
-    {'zbirenbaum/copilot.lua', ft={'python'}, config=setup_copilot, cmd='Copilot', event='InsertEnter'},
-    {'zbirenbaum/copilot-cmp', dependencies={'zbirenbaum/copilot.lua'},
-        config = function() require'copilot_cmp'.setup() end},
     {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline',
         dependencies={'hrsh7th/nvim-cmp'}},
     {'hrsh7th/cmp-nvim-lsp', dependencies={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp'}},
@@ -231,7 +225,7 @@ require('lazy').setup({
         cmd={'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim'}},
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup},
-    {'HiPhish/nvim-ts-rainbow2'},
+    {'HiPhish/nvim-ts-rainbow2', tag="v2.1.0"},
     {'folke/todo-comments.nvim', config=setup_todo_comments, dependencies={'nvim-telescope/telescope.nvim'} },
     {'nvim-treesitter/nvim-treesitter', dependencies={'HiPhish/nvim-ts-rainbow2'},
         config=require'setup_treesitter'.setup},
