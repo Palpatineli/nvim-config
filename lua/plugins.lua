@@ -192,7 +192,7 @@ require('lazy').setup({
     {'nvim-telescope/telescope-dap.nvim', dependencies={'mfussenegger/nvim-dap'}, config=setup_dap_telescope},
     {'mfussenegger/nvim-dap-python', dependencies={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_python},
     {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
-    {'sindrets/diffview.nvim', dependencies={'nvim-lua/plenary.nvim'}},
+    {'akinsho/git-conflict.nvim', config=true},
     {'j-hui/fidget.nvim', dependencies={'VonHeikemen/lsp-zero.nvim'}, config=setup_lsp_fidget},
     {'lewis6991/gitsigns.nvim', config=function() require'gitsigns'.setup() end},
     {'SmiteshP/nvim-navic', dependencies={'neovim/nvim-lspconfig'}},
