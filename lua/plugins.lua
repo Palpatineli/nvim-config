@@ -165,16 +165,20 @@ local setup_overlength = function()
     })
 end
 
-local setup_codegpt = function ()
-    require("codegpt.config")
-    vim.g['max_tokens'] = 1024
+local setup_ai = function ()
+    vim.g.ai_completions_model = "gpt-3.5-turbo"
+    vim.g.ai_edits_model = "code-davinci-edit-001"
+    vim.g.ai_context_before = 30
+    vim.g.ai_context_after = 10
+    vim.g.ai_temperature = 0.7
+    vim.g.ai_timeout = 20
     vim.keymap.set("i", "<c-c>", [[<cmd>Chat<cr>]], {noremap=true})
 end
 
 require('lazy').setup({
     {'stevearc/aerial.nvim', config=setup_aerial},
     {'romgrk/barbar.nvim', dependencies={'kyazdani42/nvim-web-devicons'}, config=setup_barbar},
-    {"dpayne/CodeGPT.nvim", dependencies={'nvim-lua/plenary.nvim', 'MunifTanjim/nui.nvim'}, config=setup_codegpt},
+    {"aduros/ai.vim", commit='921f467', config=setup_ai},
     {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end},
     {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline',
         dependencies={'hrsh7th/nvim-cmp'}},
