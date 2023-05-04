@@ -150,7 +150,7 @@ M.lualine_power = function(theme)
             sections = { 'warn' },
             diagnostics_color = { warn = { bg = custom_theme.replace.a.bg, fg = custom_theme.normal.a.fg } },
           },
-          { 'filename', file_status = false, path = 1 },
+          { 'filename', file_status = true, path = 1 },
           {
             '%w',
             cond = function()
@@ -171,7 +171,7 @@ M.lualine_power = function(theme)
           },
         },
         lualine_c = {},
-        lualine_x = { {navic.get_location, cond = navic.is_available} },
+        lualine_x = { 'navic' },
         lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
         lualine_z = { {'%l:%c', color={bg = custom_theme.command.a.bg} }, '%p%%/%L' },
       },

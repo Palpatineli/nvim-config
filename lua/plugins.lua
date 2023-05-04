@@ -119,6 +119,19 @@ local setup_barbar = function()
     vim.keymap.set('n', '<leader>b', api.pick_buffer, {silent=true, noremap=true})
 end
 
+local setup_bufferline = function()
+    local bufferline = require'bufferline'
+    bufferline.setup({ options = {
+        separator_style = 'slant',
+        show_close_icon = false,
+    }})
+    vim.keymap.set('n', '<leader>j', function() require'bufferline'.go_to(1, false) end,
+        {silent=true, noremap=true})
+    vim.keymap.set('n', '<leader>k', function() require'bufferline'.go_to(-1, false) end,
+        {silent=true, noremap=true})
+    vim.keymap.set('n', '<leader>b', require'bufferline.commands'.pick, {silent=true, noremap=true})
+end
+
 local setup_trouble = function()
     require'trouble'.setup{
         mode = "document_diagnostics"
@@ -177,7 +190,7 @@ end
 
 require('lazy').setup({
     {'stevearc/aerial.nvim', config=setup_aerial},
-    {'romgrk/barbar.nvim', dependencies={'kyazdani42/nvim-web-devicons'}, config=setup_barbar},
+    {'akinsho/bufferline.nvim', dependencies={'nvim-tree/nvim-web-devicons'}, config=setup_bufferline},
     {"aduros/ai.vim", commit='921f467', config=setup_ai},
     {'norcalli/nvim-colorizer.lua', config=function() require('colorizer').setup() end},
     {'hrsh7th/cmp-buffer', 'kdheepak/cmp-latex-symbols', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline',
@@ -233,10 +246,9 @@ require('lazy').setup({
     {'folke/todo-comments.nvim', config=setup_todo_comments, dependencies={'nvim-telescope/telescope.nvim'} },
     {'nvim-treesitter/nvim-treesitter', dependencies={'HiPhish/nvim-ts-rainbow2'},
         config=require'setup_treesitter'.setup},
-    {'folke/trouble.nvim', dependencies='kyazdani42/nvim-web-devicons', config=setup_trouble},
+    {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
     {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'},
         config=require'setup_ufo'.setup},
     'mg979/vim-visual-multi',
-    'kyazdani42/nvim-web-devicons',
     "nanotee/zoxide.vim",
 })
