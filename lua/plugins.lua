@@ -188,6 +188,20 @@ local setup_ai = function ()
     vim.keymap.set("i", "<c-c>", [[<cmd>Chat<cr>]], {noremap=true})
 end
 
+local setup_dap_ui = function()
+    local dap, dapui = require("dap"), require("dapui")
+    dapui.setup()
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+      dapui.close()
+    end
+end
+
 require('lazy').setup({
     {'stevearc/aerial.nvim', config=setup_aerial},
     {'akinsho/bufferline.nvim', dependencies={'nvim-tree/nvim-web-devicons'}, config=setup_bufferline},
@@ -206,6 +220,7 @@ require('lazy').setup({
     {'Palpatineli/vim-dadbod-completion', dependencies={'kristijanhusak/vim-dadbod', 'hrsh7th/nvim-cmp'}, ft={'sql'},
         config=setup_dadbod_comp},
     {'mfussenegger/nvim-dap', config=setup_dap},
+    {'rcarriga/nvim-dap-ui', dependencies={'mfussenegger/nvim-dap'}, config=setup_dap_ui},
     {'LiadOz/nvim-dap-repl-highlights', config=true},
     {'nvim-telescope/telescope-dap.nvim', dependencies={'mfussenegger/nvim-dap'}, config=setup_dap_telescope},
     {'mfussenegger/nvim-dap-python', dependencies={'mfussenegger/nvim-dap'}, ft={'python'}, config=setup_dap_python},
