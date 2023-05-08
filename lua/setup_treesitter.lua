@@ -1,8 +1,8 @@
 local M = {}
 M.setup = function()
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = {"bash", "c", "css", "dockerfile", "html", "javascript", "json", "lua","markdown",
-            "python", "regex", "rust", "scss", "toml", "typescript", "yaml"},
+        ensure_installed = {"bash", "c", "css", "dap_repl", "dockerfile", "html", "javascript", "json", "lua",
+            "markdown", "python", "regex", "rust", "scss", "toml", "typescript", "yaml"},
         highlight = {
             enable = true,
             additional_vim_regex_highlighting = { 'markdown' },
