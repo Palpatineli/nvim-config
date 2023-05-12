@@ -173,7 +173,7 @@ M.lualine_power = function(theme)
         lualine_c = {},
         lualine_x = { 'navic' },
         lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
-        lualine_z = { {'%l:%c', color={bg = custom_theme.command.a.bg} }, '%p%%/%L' },
+        lualine_z = { {'%l:%c', color={bg = custom_theme.command.a.bg} }, '%l/%L' },
       },
       inactive_sections = {
         lualine_c = { '%f %y %m' },

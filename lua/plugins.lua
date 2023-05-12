@@ -24,6 +24,11 @@ local setup_dap = function()
     vim.keymap.set("n", "<leader>ds", require'dap'.step_into, {})
     vim.keymap.set("n", "<leader>dn", require'dap'.step_over, {})
     vim.keymap.set("n", "<leader>du", require'dap'.repl.open, {})
+    local open_config = function()
+        local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+        vim.cmd('e ' .. root_dir .. '/.vscode/launch.json')
+    end
+    vim.keymap.set("n", "<leader>da", open_config, {})
     require('dap.ext.vscode').load_launchjs()
 end
 
@@ -125,9 +130,9 @@ local setup_bufferline = function()
         separator_style = 'slant',
         show_close_icon = false,
     }})
-    vim.keymap.set('n', '<leader>j', function() require'bufferline'.go_to(1, false) end,
+    vim.keymap.set('n', '<leader>j', function() require'bufferline'.cycle(1) end,
         {silent=true, noremap=true})
-    vim.keymap.set('n', '<leader>k', function() require'bufferline'.go_to(-1, false) end,
+    vim.keymap.set('n', '<leader>k', function() require'bufferline'.cycle(-1) end,
         {silent=true, noremap=true})
     vim.keymap.set('n', '<leader>b', require'bufferline.commands'.pick, {silent=true, noremap=true})
 end
@@ -190,15 +195,43 @@ end
 
 local setup_dap_ui = function()
     local dap, dapui = require("dap"), require("dapui")
-    dapui.setup()
+    dapui.setup({
+        layouts = {
+            {
+                elements = {
+                    {
+                        id = "scopes",
+                        size = 0.5
+                    }, {
+                        id = "breakpoints",
+                        size = 0.25
+                    }, {
+                        id = "stacks",
+                        size = 0.25
+                    }
+                },
+                position = 'left',
+                size = 80
+            }, {
+                elements = {
+                    {
+                        id = "repl",
+                        size = 1.0
+                    }
+                },
+                position = 'bottom',
+                size = 20
+            }
+        }
+    })
     dap.listeners.after.event_initialized["dapui_config"] = function()
-      dapui.open()
+        dapui.open()
     end
     dap.listeners.before.event_terminated["dapui_config"] = function()
-      dapui.close()
+        dapui.close()
     end
     dap.listeners.before.event_exited["dapui_config"] = function()
-      dapui.close()
+        dapui.close()
     end
 end
 
@@ -231,13 +264,13 @@ require('lazy').setup({
     {'SmiteshP/nvim-navic', dependencies={'neovim/nvim-lspconfig'}},
     {'rhysd/vim-grammarous', ft={'markdown'}},
     {"asiryk/auto-hlsearch.nvim", config=function() require'auto-hlsearch'.setup() end},
+    {"onsails/lspkind.nvim"},
     {'VonHeikemen/lsp-zero.nvim', config=require'setup_lsp'.setup,
         dependencies={'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'hrsh7th/nvim-cmp',
-            'L3MON4D3/LuaSnip', 'onsails/lspkind-nvim', 'nvim-telescope/telescope.nvim'}},
+            'L3MON4D3/LuaSnip', 'nvim-telescope/telescope.nvim'}},
     {"hkupty/iron.nvim", ft={'python'}, config=setup_iron},
     {'kdheepak/lazygit.nvim', dependencies={'nvim-telescope/telescope.nvim'}, config=setup_lazygit},
     'neovim/nvim-lspconfig',
-    {'onsails/lspkind-nvim', dependencies={'hrsh7th/nvim-cmp'}},
     {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest'},
         config=function() require'setup_statusline'.lualine_power('everforest') end},
     {"williamboman/mason.nvim", config=function() require'mason'.setup() end},
