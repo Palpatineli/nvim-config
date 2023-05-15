@@ -109,7 +109,7 @@ local setup_dadbod_comp = function()
 end
 
 local setup_osc = function()
-    function copy()
+    local function copy()
       if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
         require('osc52').copy_register('+')
       end
@@ -260,6 +260,7 @@ require('lazy').setup({
     {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
     {'akinsho/git-conflict.nvim', config=true},
     {'j-hui/fidget.nvim', dependencies={'VonHeikemen/lsp-zero.nvim'}, config=setup_lsp_fidget},
+    {'f-person/git-blame.nvim'},
     {'lewis6991/gitsigns.nvim', config=function() require'gitsigns'.setup() end},
     {'SmiteshP/nvim-navic', dependencies={'neovim/nvim-lspconfig'}},
     {'rhysd/vim-grammarous', ft={'markdown'}},
