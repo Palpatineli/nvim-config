@@ -113,7 +113,7 @@ M.lualine_power = function(theme)
         local left = name:sub(9, 10) < 'x'
         for pos = 1, name ~= 'lualine_z' and #section or #section - 1 do
           table.insert(section, pos * 2, { empty, color = { fg = custom_theme.normal.a.fg,
-                    bg = custom_theme.normal.a.fg } })
+                    bg = custom_theme.normal.c.bg } })
         end
         for id, comp in ipairs(section) do
           if type(comp) ~= 'table' then
@@ -173,7 +173,7 @@ M.lualine_power = function(theme)
         lualine_c = {},
         lualine_x = { 'navic' },
         lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
-        lualine_z = { {'%l:%c', color={bg = custom_theme.command.a.bg} }, '%l/%L' },
+        lualine_z = { {'%4l:%4c', color={bg = custom_theme.command.a.bg} }, '%L' },
       },
       inactive_sections = {
         lualine_c = { '%f %y %m' },

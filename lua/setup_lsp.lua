@@ -83,15 +83,8 @@ M.setup = function()
             { name = 'path' },
             { name = 'treesitter' },
             { name = 'buffer', keyword_length = 4},
-        },
-        formatting = {
-            format = require'lspkind'.cmp_format({
-                mode = 'symbol',
-                maxwidth = 50,
-            })
         }
     })
-    cmp.setup.cmdline(':', { sources = {{ name = 'cmdline' }}})
     cmp.setup.cmdline('/', {
         sources = cmp.config.sources({
             { name = 'nvim_lsp_document_symbol' }

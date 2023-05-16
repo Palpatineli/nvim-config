@@ -265,7 +265,6 @@ require('lazy').setup({
     {'SmiteshP/nvim-navic', dependencies={'neovim/nvim-lspconfig'}},
     {'rhysd/vim-grammarous', ft={'markdown'}},
     {"asiryk/auto-hlsearch.nvim", config=function() require'auto-hlsearch'.setup() end},
-    {"onsails/lspkind.nvim"},
     {'VonHeikemen/lsp-zero.nvim', config=require'setup_lsp'.setup,
         dependencies={'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim', 'hrsh7th/nvim-cmp',
             'L3MON4D3/LuaSnip', 'nvim-telescope/telescope.nvim'}},
