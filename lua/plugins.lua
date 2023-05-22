@@ -129,6 +129,8 @@ local setup_bufferline = function()
     bufferline.setup({ options = {
         separator_style = 'slant',
         show_close_icon = false,
+        show_buffer_close_icons = false,
+        enforce_regular_tabs = true,
     }})
     vim.keymap.set('n', '<leader>j', function() require'bufferline'.cycle(1) end,
         {silent=true, noremap=true})

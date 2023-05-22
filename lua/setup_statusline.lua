@@ -128,57 +128,57 @@ M.lualine_power = function(theme)
 
     local navic = require'nvim-navic'
     require('lualine').setup {
-      options = {
-        theme = theme,
-        component_separators = '',
-        section_separators = { left = '', right = '' },
-      },
-      sections = process_sections {
-        lualine_a = { 'mode' },
-        lualine_b = {
-          'branch',
-          'diff',
-          {
-            'diagnostics',
-            source = { 'nvim' },
-            sections = { 'error' },
-            diagnostics_color = { error = { bg = custom_theme.visual.a.bg, fg = custom_theme.normal.a.fg } },
-          },
-          {
-            'diagnostics',
-            source = { 'nvim' },
-            sections = { 'warn' },
-            diagnostics_color = { warn = { bg = custom_theme.replace.a.bg, fg = custom_theme.normal.a.fg } },
-          },
-          { 'filename', file_status = true, path = 1 },
-          {
-            '%w',
-            cond = function()
-              return vim.wo.previewwindow
-            end,
-          },
-          {
-            '%r',
-            cond = function()
-              return vim.bo.readonly
-            end,
-          },
-          {
-            '%q',
-            cond = function()
-              return vim.bo.buftype == 'quickfix'
-            end,
-          },
+        options = {
+            theme = theme,
+            component_separators = '',
+            section_separators = { left = '', right = '' },
         },
-        lualine_c = {},
-        lualine_x = { 'navic' },
-        lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
-        lualine_z = { {'%4l:%4c', color={bg = custom_theme.command.a.bg} }, '%L' },
-      },
-      inactive_sections = {
-        lualine_c = { '%f %y %m' },
-        lualine_x = {},
-      },
+        sections = process_sections {
+            lualine_a = { 'mode' },
+            lualine_b = {
+                { 'branch', color = { bg = custom_theme.normal.b.fg, fg = custom_theme.normal.b.bg }, },
+                { 'diff', always_visible = true, },
+                {
+                  'diagnostics',
+                  source = { 'nvim' },
+                  sections = { 'error' },
+                  diagnostics_color = { error = { bg = custom_theme.visual.a.bg, fg = custom_theme.normal.a.fg } },
+                },
+                {
+                  'diagnostics',
+                  source = { 'nvim' },
+                  sections = { 'warn' },
+                  diagnostics_color = { warn = { bg = custom_theme.replace.a.bg, fg = custom_theme.normal.a.fg } },
+                },
+                { 'filename', file_status = true, path = 1 },
+                {
+                    '%w',
+                    cond = function()
+                        return vim.wo.previewwindow
+                    end,
+                },
+                {
+                    '%r',
+                    cond = function()
+                        return vim.bo.readonly
+                    end,
+                },
+                {
+                    '%q',
+                    cond = function()
+                        return vim.bo.buftype == 'quickfix'
+                    end,
+                },
+            },
+            lualine_c = {},
+            lualine_x = { 'navic' },
+            lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
+            lualine_z = { {'%4l:%3c', color={bg = custom_theme.command.a.bg} }, '%L' },
+        },
+        inactive_sections = {
+            lualine_c = { '%f %y %m' },
+            lualine_x = {},
+        },
     }
 end
 
