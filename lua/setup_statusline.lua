@@ -97,6 +97,22 @@ M.lualine = function(theme)
     })
 end
 
+--- @param trunc_width number trunctates component when screen width is less then trunc_width
+--- @param trunc_len number truncates component to trunc_len number of chars
+--- @param hide_width number hides component when window width is smaller then hide_width
+--- @param no_ellipsis boolean whether to disable adding '...' at end after truncation
+--- return function that can format the component accordingly
+local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
+  return function(str)
+    local win_width = vim.fn.winwidth(0)
+    if hide_width and win_width < hide_width then return ''
+    elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
+       return str:sub(1, trunc_len) .. (no_ellipsis and '' or '...')
+    end
+    return str
+  end
+end
+
 M.lualine_power = function(theme)
     local custom_theme = require('lualine.themes.'..theme)
     local empty = require('lualine.component'):extend()
@@ -136,21 +152,10 @@ M.lualine_power = function(theme)
         sections = process_sections {
             lualine_a = { 'mode' },
             lualine_b = {
-                { 'branch', color = { bg = custom_theme.normal.b.fg, fg = custom_theme.normal.b.bg }, },
+                { 'branch', color = { bg = custom_theme.normal.b.fg, fg = custom_theme.normal.b.bg },
+                    fmt = trunc(180, 15, 80, false) },
                 { 'diff', always_visible = true, },
-                {
-                  'diagnostics',
-                  source = { 'nvim' },
-                  sections = { 'error' },
-                  diagnostics_color = { error = { bg = custom_theme.visual.a.bg, fg = custom_theme.normal.a.fg } },
-                },
-                {
-                  'diagnostics',
-                  source = { 'nvim' },
-                  sections = { 'warn' },
-                  diagnostics_color = { warn = { bg = custom_theme.replace.a.bg, fg = custom_theme.normal.a.fg } },
-                },
-                { 'filename', file_status = true, path = 1 },
+                { 'filename', file_status = true, path = 1, fmt = trunc(180, 15, 80, false) },
                 {
                     '%w',
                     cond = function()
@@ -171,7 +176,7 @@ M.lualine_power = function(theme)
                 },
             },
             lualine_c = {},
-            lualine_x = { 'navic' },
+            lualine_x = { 'navic', fmt = trunc(180, 35, 80, false) },
             lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
             lualine_z = { {'%4l:%3c', color={bg = custom_theme.command.a.bg} }, '%L' },
         },

@@ -130,7 +130,12 @@ M.setup = function()
     zero.configure('vimls', {
         init_options = { runtimepath = vim.api.nvim_get_option("runtimepath"), indexes = {gap = 75, count = 5} }
     })
-    zero.configure('yamlls', { settings = { yaml = {format = {enable = true, singleQuote = true}, validate = true} } })
+    zero.configure('yamlls', { settings = { yaml = {
+        format = {enable = true, singleQuote = true},
+        validate = true,
+        hover = true,
+        completion = true,
+    }}})
     zero.configure('marksman', {filetypes = {'markdown'}})
 
     zero.setup()

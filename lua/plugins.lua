@@ -24,12 +24,13 @@ local setup_dap = function()
     vim.keymap.set("n", "<leader>ds", require'dap'.step_into, {})
     vim.keymap.set("n", "<leader>dn", require'dap'.step_over, {})
     vim.keymap.set("n", "<leader>du", require'dap'.repl.open, {})
+    local config_path = os.getenv("HOME") .. '/.vscode/launch.json'
     local open_config = function()
         local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
-        vim.cmd('e ' .. root_dir .. '/.vscode/launch.json')
+        vim.cmd('e ' .. config_path)
     end
     vim.keymap.set("n", "<leader>da", open_config, {})
-    require('dap.ext.vscode').load_launchjs()
+    require('dap.ext.vscode').load_launchjs(config_path)
 end
 
 local setup_dap_telescope = function()
@@ -224,7 +225,8 @@ local setup_dap_ui = function()
                 position = 'bottom',
                 size = 20
             }
-        }
+        },
+        mappings = {}
     })
     dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
