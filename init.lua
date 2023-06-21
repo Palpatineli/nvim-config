@@ -53,4 +53,12 @@ vim.keymap.set('n', '<leader>e', [[:%s/\<<C-r><C-w>\>//<Left>]], {silent=true})
 ---- Insert date time
 vim.cmd[[iab <expr> dts strftime("%F %T")]]
 
+local ok, wf = pcall(require, "vim.lsp._watchfiles")
+if ok then
+   -- disable lsp watcher. Too slow on linux
+   wf._watchfunc = function()
+     return function() end
+   end
+end
+
 require'plugins'
