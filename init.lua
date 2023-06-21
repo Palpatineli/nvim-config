@@ -8,16 +8,12 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.backup = false
 vim.opt.swapfile = false
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 -- ui
 vim.opt.cmdheight = 0
 vim.opt.termguicolors = true
 vim.opt.background = 'light'
 ---- substitutions go global by default
 vim.opt.gdefault = true
----- program title shows file name
-vim.opt.title = true
 ---- highlight hard tab
 vim.opt.list = true
 vim.opt.listchars = 'trail:~,tab:>-,nbsp:␣'
@@ -31,10 +27,6 @@ vim.opt.shiftwidth = 4
 vim.opt.inccommand = 'nosplit'
 vim.opt.clipboard = 'unnamedplus'
 
--- filetypes
-vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.md", "*.txt"}, callback=function() vim.bo.filetype = 'markdown' end})
-
--- mapping
 vim.g.mapleader = ';'
 vim.g.maplocalleader = ';'
 vim.cmd[[ca w!! w !sudo tee "%"]]
@@ -52,5 +44,13 @@ vim.keymap.set('t', '<c-l>', '<C-\\><C-n><C-w>l', {silent=true})
 vim.keymap.set('n', '<leader>e', [[:%s/\<<C-r><C-w>\>//<Left>]], {silent=true})
 ---- Insert date time
 vim.cmd[[iab <expr> dts strftime("%F %T")]]
+
+local ok, wf = pcall(require, "vim.lsp._watchfiles")
+if ok then
+   -- disable lsp watcher. Too slow on linux
+   wf._watchfunc = function()
+     return function() end
+   end
+end
 
 require'plugins'

@@ -46,107 +46,28 @@ local setup_osc = function()
     vim.api.nvim_create_autocmd('TextYankPost', {callback = copy})
 end
 
-local setup_bufferline = function()
-    local bufferline = require'bufferline'
-    bufferline.setup({ options = {
-        separator_style = 'slant',
-        show_close_icon = false,
-        show_buffer_close_icons = false,
-        enforce_regular_tabs = true,
-    }})
-    vim.keymap.set('n', '<leader>j', function() require'bufferline'.cycle(1) end,
-        {silent=true, noremap=true})
-    vim.keymap.set('n', '<leader>k', function() require'bufferline'.cycle(-1) end,
-        {silent=true, noremap=true})
-    vim.keymap.set('n', '<leader>b', require'bufferline.commands'.pick, {silent=true, noremap=true})
-end
-
-local setup_trouble = function()
-    require'trouble'.setup{
-        mode = "document_diagnostics"
-    }
-    vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", {silent=true, noremap=true})
-    vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent=true, noremap=true})
-end
-
-local setup_comment = function()
-    require'Comment'.setup{
-        toggler = {
-            line = ';cc',
-            block = ';bc'
-        },
-        opleader = {
-            line = ';c',
-            block = ';b'
-        },
-        mappings = {
-            extra = false
-        }
-    }
-end
-
-local setup_todo_comments = function()
-    require("todo-comments").setup({
-        keywords={
-            DEBUG = {icon=" ", color="warning"}
-        }
-    })
-    vim.keymap.set("n", "<leader>T", ":TodoTelescope<cr>", {})
-end
-
-local setup_ai = function ()
-    vim.g.ai_completions_model = "gpt-3.5-turbo"
-    vim.g.ai_edits_model = "code-davinci-edit-001"
-    vim.g.ai_context_before = 30
-    vim.g.ai_context_after = 10
-    vim.g.ai_temperature = 0.7
-    vim.g.ai_timeout = 20
-    vim.keymap.set("i", "<c-c>", [[<cmd>Chat<cr>]], {noremap=true})
-end
-
 require('lazy').setup({
-    {'stevearc/aerial.nvim', config=function()
-        require'aerial'.setup{}
-        vim.keymap.set('n', '<F9>', '<cmd>AerialToggle!<CR>')
-    end},
-    {'akinsho/bufferline.nvim', dependencies={'nvim-tree/nvim-web-devicons'}, config=setup_bufferline},
-    {"aduros/ai.vim", commit='921f467', config=setup_ai},
-    {'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline',
+    {'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
         dependencies={'hrsh7th/nvim-cmp'}, config=require'setup_cmp'.setup},
     {'hrsh7th/cmp-nvim-lsp',
         dependencies={'neovim/nvim-lspconfig', 'hrsh7th/nvim-cmp', "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim", "SmiteshP/nvim-navic"},
-        config=require'setup_lsp'.setup},
-    {'hrsh7th/cmp-nvim-lsp-signature-help', dependencies={'hrsh7th/cmp-nvim-lsp'}},
-    {'numToStr/Comment.nvim', config=setup_comment},
-    {'saadparwaiz1/cmp_luasnip', dependencies={'L3MON4D3/LuaSnip', 'hrsh7th/nvim-cmp'},
-        config=require'setup_luasnip'.setup},
-    {'rcarriga/nvim-dap-ui', ft={'python'},
-        dependencies={'mfussenegger/nvim-dap', 'mfussenegger/nvim-dap-python'},
-        config=require'setup_dap'.setup},
-    {'LiadOz/nvim-dap-repl-highlights', config=true},
-    {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
-    {'akinsho/git-conflict.nvim', config=true},
-    {'f-person/git-blame.nvim'},
-    {'lewis6991/gitsigns.nvim', config=true},
-    {"asiryk/auto-hlsearch.nvim", config=true},
+            "williamboman/mason-lspconfig.nvim"}, config=require'setup_lsp'.setup},
     {"hkupty/iron.nvim", ft={'python'}, config=setup_iron},
-    {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest'},
-        config=function() require'setup_statusline'.lualine('everforest') end},
-    {"prichrd/netrw.nvim", config=function()
-        require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
-    end},
     {'ojroques/nvim-osc52', config=setup_osc},
-    {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
-    {'cameron-wags/rainbow_csv.nvim', ft={'csv', 'tsv'}, config=true,
-        cmd={'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim'}},
+    {'sainnhe/everforest', config=function()
+        vim.opt.background = 'light'
+        vim.g.everforest_background = 'hard'
+        vim.g.everforest_better_performance = 1
+        vim.cmd[[colorscheme everforest]]
+    end},
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup},
-    {'folke/todo-comments.nvim', config=setup_todo_comments, dependencies={'nvim-telescope/telescope.nvim'} },
-    {'nvim-treesitter/nvim-treesitter', dependencies={'HiPhish/nvim-ts-rainbow2', 'LiadOz/nvim-dap-repl-highlights'},
-        config=require'setup_treesitter'.setup},
-    {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
-    {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'},
-        config=require'setup_ufo'.setup},
-    'mg979/vim-visual-multi',
+    {'nvim-treesitter/nvim-treesitter', config=function()
+        require'nvim-treesitter.configs'.setup {
+            ensure_installed = {"bash", "json", "lua", "markdown", "python", "toml", "yaml"},
+            highlight = { enable = true },
+            autopairs = { enable = true },
+            indent = { enable = true, },
+        }
+    end},
 })
