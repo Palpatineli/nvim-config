@@ -1,12 +1,13 @@
 local M = {}
 M.setup = function()
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = {"bash", "c", "css", "dap_repl", "dockerfile", "html", "javascript", "json", "lua",
-            "markdown", "python", "regex", "rust", "scss", "toml", "typescript", "yaml"},
+        ensure_installed = {"bash", "dap_repl", "dockerfile", "html", "javascript", "json", "lua",
+            "markdown", "python", "toml", "yaml"},
         highlight = {
             enable = true,
             additional_vim_regex_highlighting = { 'markdown' },
         },
+        autopairs = { enable = true },
         incremental_selection = {
             enable = true,
             keymaps = {
@@ -16,13 +17,7 @@ M.setup = function()
                 scope_incremental = ";tl"
             },
         },
-        indent = { enable = true, disable = {"python"}, },
-        -- nvim-ts-rainbow
-        rainbow = {
-            enable = true,
-            query='rainbow-parens',
-            strategy=require'ts-rainbow.strategy.global',
-        }
+        indent = { enable = true, },
     }
 end
 

@@ -1,27 +1,4 @@
 local M = {}
-local setup_gps = function()
-    local gps = require("nvim-gps")
-    gps.setup({
-        icons = {
-            ["class-name"] = ' ',      -- Classes and class-like objects
-            ["function-name"] = ' ',   -- Functions
-            ["method-name"] = ' '      -- Methods (functions inside class-like objects)
-        },
-        languages = {                    -- You can disable any language individually here
-            ["c"] = true,
-            ["cpp"] = true,
-            ["go"] = true,
-            ["java"] = true,
-            ["javascript"] = true,
-            ["lua"] = true,
-            ["python"] = true,
-            ["rust"] = true,
-        },
-        separator = ' > ',
-    })
-    return gps
-end
-
 local count_buffers = function()
     local buflisted = vim.fn.buflisted
     local len = 0
@@ -63,40 +40,6 @@ M.cycle = function(x)
     end
 end
 
-M.lualine = function(theme)
-    local gps = setup_gps()
-    require('lualine').setup({
-        options = {
-            icons_enabled=true,
-            theme = theme,
-            component_separators = { left = '', right = '' },
-            section_separators = { left = '', right = '' },
-            globalstatus = true,
-        },
-        sections = {
-            lualine_a = {'filename'},
-            lualine_b = {'branch', 'diff'},
-            lualine_c = {
-                {
-                    'diagnostics', source={'nvim_lsp'}, sections={'error', 'warn', 'info'},
-                    always_visible=true,
-                },
-            },
-            lualine_x = {{gps.get_location, cond=gps.is_available}},
-            lualine_y = {'filetype'},
-            lualine_z = {'progress'},
-        },
-        inactive_sections = {
-            lualine_a = {},
-            lualine_b = {},
-            lualine_c = {'filename'},
-            lualine_x = {'location'},
-            lualine_y = {},
-            lualine_z = {}
-        }
-    })
-end
-
 --- @param trunc_width number trunctates component when screen width is less then trunc_width
 --- @param trunc_len number truncates component to trunc_len number of chars
 --- @param hide_width number hides component when window width is smaller then hide_width
@@ -111,6 +54,36 @@ local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
     end
     return str
   end
+end
+
+M.lualine = function(theme)
+    local navic = require'nvim-navic'
+    local custom_theme = require('lualine.themes.'..theme)
+    require('lualine').setup({
+        options = {
+            icons_enabled=true,
+            theme = theme,
+            component_separators = { left = '', right = '' },
+            section_separators = { left = '', right = '' },
+            globalstatus = true,
+        },
+        sections = {
+            lualine_a = {'mode'},
+            lualine_b = {
+                {'branch', color={bg=custom_theme.normal.b.fg, fg=custom_theme.normal.b.bg},
+                    fmt=trunc(180, 15, 80, false)},
+                'diff',
+                {'filename', file_status=true, path=1, fmt=trunc(180, 15, 80, false)},
+            },
+            lualine_c = {
+                {'diagnostics', source={'nvim_lsp'}, sections={'error', 'warn', 'info'},
+                    always_visible=true, symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'}}
+            },
+            lualine_x = {{'navic', fmt=trunc(180, 35, 80, false)}},
+            lualine_y = {{'filetype', color={bg=custom_theme.normal.b.bg}}},
+            lualine_z = {{'%4l:%3c', color={bg=custom_theme.command.a.bg}}, '%L'},
+        }
+    })
 end
 
 M.lualine_power = function(theme)

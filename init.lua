@@ -14,14 +14,13 @@ vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.cmdheight = 0
 vim.opt.termguicolors = true
 vim.opt.background = 'light'
-vim.opt.guifont = 'FiraCode NF:h8'
 ---- substitutions go global by default
 vim.opt.gdefault = true
 ---- program title shows file name
 vim.opt.title = true
 ---- highlight hard tab
 vim.opt.list = true
-vim.opt.listchars = 'tab:<+'
+vim.opt.listchars = 'trail:~,tab:>-,nbsp:␣'
 vim.opt.hlsearch = false
 vim.opt.completeopt = 'menuone,noselect'
 vim.opt.shortmess = vim.opt.shortmess + 'c'
@@ -34,8 +33,6 @@ vim.opt.clipboard = 'unnamedplus'
 
 -- filetypes
 vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.md", "*.txt"}, callback=function() vim.bo.filetype = 'markdown' end})
-vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern='*.qml', callback=function() vim.bo.filetype = 'javascript' end}) -- qtquick
-vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern='*.msc', callback=function() vim.bo.filetype = 'mscgen' end})
 
 -- mapping
 vim.g.mapleader = ';'
@@ -52,13 +49,8 @@ vim.keymap.set('t', '<c-j>', '<C-\\><C-n><C-w>j', {silent=true})
 vim.keymap.set('t', '<c-k>', '<C-\\><C-n><C-w>k', {silent=true})
 vim.keymap.set('t', '<c-l>', '<C-\\><C-n><C-w>l', {silent=true})
 ---- replace word under cursor
-vim.keymap.set('n', '<Leader>s', [[:%s/\<<C-r><C-w>\>//<Left>]], {silent=true})
+vim.keymap.set('n', '<leader>e', [[:%s/\<<C-r><C-w>\>//<Left>]], {silent=true})
 ---- Insert date time
 vim.cmd[[iab <expr> dts strftime("%F %T")]]
-vim.keymap.set('n', '<leader>m', ':message<cr>', {silent=true})
-
-if vim.fn.executable('nvr') == 1 then
-    vim.fn.setenv("GIT_EDITOR", "nvr -cc split --remote-wait +'set bufhidden=wipe'")
-end
 
 require'plugins'
