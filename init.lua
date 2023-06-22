@@ -62,3 +62,4 @@ if ok then
 end
 
 require'plugins'
+require'helix-mapping'

@@ -9,11 +9,11 @@ M.setup = function()
     vim.api.nvim_create_autocmd('LspAttach', {
       desc = 'LSP actions',
       callback = function(event)
-        vim.keymap.set("n", "<Leader>J", vim.diagnostic.goto_next, {noremap=true, silent=true})
-        vim.keymap.set("n", "<Leader>K", vim.diagnostic.goto_prev, {noremap=true, silent=true})
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {noremap=true, silent=true})
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {noremap=true, silent=true})
         vim.keymap.set("n", "K", vim.lsp.buf.hover, {noremap=true, silent=true})
-        vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, {noremap=true})
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {noremap=true})
+        vim.keymap.set('n', '<space>r', vim.lsp.buf.rename, {noremap=true})
+        vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, {noremap=true})
       end
     })
 
@@ -23,7 +23,6 @@ M.setup = function()
         'jsonls',
         'marksman',
         'pyright',
-        'ruff_lsp',
         'yamlls',
       }
     })

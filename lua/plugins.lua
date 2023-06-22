@@ -27,13 +27,13 @@ local setup_iron = function()
         },
         keymaps = {
             visual_send = "<leader><space>",
-            send_line = "<leader><space>",
+            send_line = "<leader>ir",
             cr = "<leader>i<cr>",
             interrupt = "<leader>ic",
             exit = "<leader>iq"
         }
     }
-    vim.keymap.set("n", "<leader>ir", "?^##<cr>jV/^##<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>",
+    vim.keymap.set("n", "<leader><space>", "?^# %%<cr>jV/^# %%<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>",
         {noremap = true, silent = true})
 end
 
@@ -126,6 +126,9 @@ require('lazy').setup({
         config=require'setup_dap'.setup},
     {'LiadOz/nvim-dap-repl-highlights', config=true},
     {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
+    {'folke/flash.nvim', event='VeryLazy', keys={
+        {'s', mode={'n', 'x', 'o'}, function() require'flash'.jump() end, desc='flash'}
+    }},
     {'akinsho/git-conflict.nvim', config=true},
     {'f-person/git-blame.nvim'},
     {'lewis6991/gitsigns.nvim', config=true},
@@ -133,6 +136,7 @@ require('lazy').setup({
     {"hkupty/iron.nvim", ft={'python'}, config=setup_iron},
     {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
+    {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {"prichrd/netrw.nvim", config=function()
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
     end},
