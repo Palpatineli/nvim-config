@@ -80,6 +80,7 @@ M.setup = function()
     require('mason-lspconfig').setup({
       ensure_installed = {
         'jsonls',
+        'lua_ls',
         'marksman',
         'pyright',
         'yamlls',

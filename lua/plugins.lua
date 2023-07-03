@@ -91,7 +91,7 @@ local setup_todo_comments = function()
             DEBUG = {icon=" ", color="warning"}
         }
     })
-    vim.keymap.set("n", "<leader>T", ":TodoTelescope<cr>", {})
+    vim.keymap.set("n", "<space>T", ":TodoTelescope<cr>", {})
 end
 
 local setup_ai = function ()
@@ -145,7 +145,7 @@ require('lazy').setup({
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup},
     {'folke/todo-comments.nvim', config=setup_todo_comments, dependencies={'nvim-telescope/telescope.nvim'} },
-    {'nvim-treesitter/nvim-treesitter', dependencies={'HiPhish/nvim-ts-rainbow2', 'LiadOz/nvim-dap-repl-highlights'},
+    {'nvim-treesitter/nvim-treesitter', dependencies={'LiadOz/nvim-dap-repl-highlights'},
         config=require'setup_treesitter'.setup},
     {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
     {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'},
