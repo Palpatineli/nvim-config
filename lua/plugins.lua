@@ -12,31 +12,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local setup_iron = function()
-    local iron = require'iron'
-    iron.core.setup {
-        config = {
-            should_map_plug = false,
-            scratch_repl = false,
-            buflisted = true,
-            repl_definition = {
-                python = require'iron.fts.python'.ipython,
-                sh = { command = {"bash"} }
-            },
-            repl_open_cmd = "botright 40 split"
-        },
-        keymaps = {
-            visual_send = "<leader><space>",
-            send_line = "<leader>ir",
-            cr = "<leader>i<cr>",
-            interrupt = "<leader>ic",
-            exit = "<leader>iq"
-        }
-    }
-    vim.keymap.set("n", "<leader><space>", "?^# %%<cr>jV/^# %%<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>",
-        {noremap = true, silent = true})
-end
-
 local setup_osc = function()
     local function copy()
       if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
@@ -94,7 +69,7 @@ local setup_todo_comments = function()
     vim.keymap.set("n", "<space>T", ":TodoTelescope<cr>", {})
 end
 
-local setup_ai = function ()
+local setup_ai = function()
     vim.g.ai_completions_model = "gpt-3.5-turbo"
     vim.g.ai_edits_model = "code-davinci-edit-001"
     vim.g.ai_context_before = 30
@@ -131,7 +106,7 @@ require('lazy').setup({
     {'f-person/git-blame.nvim'},
     {'lewis6991/gitsigns.nvim', config=true},
     {"asiryk/auto-hlsearch.nvim", config=true},
-    {"hkupty/iron.nvim", ft={'python'}, config=setup_iron},
+    {'milanglacier/yarepl.nvim', ft={'python'}, config=require'setup_repl'.yarepl},
     {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest', 'SmiteshP/nvim-navic'},
         config=function() require'setup_statusline'.lualine('everforest') end},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
