@@ -1,7 +1,7 @@
 local M = {}
 M.setup = function()
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = {"bash", "dap_repl", "dockerfile", "html", "javascript", "json", "lua",
+        ensure_installed = {"bash", "dockerfile", "html", "javascript", "json", "lua",
             "markdown", "python", "toml", "yaml"},
         highlight = {
             enable = true,

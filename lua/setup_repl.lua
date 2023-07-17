@@ -7,7 +7,7 @@ M.iron = function()
             scratch_repl = false,
             buflisted = true,
             repl_definition = {
-                python = require'iron.fts.python'.ipython,
+                python = { command = {'python', '-m', 'IPython'} },
                 sh = { command = {"bash"} }
             },
             repl_open_cmd = "botright 40 split"
@@ -20,7 +20,8 @@ M.iron = function()
             exit = "<leader>iq"
         }
     }
-    vim.keymap.set("n", "<leader><space>", "?^# %%<cr>jV/^# %%<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>",
+    vim.keymap.set("n", "<leader><space>",
+        "?^# %%<cr>jV/^# %%<cr>k<esc>:lua require('iron').core.visual_send()<cr>jj:nohl<cr>",
         {noremap = true, silent = true})
 end
 
@@ -36,7 +37,8 @@ M.sniprun = function()
         repl_enable = { 'python' },
     }
     vim.keymap.set('v', '<leader><space>', function() sniprun.run('v') end, {})
-    vim.keymap.set("n", "<leader><space>", "?^# %%<cr>jV/^# %%<cr>k<esc>:lua require'sniprun'.run('v')<cr>jj:nohl<cr>", {})
+    vim.keymap.set("n", "<leader><space>",
+        "?^# %%<cr>jV/^# %%<cr>k<esc>:lua require'sniprun'.run('v')<cr>jj:nohl<cr>", {})
 end
 
 M.yarepl = function()

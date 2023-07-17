@@ -48,6 +48,8 @@ vim.keymap.set('t', '<c-h>', '<C-\\><C-n><C-w>h', {silent=true})
 vim.keymap.set('t', '<c-j>', '<C-\\><C-n><C-w>j', {silent=true})
 vim.keymap.set('t', '<c-k>', '<C-\\><C-n><C-w>k', {silent=true})
 vim.keymap.set('t', '<c-l>', '<C-\\><C-n><C-w>l', {silent=true})
+---- close buffer while keep split
+vim.keymap.set('n', 'qq', function() vim.cmd[[bp|bd #]] end, {})
 ---- replace word under cursor
 vim.keymap.set('n', '<leader>e', [[:%s/\<<C-r><C-w>\>//<Left>]], {silent=true})
 ---- Insert date time

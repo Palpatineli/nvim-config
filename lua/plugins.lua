@@ -26,6 +26,7 @@ local setup_bufferline = function()
     bufferline.setup({ options = {
         separator_style = 'slant',
         show_close_icon = false,
+        show_buffer_icons = false,
         show_buffer_close_icons = false,
         enforce_regular_tabs = true,
     }})
@@ -86,6 +87,7 @@ require('lazy').setup({
     end},
     {'akinsho/bufferline.nvim', dependencies={'nvim-tree/nvim-web-devicons'}, config=setup_bufferline},
     {"aduros/ai.vim", commit='921f467', config=setup_ai},
+    {"asiryk/auto-hlsearch.nvim", config=true},
     {'hrsh7th/nvim-cmp',
         dependencies={'neovim/nvim-lspconfig', 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', "williamboman/mason.nvim",
@@ -101,12 +103,13 @@ require('lazy').setup({
     {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
     {'folke/flash.nvim', event='VeryLazy', keys={
         {'s', mode={'n', 'x', 'o'}, function() require'flash'.jump() end, desc='flash'}
-    }},
+    }, config=true},
+    {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
     {'akinsho/git-conflict.nvim', config=true},
     {'f-person/git-blame.nvim'},
     {'lewis6991/gitsigns.nvim', config=true},
-    {"asiryk/auto-hlsearch.nvim", config=true},
-    {'milanglacier/yarepl.nvim', ft={'python'}, config=require'setup_repl'.yarepl},
+    {'RRethy/vim-illuminate'},
+    {'Vigemus/iron.nvim', ft={'python'}, config=function() require'setup_repl'.iron() end},
     {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest', 'SmiteshP/nvim-navic'},
         config=function() require'setup_statusline'.lualine('everforest') end},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
@@ -114,7 +117,6 @@ require('lazy').setup({
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
     end},
     {'ojroques/nvim-osc52', config=setup_osc},
-    {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
     {'cameron-wags/rainbow_csv.nvim', ft={'csv', 'tsv'}, config=true,
         cmd={'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim'}},
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
