@@ -103,6 +103,7 @@ M.setup = function()
 
     lspconfig.pyright.setup{
         default_config = {
+            on_attach = on_attach,
             root_dir = util.root_pattern(".git", "setup.py", "setup.cfg", "pyproject.toml", "requirement.txt",
                 "Makefile"),
             settings = {
@@ -119,6 +120,7 @@ M.setup = function()
     }
 
     lspconfig.yamlls.setup{
+        on_attach = on_attach,
         format = {enable = true, singleQuote = true},
         validate = true,
         hover = true,
@@ -129,6 +131,7 @@ M.setup = function()
     table.insert(runtime_path, "lua/?.lua")
     table.insert(runtime_path, "lua/?/init.lua")
     lspconfig.lua_ls.setup{
+        on_attach = on_attach,
         settings = {
             Lua = {
                 runtime = { version = 'LuaJIT', path = runtime_path, },
