@@ -56,8 +56,24 @@ local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
   end
 end
 
+local current_treesitter_context = function()
+  if not package.loaded["nvim-treesitter"] then
+    return " "
+  end
+  local f = require'nvim-treesitter'.statusline({
+    indicator_size = 300,
+    type_patterns = {"class", "function", "method"}
+  })
+  local fun_name = string.format("%s", f) -- convert to string, it may be a empty ts node
+
+  -- print(string.find(fun_name, "vim.NIL"))
+  if fun_name == "vim.NIL" then
+    return " "
+  end
+  return " " .. fun_name
+end
+
 M.lualine = function(theme)
-    local navic = require'nvim-navic'
     local custom_theme = require('lualine.themes.'..theme)
     require('lualine').setup({
         options = {
@@ -79,7 +95,7 @@ M.lualine = function(theme)
                 {'diagnostics', source={'nvim_lsp'}, sections={'error', 'warn', 'info'},
                     always_visible=true, symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'}}
             },
-            lualine_x = {{'navic', fmt=trunc(180, 35, 80, false)}},
+            lualine_x = {{current_treesitter_context, fmt=trunc(180, 35, 80, false)}},
             lualine_y = {{'filetype', color={bg=custom_theme.normal.b.bg}}},
             lualine_z = {{'%4l:%3c', color={bg=custom_theme.command.a.bg}}, '%L'},
         }
@@ -115,7 +131,6 @@ M.lualine_power = function(theme)
       return sections
     end
 
-    local navic = require'nvim-navic'
     require('lualine').setup {
         options = {
             theme = theme,
@@ -149,7 +164,7 @@ M.lualine_power = function(theme)
                 },
             },
             lualine_c = {},
-            lualine_x = { 'navic', fmt = trunc(180, 35, 80, false) },
+            lualine_x = { current_treesitter_context, fmt = trunc(180, 35, 80, false) },
             lualine_y = { {'filetype', color={bg=custom_theme.normal.b.bg}} },
             lualine_z = { {'%4l:%3c', color={bg = custom_theme.command.a.bg} }, '%L' },
         },

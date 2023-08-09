@@ -91,7 +91,7 @@ require('lazy').setup({
     {'hrsh7th/nvim-cmp',
         dependencies={'neovim/nvim-lspconfig', 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim", "SmiteshP/nvim-navic", 'hrsh7th/cmp-nvim-lsp-signature-help'},
+            "williamboman/mason-lspconfig.nvim", 'hrsh7th/cmp-nvim-lsp-signature-help'},
         config=require'setup_lsp'.setup},
     {'numToStr/Comment.nvim', config=setup_comment},
     {'saadparwaiz1/cmp_luasnip', dependencies={'L3MON4D3/LuaSnip'},
@@ -110,7 +110,7 @@ require('lazy').setup({
     {'lewis6991/gitsigns.nvim', config=true},
     {'RRethy/vim-illuminate'},
     {'Vigemus/iron.nvim', ft={'python'}, config=function() require'setup_repl'.iron() end},
-    {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest', 'SmiteshP/nvim-navic'},
+    {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {"prichrd/netrw.nvim", config=function()
