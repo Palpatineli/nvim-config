@@ -57,6 +57,25 @@ local setup_cmp = function()
     })
 end
 
+local function setup_ast_grep()
+    local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+    local configs = require'lspconfig.configs'
+    local util = require("lspconfig.util")
+    if not configs.dart then
+        configs.ast_grep = {
+            default_config = {
+                cmd = {'sg', 'lsp'};
+                filetypes = {'typescript'};
+                single_file_support = true;
+                root_dir = util.root_pattern('.git', 'sgconfig.yml');
+            };
+        }
+    end
+    require'lspconfig'.ast_grep.setup{
+        capabilities = lsp_capabilities
+    }
+end
+
 local M = {}
 M.setup = function()
     local lspconfig = require('lspconfig')
@@ -92,8 +111,11 @@ M.setup = function()
         })
     end
 
+    setup_ast_grep()
+
     lspconfig.pyright.setup{
         default_config = {
+            capabilities = lsp_capabilities,
             root_dir = util.root_pattern(".git", "setup.py", "setup.cfg", "pyproject.toml", "requirement.txt",
                 "Makefile"),
             settings = {
@@ -110,6 +132,7 @@ M.setup = function()
     }
 
     lspconfig.yamlls.setup{
+        capabilities = lsp_capabilities,
         format = {enable = true, singleQuote = true},
         validate = true,
         hover = true,
@@ -120,6 +143,7 @@ M.setup = function()
     table.insert(runtime_path, "lua/?.lua")
     table.insert(runtime_path, "lua/?/init.lua")
     lspconfig.lua_ls.setup{
+        capabilities = lsp_capabilities,
         settings = {
             Lua = {
                 runtime = { version = 'LuaJIT', path = runtime_path, },
