@@ -80,6 +80,25 @@ local setup_ai = function()
     vim.keymap.set("i", "<c-c>", [[<cmd>Chat<cr>]], {noremap=true})
 end
 
+local setup_gitlab = function()
+    require'dressing'.setup{input={enabled=true}}
+    local gitlab = require'gitlab'
+    gitlab.setup{}
+    vim.keymap.set("n", "<space>lr", gitlab.review)
+    vim.keymap.set("n", "<space>ls", gitlab.summary)
+    vim.keymap.set("n", "<space>lA", gitlab.approve)
+    vim.keymap.set("n", "<space>lR", gitlab.revoke)
+    vim.keymap.set("n", "<space>lc", gitlab.create_comment)
+    vim.keymap.set("n", "<space>ln", gitlab.create_note)
+    vim.keymap.set("n", "<space>ld", gitlab.toggle_discussions)
+    vim.keymap.set("n", "<space>laa", gitlab.add_assignee)
+    vim.keymap.set("n", "<space>lad", gitlab.delete_assignee)
+    vim.keymap.set("n", "<space>lra", gitlab.add_reviewer)
+    vim.keymap.set("n", "<space>lrd", gitlab.delete_reviewer)
+    vim.keymap.set("n", "<space>lp", gitlab.pipeline)
+    vim.keymap.set("n", "<space>lo", gitlab.open_in_browser)
+end
+
 require('lazy').setup({
     {'stevearc/aerial.nvim', config=function()
         require'aerial'.setup{}
@@ -105,11 +124,18 @@ require('lazy').setup({
         {'s', mode={'n', 'x', 'o'}, function() require'flash'.jump() end, desc='flash'}
     }, config=true},
     {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
-    {'akinsho/git-conflict.nvim', config=true},
     {'f-person/git-blame.nvim'},
+    {'akinsho/git-conflict.nvim', config=true},
+    {'harrisoncramer/gitlab.nvim',
+        enabled=function() return vim.fn.executable('go') == 1 end,
+        dependencies={'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim', 'stevearc/dressing.nvim', enabled=true,},
+        build=function() require'gitlab.server'.build(true) end,
+        config=setup_gitlab},
     {'lewis6991/gitsigns.nvim', config=true},
     {'RRethy/vim-illuminate'},
     {'Vigemus/iron.nvim', ft={'python'}, config=function() require'setup_repl'.iron() end},
+    {'kdheepak/lazygit.nvim', dependencies={'nvim-lua/plenary.nvim'}, config=function()
+        vim.keymap.set('n', '<space>g', '<cmd>LazyGit<cr>', {silent=true, noremap=true}) end},
     {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
