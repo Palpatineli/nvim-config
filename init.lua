@@ -31,6 +31,21 @@ vim.opt.shiftwidth = 4
 vim.opt.inccommand = 'nosplit'
 vim.opt.clipboard = 'unnamedplus'
 
+if vim.fn.has('wsl') == 1 then
+    vim.g.clipboard = {
+        name = 'win32yank',
+        copy = {
+            ["+"] = 'win32yank.exe -i --crlf',
+            ["*"] = 'win32yank.exe -i --crlf',
+        },
+        paste = {
+            ["+"] = 'win32yank.exe -o --lf',
+            ["*"] = 'win32yank.exe -o --lf',
+        },
+        cache_enabled = 0,
+    }
+end
+
 -- filetypes
 vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.md", "*.txt"}, callback=function() vim.bo.filetype = 'markdown' end})
 
