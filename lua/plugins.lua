@@ -151,7 +151,5 @@ require('lazy').setup({
     {'nvim-treesitter/nvim-treesitter', dependencies={'LiadOz/nvim-dap-repl-highlights'},
         config=require'setup_treesitter'.setup},
     {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
-    {'kevinhwang91/nvim-ufo', dependencies={'kevinhwang91/promise-async', 'nvim-treesitter/nvim-treesitter'},
-        config=require'setup_ufo'.setup},
     'mg979/vim-visual-multi',
 })
