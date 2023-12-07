@@ -48,6 +48,7 @@ end
 
 -- filetypes
 vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.md", "*.txt"}, callback=function() vim.bo.filetype = 'markdown' end})
+vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.typ"}, callback=function() vim.bo.filetype = 'typst' end})
 
 -- mapping
 vim.g.mapleader = ';'

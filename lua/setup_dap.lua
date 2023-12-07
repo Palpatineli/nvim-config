@@ -18,6 +18,43 @@ M.setup_python = function()
 end
 
 
+M.setup_cpp = function ()
+    local dap = require'dap'
+    dap.adapters.lldb = {
+        type = 'executable',
+        command = '/usr/bin/lldb-vscode', -- adjust as needed, must be absolute path
+        name = 'lldb'
+    }
+    dap.configurations.cpp = {
+        {
+            name = 'Launch',
+            type = 'lldb',
+            request = 'launch',
+            program = function()
+                return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+            end,
+            cwd = '${workspaceFolder}',
+            stopOnEntry = false,
+            args = {},
+
+            -- 💀
+            -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+            --
+            --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+            --
+            -- Otherwise you might get the following error:
+            --
+            --    Error on launch: Failed to attach to the target process
+            --
+            -- But you should be aware of the implications:
+            -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+            -- runInTerminal = false,
+        },
+    }
+    dap.configurations.c = dap.configurations.cpp
+end
+
+
 M.setup_ui = function()
     local dap, dapui = require("dap"), require("dapui")
     dapui.setup({
@@ -63,8 +100,14 @@ end
 M.setup = function()
     M.setup_key()
     M.setup_python()
+    M.setup_cpp()
     M.setup_ui()
-    local config_path = os.getenv("HOME") .. '/.vscode/launch.json'
+    local config_path
+    if vim.fn.has('win32') == 1 then
+        config_path = os.getenv("UserProfile") .. '\\.vscode\\launch.json'
+    else
+        config_path = os.getenv("HOME") .. '/.vscode/launch.json'
+    end
     local open_config = function() vim.cmd('e ' .. config_path) end
     vim.keymap.set("n", "<leader>da", open_config, {})
     require('dap.ext.vscode').load_launchjs(config_path)

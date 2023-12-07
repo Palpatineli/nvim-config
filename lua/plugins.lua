@@ -72,7 +72,6 @@ end
 
 local setup_ai = function()
     vim.g.ai_completions_model = "gpt-3.5-turbo"
-    vim.g.ai_edits_model = "code-davinci-edit-001"
     vim.g.ai_context_before = 30
     vim.g.ai_context_after = 10
     vim.g.ai_temperature = 0.7
@@ -151,5 +150,6 @@ require('lazy').setup({
     {'nvim-treesitter/nvim-treesitter', dependencies={'LiadOz/nvim-dap-repl-highlights'},
         config=require'setup_treesitter'.setup},
     {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
+    {'chomosuke/typst-preview.nvim', ft='typst', build=function() require'typst-preview'.update() end},
     'mg979/vim-visual-multi',
 })
