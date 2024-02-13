@@ -137,6 +137,7 @@ require('lazy').setup({
         vim.keymap.set('n', '<space>g', '<cmd>LazyGit<cr>', {silent=true, noremap=true}) end},
     {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
+    {'mrcjkb/rustaceanvim', ft = {'rust'}},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {"prichrd/netrw.nvim", config=function()
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
@@ -151,5 +152,7 @@ require('lazy').setup({
         config=require'setup_treesitter'.setup},
     {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
     {'chomosuke/typst-preview.nvim', ft='typst', build=function() require'typst-preview'.update() end},
+    {'kevinhwang91/nvim-ufo', dependencies='kevinhwang91/promise-async',
+        config=function() require'setup_ufo'.setup() end},
     'mg979/vim-visual-multi',
 })
