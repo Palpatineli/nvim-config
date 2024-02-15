@@ -122,7 +122,12 @@ require('lazy').setup({
     {'folke/flash.nvim', event='VeryLazy', keys={
         {'s', mode={'n', 'x', 'o'}, function() require'flash'.jump() end, desc='flash'}
     }, config=true},
-    {'sainnhe/everforest', config=function() require'colorschemes'.everforest('light', 'hard') end},
+    {'neanias/everforest-nvim', version=false, lazy=false, priority=1000,
+        config=function()
+            local theme = require'everforest'
+            theme.setup{background='hard'}
+            theme.load()
+        end},
     {'f-person/git-blame.nvim'},
     {'akinsho/git-conflict.nvim', config=true},
     {'harrisoncramer/gitlab.nvim',
@@ -133,9 +138,9 @@ require('lazy').setup({
     {'lewis6991/gitsigns.nvim', config=true},
     {'RRethy/vim-illuminate'},
     {'Vigemus/iron.nvim', ft={'python'}, config=function() require'setup_repl'.iron() end},
-    {'kdheepak/lazygit.nvim', dependencies={'nvim-lua/plenary.nvim'}, config=function()
-        vim.keymap.set('n', '<space>g', '<cmd>LazyGit<cr>', {silent=true, noremap=true}) end},
-    {'nvim-lualine/lualine.nvim', dependencies={'sainnhe/everforest'},
+    {'kdheepak/lazygit.nvim', lazy=true, dependencies={'nvim-lua/plenary.nvim'},
+        keys= {{'<space>g', '<cmd>LazyGit<cr>', desc='LazyGit'}}},
+    {'nvim-lualine/lualine.nvim', dependencies={'neanias/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
     {'mrcjkb/rustaceanvim', ft = {'rust'}},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
