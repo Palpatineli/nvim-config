@@ -142,7 +142,11 @@ require('lazy').setup({
         keys= {{'<space>g', '<cmd>LazyGit<cr>', desc='LazyGit'}}},
     {'nvim-lualine/lualine.nvim', dependencies={'neanias/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
-    {'mrcjkb/rustaceanvim', ft = {'rust'}},
+    {'smoka7/multicursors.nvim', event="VeryLazy", dependencies={'smoka7/hydra.nvim'},
+        opts = {},
+        cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
+        keys = { { mode = { 'v', 'n' }, '<Leader>m', '<cmd>MCstart<cr>', }, },
+    },
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {"prichrd/netrw.nvim", config=function()
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
@@ -159,5 +163,4 @@ require('lazy').setup({
     {'chomosuke/typst-preview.nvim', ft='typst', build=function() require'typst-preview'.update() end},
     {'kevinhwang91/nvim-ufo', dependencies='kevinhwang91/promise-async',
         config=function() require'setup_ufo'.setup() end},
-    'mg979/vim-visual-multi',
 })
