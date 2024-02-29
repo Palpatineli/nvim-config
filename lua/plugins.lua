@@ -152,6 +152,13 @@ require('lazy').setup({
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
     end},
     {'ojroques/nvim-osc52', config=setup_osc},
+    {'epwalsh/obsidian.nvim', lazy=true, dependencies={'nvim-lua/plenary.nvim'},
+        event={
+            'BufReadPre '..'/mnt/e/notes/segmentation/**.md',
+            'BufNewFile '..'/mnt/e/notes/segmentation/**.md'
+        },
+        opts={workspaces={{name='work', path='/mnt/e/notes/segmentation'}}}
+    },
     {'cameron-wags/rainbow_csv.nvim', ft={'csv', 'tsv'}, config=true,
         cmd={'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim'}},
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},

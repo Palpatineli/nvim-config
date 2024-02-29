@@ -12,6 +12,7 @@ vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 -- ui
 vim.opt.cmdheight = 0
+vim.opt.conceallevel = 1
 vim.opt.termguicolors = true
 vim.opt.background = 'light'
 ---- substitutions go global by default
