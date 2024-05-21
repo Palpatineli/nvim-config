@@ -45,22 +45,6 @@ local setup_trouble = function()
     vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent=true, noremap=true})
 end
 
-local setup_comment = function()
-    require'Comment'.setup{
-        toggler = {
-            line = ';cc',
-            block = ';bc'
-        },
-        opleader = {
-            line = ';c',
-            block = ';b'
-        },
-        mappings = {
-            extra = false
-        }
-    }
-end
-
 local setup_todo_comments = function()
     require("todo-comments").setup({
         keywords={
@@ -111,11 +95,10 @@ require('lazy').setup({
             'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim", 'hrsh7th/cmp-nvim-lsp-signature-help'},
         config=require'setup_lsp'.setup},
-    {'numToStr/Comment.nvim', config=setup_comment},
     {'saadparwaiz1/cmp_luasnip', dependencies={'L3MON4D3/LuaSnip'},
         config=require'setup_luasnip'.setup},
     {'mfussenegger/nvim-dap', ft={'python'},
-        dependencies={'rcarriga/nvim-dap-ui', 'mfussenegger/nvim-dap-python'},
+        dependencies={'rcarriga/nvim-dap-ui', 'mfussenegger/nvim-dap-python', 'nvim-neotest/nvim-nio'},
         config=require'setup_dap'.setup},
     {'LiadOz/nvim-dap-repl-highlights', config=true},
     {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
