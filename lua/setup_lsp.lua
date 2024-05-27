@@ -102,6 +102,7 @@ M.setup = function()
         'lua_ls',
         'marksman',
         'pyright',
+        'ruff-lsp',
         'rust_analyzer',
         'yamlls',
       }

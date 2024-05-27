@@ -89,7 +89,6 @@ require('lazy').setup({
     end},
     {'akinsho/bufferline.nvim', dependencies={'nvim-tree/nvim-web-devicons'}, config=setup_bufferline},
     {"aduros/ai.vim", commit='921f467', config=setup_ai},
-    {"asiryk/auto-hlsearch.nvim", config=true},
     {'hrsh7th/nvim-cmp',
         dependencies={'neovim/nvim-lspconfig', 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', "williamboman/mason.nvim",
