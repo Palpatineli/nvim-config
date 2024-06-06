@@ -150,6 +150,4 @@ require('lazy').setup({
         config=require'setup_treesitter'.setup},
     {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
     {'chomosuke/typst-preview.nvim', ft='typst', build=function() require'typst-preview'.update() end},
-    {'kevinhwang91/nvim-ufo', dependencies='kevinhwang91/promise-async',
-        config=function() require'setup_ufo'.setup() end},
 })

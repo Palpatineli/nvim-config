@@ -97,6 +97,7 @@ M.setup = function()
     require('mason').setup()
     require('mason-lspconfig').setup({
       ensure_installed = {
+        'black',
         'clangd',
         'jsonls',
         'lua_ls',

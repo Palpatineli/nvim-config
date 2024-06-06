@@ -8,6 +8,8 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.backup = false
 vim.opt.swapfile = false
+-- highlight fold
+vim.opt.foldtext = ""
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 -- ui
