@@ -86,8 +86,8 @@ M.setup = function()
     vim.api.nvim_create_autocmd('LspAttach', {
       desc = 'LSP actions',
       callback = function(event)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {noremap=true, silent=true})
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {noremap=true, silent=true})
+        vim.keymap.set("n", "]d", function() vim.diagnostic.jump({count=1}) end, {noremap=true, silent=true})
+        vim.keymap.set("n", "[d", function() vim.diagnostic.jump({count=-1}) end, {noremap=true, silent=true})
         vim.keymap.set("n", "K", vim.lsp.buf.hover, {noremap=true, silent=true})
         vim.keymap.set('n', '<space>r', vim.lsp.buf.rename, {noremap=true})
         vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, {noremap=true})
@@ -99,6 +99,7 @@ M.setup = function()
       ensure_installed = {
         'black',
         'clangd',
+        'emmet-language-server',
         'jsonls',
         'lua_ls',
         'marksman',

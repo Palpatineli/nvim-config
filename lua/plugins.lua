@@ -83,10 +83,12 @@ local setup_gitlab = function()
 end
 
 require('lazy').setup({
-    {'stevearc/aerial.nvim', config=function()
-        require'aerial'.setup{}
-        vim.keymap.set('n', '<F9>', '<cmd>AerialToggle!<CR>')
-    end},
+    {'stevearc/aerial.nvim', dependencies={"nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons"},
+        config=function()
+            require'aerial'.setup{}
+            vim.keymap.set('n', '<F9>', '<cmd>AerialToggle!<CR>')
+        end
+    },
     {'akinsho/bufferline.nvim', dependencies={'nvim-tree/nvim-web-devicons'}, config=setup_bufferline},
     {"aduros/ai.vim", commit='921f467', config=setup_ai},
     {'hrsh7th/nvim-cmp',
@@ -94,6 +96,7 @@ require('lazy').setup({
             'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim", 'hrsh7th/cmp-nvim-lsp-signature-help'},
         config=require'setup_lsp'.setup},
+    {"williamboman/mason-lspconfig.nvim", dependencies="williamboman/mason.nvim"},
     {'saadparwaiz1/cmp_luasnip', dependencies={'L3MON4D3/LuaSnip'},
         config=require'setup_luasnip'.setup},
     {'mfussenegger/nvim-dap', ft={'python'},
