@@ -37,6 +37,38 @@ local setup_bufferline = function()
     vim.keymap.set('n', '<leader>b', require'bufferline.commands'.pick, {silent=true, noremap=true})
 end
 
+local setup_conform = function ()
+    require'conform'.setup{
+        formatters_by_ft = {
+            lua = { "stylua" },
+            -- Conform will run multiple formatters sequentially
+            python = { "isort", "black" },
+            -- Use a sub-list to run only the first available formatter
+            javascript = { { "prettierd", "prettier" } },
+        }
+    }
+    vim.api.nvim_create_user_command("Format", function(args)
+        local range = nil
+        if args.count ~= -1 then
+            local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+            range = {
+                start = { args.line1, 0 },
+                ["end"] = { args.line2, end_line:len() },
+            }
+        end
+        require("conform").format({ async = true, lsp_format = "fallback", range = range })
+    end, { range = true })
+end
+
+local setup_noice = function()
+    require'noice'.setup{
+        presets = {
+            command_palette = true,
+            long_message_to_split = true,
+        }
+    }
+end
+
 local setup_trouble = function()
     require'trouble'.setup{
         mode = "document_diagnostics"
@@ -96,6 +128,7 @@ require('lazy').setup({
             'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim", 'hrsh7th/cmp-nvim-lsp-signature-help'},
         config=require'setup_lsp'.setup},
+    {'stevearc/conform.nvim', ft={'python'}, config=setup_conform},
     {"williamboman/mason-lspconfig.nvim", dependencies="williamboman/mason.nvim"},
     {'saadparwaiz1/cmp_luasnip', dependencies={'L3MON4D3/LuaSnip'},
         config=require'setup_luasnip'.setup},
@@ -136,6 +169,8 @@ require('lazy').setup({
     {"prichrd/netrw.nvim", config=function()
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
     end},
+    {'folke/noice.nvim', event='VeryLazy', dependencies={'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify'},
+        config=setup_noice},
     {'ojroques/nvim-osc52', config=setup_osc},
     {'epwalsh/obsidian.nvim', lazy=true, dependencies={'nvim-lua/plenary.nvim'},
         event={
