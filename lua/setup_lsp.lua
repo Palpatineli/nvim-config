@@ -97,14 +97,13 @@ M.setup = function()
     require('mason').setup()
     require('mason-lspconfig').setup({
       ensure_installed = {
-        'black',
         'clangd',
-        'emmet-language-server',
+        'emmet_language_server',
         'jsonls',
         'lua_ls',
         'marksman',
         'pyright',
-        'ruff-lsp',
+        'ruff_lsp',
         'rust_analyzer',
         'yamlls',
       }
