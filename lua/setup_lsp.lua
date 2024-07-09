@@ -16,7 +16,7 @@ local setup_cmp = function()
         mapping = {
             ['<C-Space>'] = cmp.mapping.complete({}),
             ['<CR>'] = cmp.mapping.confirm({ select = true }),
-            ['<C-j>'] = cmp.mapping(function(fallback)
+            ['<tab>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
                 elseif luasnip.expand_or_jumpable() then
@@ -27,7 +27,7 @@ local setup_cmp = function()
                     fallback()
                 end
             end, { "i", "s", "c" }),
-            ['<C-k>'] = cmp.mapping(function(fallback)
+            ['<S-tab>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
                 elseif luasnip.jumpable(-1) then
