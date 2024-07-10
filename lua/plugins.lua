@@ -70,12 +70,24 @@ local setup_noice = function()
     }
 end
 
-local setup_trouble = function()
-    require'trouble'.setup{
-        mode = "document_diagnostics"
+local setup_tmux_navigation = function()
+    require'nvim-tmux-navigation'.setup {
+        disable_when_zoomed = true, -- defaults to false
+        keybindings = {
+            left = "<C-h>",
+            down = "<C-j>",
+            up = "<C-k>",
+            right = "<C-l>"
+        }
     }
-    vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", {silent=true, noremap=true})
-    vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent=true, noremap=true})
+end
+
+local setup_trouble = function()
+    require'trouble'.setup{}
+    vim.keymap.set("n", "<space>X", "<cmd>Trouble diagnostics toggle<cr>", {silent=true, noremap=true})
+    vim.keymap.set("n", "<space>W", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", {silent=true, noremap=true})
+    vim.keymap.set("n", "<space>O", "<cmd>Trouble symbols toggle<cr>", {silent=true, noremap=true})
+    vim.keymap.set("n", "<space>L", "<cmd>Trouble lsp toggle<cr>", {silent=true, noremap=true})
 end
 
 local setup_todo_comments = function()
@@ -184,6 +196,7 @@ require('lazy').setup({
         cmd={'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim'}},
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
         config=require'setup_telescope'.setup},
+    { 'alexghergh/nvim-tmux-navigation', config=setup_tmux_navigation},
     {'folke/todo-comments.nvim', config=setup_todo_comments, dependencies={'nvim-telescope/telescope.nvim'} },
     {'nvim-treesitter/nvim-treesitter', dependencies={'LiadOz/nvim-dap-repl-highlights'},
         config=require'setup_treesitter'.setup},
