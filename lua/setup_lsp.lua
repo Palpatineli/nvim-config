@@ -8,7 +8,7 @@ local setup_cmp = function()
     local luasnip = require'luasnip'
     cmp.setup({
         enabled = function ()
-            return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or require'cmp_dap'.is_dap_buffer()
+            return vim.api.nvim_get_option_value('buftype', {scope='local'}) ~= 'prompt' or require'cmp_dap'.is_dap_buffer()
         end,
         snippet = {
             expand = function(args) luasnip.lsp_expand(args.body) end,
@@ -48,12 +48,25 @@ local setup_cmp = function()
         }
     })
     cmp.setup.cmdline('/', {
-        sources = cmp.config.sources({
+        source = cmp.config.sources({
             { name = 'nvim_lsp_document_symbol' }
         },
         {
             { name = 'buffer' }
         })
+    })
+    cmp.setup.cmdline(':', {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources({
+        { name = 'path' }
+      }, {
+        {
+          name = 'cmdline',
+          option = {
+            ignore_cmds = { 'Man', '!' }
+          }
+        }
+      })
     })
 end
 
