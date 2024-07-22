@@ -61,15 +61,6 @@ local setup_conform = function ()
     end, { range = true })
 end
 
-local setup_noice = function()
-    require'noice'.setup{
-        presets = {
-            command_palette = true,
-            long_message_to_split = true,
-        }
-    }
-end
-
 local setup_tmux_navigation = function()
     require'nvim-tmux-navigation'.setup {
         disable_when_zoomed = true, -- defaults to false
@@ -173,6 +164,8 @@ require('lazy').setup({
         keys= {{'<space>g', '<cmd>LazyGit<cr>', desc='LazyGit'}}},
     {'nvim-lualine/lualine.nvim', dependencies={'neanias/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
+    {'iamcco/markdown-preview.nvim', cmd={ "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" }, build = function() vim.fn["mkdp#util#install"]() end,},
     {'smoka7/multicursors.nvim', event="VeryLazy", dependencies={'smoka7/hydra.nvim'},
         opts = {},
         cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
@@ -182,8 +175,6 @@ require('lazy').setup({
     {"prichrd/netrw.nvim", config=function()
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
     end},
-    {'folke/noice.nvim', event='VeryLazy', dependencies={'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify'},
-        config=setup_noice},
     {'ojroques/nvim-osc52', config=setup_osc},
     {'epwalsh/obsidian.nvim', lazy=true, dependencies={'nvim-lua/plenary.nvim'},
         event={

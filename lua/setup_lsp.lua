@@ -16,7 +16,7 @@ local setup_cmp = function()
         mapping = {
             ['<C-Space>'] = cmp.mapping.complete({}),
             ['<CR>'] = cmp.mapping.confirm({ select = true }),
-            ['<tab>'] = cmp.mapping(function(fallback)
+            ['<C-j>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
                 elseif luasnip.expand_or_jumpable() then
@@ -27,7 +27,7 @@ local setup_cmp = function()
                     fallback()
                 end
             end, { "i", "s", "c" }),
-            ['<S-tab>'] = cmp.mapping(function(fallback)
+            ['<C-k>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
                 elseif luasnip.jumpable(-1) then
@@ -129,6 +129,10 @@ M.setup = function()
     end
 
     setup_ast_grep()
+
+    lspconfig.typst_lsp.setup{
+        capabilities = lsp_capabilities
+    }
 
     lspconfig.pyright.setup{
         default_config = {
