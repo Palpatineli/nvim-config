@@ -166,11 +166,6 @@ require('lazy').setup({
         config=function() require'setup_statusline'.lualine('everforest') end},
     {'iamcco/markdown-preview.nvim', cmd={ "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" }, build = function() vim.fn["mkdp#util#install"]() end,},
-    {'smoka7/multicursors.nvim', event="VeryLazy", dependencies={'smoka7/hydra.nvim'},
-        opts = {},
-        cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
-        keys = { { mode = { 'v', 'n' }, '<Leader>m', '<cmd>MCstart<cr>', }, },
-    },
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {"prichrd/netrw.nvim", config=function()
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}

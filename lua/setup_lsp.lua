@@ -116,7 +116,7 @@ M.setup = function()
         'lua_ls',
         'marksman',
         'pyright',
-        'ruff_lsp',
+        'ruff',
         'rust_analyzer',
         'yamlls',
       }
@@ -159,6 +159,8 @@ M.setup = function()
         hover = true,
         completion = true,
     }
+
+    lspconfig.openscad_lsp.setup{}
 
     local runtime_path = vim.split(package.path, ';')
     table.insert(runtime_path, "lua/?.lua")
