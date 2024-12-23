@@ -90,34 +90,6 @@ local setup_todo_comments = function()
     vim.keymap.set("n", "<space>T", ":TodoTelescope<cr>", {})
 end
 
-local setup_ai = function()
-    vim.g.ai_completions_model = "gpt-3.5-turbo"
-    vim.g.ai_context_before = 30
-    vim.g.ai_context_after = 10
-    vim.g.ai_temperature = 0.7
-    vim.g.ai_timeout = 20
-    vim.keymap.set("i", "<c-c>", [[<cmd>Chat<cr>]], {noremap=true})
-end
-
-local setup_gitlab = function()
-    require'dressing'.setup{input={enabled=true}}
-    local gitlab = require'gitlab'
-    gitlab.setup{}
-    vim.keymap.set("n", "<space>lr", gitlab.review)
-    vim.keymap.set("n", "<space>ls", gitlab.summary)
-    vim.keymap.set("n", "<space>lA", gitlab.approve)
-    vim.keymap.set("n", "<space>lR", gitlab.revoke)
-    vim.keymap.set("n", "<space>lc", gitlab.create_comment)
-    vim.keymap.set("n", "<space>ln", gitlab.create_note)
-    vim.keymap.set("n", "<space>ld", gitlab.toggle_discussions)
-    vim.keymap.set("n", "<space>laa", gitlab.add_assignee)
-    vim.keymap.set("n", "<space>lad", gitlab.delete_assignee)
-    vim.keymap.set("n", "<space>lra", gitlab.add_reviewer)
-    vim.keymap.set("n", "<space>lrd", gitlab.delete_reviewer)
-    vim.keymap.set("n", "<space>lp", gitlab.pipeline)
-    vim.keymap.set("n", "<space>lo", gitlab.open_in_browser)
-end
-
 require('lazy').setup({
     {'stevearc/aerial.nvim', dependencies={"nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons"},
         config=function()
@@ -125,22 +97,36 @@ require('lazy').setup({
             vim.keymap.set('n', '<F9>', '<cmd>AerialToggle!<CR>')
         end
     },
-    {'akinsho/bufferline.nvim', dependencies={'nvim-tree/nvim-web-devicons'}, config=setup_bufferline},
-    {"aduros/ai.vim", commit='921f467', config=setup_ai},
-    {'hrsh7th/nvim-cmp',
-        dependencies={'neovim/nvim-lspconfig', 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path',
-            'hrsh7th/cmp-cmdline', 'saadparwaiz1/cmp_luasnip', "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim", 'hrsh7th/cmp-nvim-lsp-signature-help'},
-        config=require'setup_lsp'.setup},
+    {'saghen/blink.cmp', dependencies='rafamadriz/friendly-snippets',
+        version = '*',
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+            keymap = { preset = 'super-tab' },
+            appearance = { use_nvim_cmp_as_default = false, nerd_font_variant = 'mono' },
+            sources = { default = { 'lsp', 'path', 'snippets', 'buffer' } },
+            signature = { enabled = true },
+            completion = {
+                documentation = { auto_show = true, auto_show_delay_ms = 250, treesitter_highlighting = true, window = { border = "rounded" } },
+                list = { selection = { preselect = false, auto_insert = true } },
+                ghost_text = { enabled = true },
+                menu = {
+                    border = "rounded",
+                    draw = {
+                        columns = {{"label", "label_description", gap = 1}, {"kind"}}
+                    }
+                },
+            },
+        },
+        opts_extend = { 'sources.default' }
+    },
+    {'akinsho/bufferline.nvim', config=setup_bufferline},
     {'stevearc/conform.nvim', ft={'python'}, config=setup_conform},
     {"williamboman/mason-lspconfig.nvim", dependencies="williamboman/mason.nvim"},
-    {'saadparwaiz1/cmp_luasnip', dependencies={'L3MON4D3/LuaSnip'},
-        config=require'setup_luasnip'.setup},
     {'mfussenegger/nvim-dap', ft={'python'},
         dependencies={'rcarriga/nvim-dap-ui', 'mfussenegger/nvim-dap-python', 'nvim-neotest/nvim-nio'},
         config=require'setup_dap'.setup},
     {'LiadOz/nvim-dap-repl-highlights', config=true},
-    {'rcarriga/cmp-dap', dependencies={'mfussenegger/nvim-dap', 'hrsh7th/nvim-cmp'}},
     {'folke/flash.nvim', event='VeryLazy', keys={
         {'s', mode={'n', 'x', 'o'}, function() require'flash'.jump() end, desc='flash'}
     }, config=true},
@@ -152,16 +138,13 @@ require('lazy').setup({
         end},
     {'f-person/git-blame.nvim'},
     {'akinsho/git-conflict.nvim', config=true},
-    {'harrisoncramer/gitlab.nvim',
-        enabled=function() return vim.fn.executable('go') == 1 end,
-        dependencies={'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim', 'stevearc/dressing.nvim', enabled=true,},
-        build=function() require'gitlab.server'.build(true) end,
-        config=setup_gitlab},
     {'lewis6991/gitsigns.nvim', config=true},
     {'RRethy/vim-illuminate'},
     {'Vigemus/iron.nvim', ft={'python'}, config=function() require'setup_repl'.iron() end},
     {'kdheepak/lazygit.nvim', lazy=true, dependencies={'nvim-lua/plenary.nvim'},
         keys= {{'<space>g', '<cmd>LazyGit<cr>', desc='LazyGit'}}},
+    {'tzachar/local-highlight.nvim', config=function () require'local-highlight'.setup{disable_file_types={'markdown'}} end},
+    {'neovim/nvim-lspconfig', dependencies={'saghen/blink.cmp'}, config=require'setup_lsp'.setup},
     {'nvim-lualine/lualine.nvim', dependencies={'neanias/everforest'},
         config=function() require'setup_statusline'.lualine('everforest') end},
     {'iamcco/markdown-preview.nvim', cmd={ "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
@@ -171,13 +154,6 @@ require('lazy').setup({
         require'netrw'.setup{mappings ={['p']=function(payload) print(vim.inspect(payload))end}}
     end},
     {'ojroques/nvim-osc52', config=setup_osc},
-    {'epwalsh/obsidian.nvim', lazy=true, dependencies={'nvim-lua/plenary.nvim'},
-        event={
-            'BufReadPre '..'/mnt/e/notes/segmentation/**.md',
-            'BufNewFile '..'/mnt/e/notes/segmentation/**.md'
-        },
-        opts={workspaces={{name='work', path='/mnt/e/notes/segmentation'}}}
-    },
     {'cameron-wags/rainbow_csv.nvim', ft={'csv', 'tsv'}, config=true,
         cmd={'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim'}},
     {'nvim-telescope/telescope.nvim', dependencies={'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'},
@@ -187,7 +163,6 @@ require('lazy').setup({
     {'nvim-treesitter/nvim-treesitter', dependencies={'LiadOz/nvim-dap-repl-highlights'},
         config=require'setup_treesitter'.setup},
     {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', config=setup_trouble},
-    {'chomosuke/typst-preview.nvim', ft='typst', build=function() require'typst-preview'.update() end},
     install = { colorscheme = { "everforest" } },
     checker = { enabled = true },
 })
