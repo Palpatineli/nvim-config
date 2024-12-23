@@ -130,7 +130,7 @@ M.setup = function()
 
     setup_ast_grep()
 
-    lspconfig.typst_lsp.setup{
+    lspconfig.tinymist.setup{
         capabilities = lsp_capabilities
     }
 
