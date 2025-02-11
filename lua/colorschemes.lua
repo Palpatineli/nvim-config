@@ -8,7 +8,6 @@ M.catppuccin = function(flavor)
             ts_rainbow = true,
             mini = true,
             cmp = true,
-            telescope = true,
             fidget = true,
             indent_blankline = {
                 enabled = true,

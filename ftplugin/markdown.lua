@@ -22,7 +22,7 @@ vim.api.nvim_buf_set_keymap(0, "n", "<cr>", "", {noremap = true, callback=requir
 local grep_file_tag = function()
     local tag = vim.fn.expand('%<')  -- needs the escape as [ is special in telescope
     local root_dir = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
-    require("telescope.builtin").grep_string{cwd=root_dir, search=tag}
+    Snacks.picker.grep{dirs={root_dir}, glob=tag}
 end
 
 vim.keymap.set('n', '<leader>z', grep_file_tag, {noremap = true})
