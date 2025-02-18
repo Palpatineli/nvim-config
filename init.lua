@@ -85,5 +85,7 @@ if ok then
    end
 end
 
+vim.diagnostic.config{virtual_lines = true}
+
 require'plugins'
 require'helix-mapping'

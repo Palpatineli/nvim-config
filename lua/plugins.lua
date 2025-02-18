@@ -76,6 +76,11 @@ require('lazy').setup({
         end, { range = true })
     end
     },
+    {'hat0uma/csvview.nvim', cmd = {'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle'},
+        ---@module "csvview"
+        ---@type CsvView.Options
+        opts = { }
+    },
     {"williamboman/mason-lspconfig.nvim", dependencies="williamboman/mason.nvim"},
     {'mfussenegger/nvim-dap', ft={'python'},
         dependencies={'rcarriga/nvim-dap-ui', 'mfussenegger/nvim-dap-python', 'nvim-neotest/nvim-nio'},
