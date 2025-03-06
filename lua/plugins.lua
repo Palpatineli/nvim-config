@@ -95,6 +95,7 @@ require('lazy').setup({
             theme.setup{background='hard'}
             theme.load()
         end},
+    {'David-Kunz/gen.nvim', opts={model="phi4", display_mode="split"}, keys={{'<space>a', ':Gen<CR>', mode={'n', 'x'}}}},
     {'f-person/git-blame.nvim'},
     {'akinsho/git-conflict.nvim', config=true},
     {'RRethy/vim-illuminate'},
