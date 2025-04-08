@@ -162,7 +162,7 @@ require('lazy').setup({
     end
     },
     {'folke/todo-comments.nvim', dependencies={'folke/snacks.nvim'},
-        keys = { {"n", "<space>T", function() Snacks.picker.todo_comments() end, desc="TODO" } },
+        keys = { {"<space>T", function() Snacks.picker.todo_comments() end, desc="TODO" } },
         config = function()
             require("todo-comments").setup({
                 keywords={
@@ -194,4 +194,5 @@ require('lazy').setup({
             end,
         },
     },
+    {"cdmill/focus.nvim", cmd = { "Focus", "Zen", "Narrow" }, opts={}},
 })
