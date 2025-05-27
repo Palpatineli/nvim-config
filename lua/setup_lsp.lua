@@ -16,23 +16,32 @@ M.setup = function()
       end
     })
 
+    local servers = {
+        'emmet_language_server',
+        'jsonls',
+        'lua_ls',
+        'marksman',
+        'pyright',
+        'ruff',
+        'rust_analyzer',
+        'yamlls',
+    }
+    local default_servers = {
+        'emmet_language_server',
+        'jsonls',
+        'marksman',
+        'ruff',
+        'rust_analyzer',
+    }
     require('mason').setup()
     require('mason-lspconfig').setup({
-        ensure_installed = {
-            'emmet_language_server',
-            'jsonls',
-            'lua_ls',
-            'marksman',
-            'pyright',
-            'ruff',
-            'rust_analyzer',
-            'yamlls',
-        },
-        automatic_installation = false
+        ensure_installed = servers,
+        automatic_installation = false,
+        automatic_enable = false
     })
 
     local capabilities = blink.get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
-    for _, server_name in ipairs(get_servers()) do
+    for _, server_name in ipairs(default_servers) do
         lspconfig[server_name].setup({ capabilities = capabilities, })
     end
 
