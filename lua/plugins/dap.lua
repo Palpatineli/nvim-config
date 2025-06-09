@@ -1,0 +1,71 @@
+return { {
+    'mfussenegger/nvim-dap', ft={'python', 'lua'},
+    dependencies={'rcarriga/nvim-dap-ui', 'mfussenegger/nvim-dap-python', 'nvim-neotest/nvim-nio'},
+    config=function()
+        local dap_python = require'dap-python'
+        dap_python.setup()
+        dap_python.test_runner = 'pytest'
+        vim.keymap.set("n", "<leader>df", dap_python.test_method, {silent=true})
+        vim.keymap.set("n", "<leader>dF", dap_python.test_class, {silent=true})
+        vim.keymap.set("v", "<leader>DS", dap_python.debug_selection, {silent=true})
+        local dap = require'dap'
+        dap.adapters.lldb = {
+            type = 'executable',
+            command = '/usr/bin/lldb-vscode', -- adjust as needed, must be absolute path
+            name = 'lldb'
+        }
+        dap.configurations.cpp = { {
+                name = 'Launch',
+                type = 'lldb',
+                request = 'launch',
+                program = function()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+                args = {},
+            }, }
+        dap.configurations.c = dap.configurations.cpp
+        local dap, dapui = require("dap"), require("dapui")
+        dapui.setup({
+            layouts = {
+                {
+                    elements = {
+                        { id = "scopes", bize = 0.5 },
+                        { id = "breakpoints", size = 0.25 },
+                        { id = "stacks", size = 0.25 }
+                    },
+                    position = 'left',
+                    size = 80
+                },
+                {
+                    elements = {
+                        { id = "repl", size = 1.0 }
+                    },
+                    position = 'bottom',
+                    size = 20
+                }
+            },
+            mappings = {}
+        })
+        dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+        dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+        dap.listeners.before.event_exited["dapui_config"] = dapui.close
+        local config_path
+        if vim.fn.has('win32') == 1 then
+            config_path = os.getenv("UserProfile") .. '\\.vscode\\launch.json'
+        else
+            config_path = os.getenv("HOME") .. '/.vscode/launch.json'
+        end
+        local open_config = function() vim.cmd('e ' .. config_path) end
+        vim.keymap.set("n", "<leader>da", open_config, {})
+        require('dap.ext.vscode').load_launchjs(config_path)
+    end,
+    keys = {
+        {"<leader>db", require'dap'.toggle_breakpoint},
+        {"<leader>dc", require'dap'.continue},
+        {"<leader>ds", require'dap'.step_into},
+        {"<leader>dn", require'dap'.step_over},
+        {"<leader>du", require'dap'.repl.open},
+    }
+} }
