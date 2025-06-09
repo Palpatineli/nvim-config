@@ -76,12 +76,12 @@ require('lazy').setup({
         end, { range = true })
     end
     },
+    {'norcalli/nvim-colorizer.lua', config=true},
     {'hat0uma/csvview.nvim', cmd = {'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle'},
         ---@module "csvview"
         ---@type CsvView.Options
         opts = { }
     },
-    {"williamboman/mason-lspconfig.nvim", dependencies="williamboman/mason.nvim"},
     {'mfussenegger/nvim-dap', ft={'python'},
         dependencies={'rcarriga/nvim-dap-ui', 'mfussenegger/nvim-dap-python', 'nvim-neotest/nvim-nio'},
         config=require'setup_dap'.setup},
@@ -106,6 +106,7 @@ require('lazy').setup({
         config=function() require'setup_statusline'.lualine('everforest') end},
     {'iamcco/markdown-preview.nvim', cmd={ "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" }, build = function() vim.fn["mkdp#util#install"]() end,},
+    {"williamboman/mason-lspconfig.nvim", dependencies="williamboman/mason.nvim"},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {'ojroques/nvim-osc52', config=function()
         local function copy()
