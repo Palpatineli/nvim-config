@@ -1,6 +1,6 @@
 local M = {}
 
-local current_treesitter_context = function()
+function M.current_treesitter_context()
   if not package.loaded["nvim-treesitter"] then
     return " "
   end
@@ -22,7 +22,7 @@ end
 --- @param hide_width number hides component when window width is smaller then hide_width
 --- @param no_ellipsis boolean whether to disable adding '...' at end after truncation
 --- return function that can format the component accordingly
-local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
+function M.trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
   return function(str)
     local win_width = vim.fn.winwidth(0)
     if hide_width and win_width < hide_width then return ''
@@ -33,6 +33,12 @@ local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
   end
 end
 
-M.trunc = trunc
-M.current_treesitter_context = current_treesitter_context
+function M.follow_link()
+    if require'obsidian'.util.cursor_on_markdown_link() then
+        return '<cmd>ObsidianFollowLink<CR>'
+    else
+        return 'gf'
+    end
+end
+
 return M

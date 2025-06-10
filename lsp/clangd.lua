@@ -1,4 +1,4 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities())
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local function swich_source_header(bufnr)
     local method_name = 'textDocument/switchSourceHeader'
@@ -21,7 +21,7 @@ end
 
 return {
     cmd = { 'clangd' },
-    filetype = { 'c', 'cpp' },
+    filetypes = { 'c', 'cpp' },
     root_markers = { '.clangd', 'compile_commands.json', '.git' },
     capabilities = require'blink.cmp'.get_lsp_capabilities({
         textDocument = {

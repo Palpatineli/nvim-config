@@ -1,6 +1,6 @@
 return {
     cmd = { 'pyright-langserver', '--stdio' },
-    filetype = { 'python' },
+    filetypes = { 'python' },
     root_markers = { ".git", "setup.py", "setup.cfg", "pyproject.toml", "requirement.txt", "Makefile" },
     settings = {
         python = {
@@ -19,6 +19,6 @@ return {
                 arguments = { vim.uri_from_bufnr(bufnr) },
             })
         end, {
-        desc = 'Organize Imports',
-    })
+        desc = 'Organize Imports' })
+    end
 }

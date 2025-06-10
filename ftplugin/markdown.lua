@@ -12,12 +12,9 @@ vim.api.nvim_buf_set_keymap(0, "v", "<c-a-u>", "<Esc>`>a^<Esc>`<i^<Esc>", {norem
 vim.api.nvim_buf_set_keymap(0, "v", "<c-u>", "<Esc>`>a~<Esc>`<i~<Esc>", {noremap = true})
 vim.cmd [["command! SSplit :s/\([\.!?]['"]\?\) /\1\r"]]
 
--- nabla
-vim.keymap.set("n", "<F5>", function() require('nabla').action() end, {noremap = true})
-
 -- note taking
 vim.g.note_root = vim.fn.expand("~/Sync/note")
-vim.api.nvim_buf_set_keymap(0, "n", "<cr>", "", {noremap = true, callback=require'setup_note'.follow_link})
+vim.api.nvim_buf_set_keymap(0, "n", "<cr>", "", {noremap = true, callback=require'core.util'.follow_link})
 
 local grep_file_tag = function()
     local tag = vim.fn.expand('%<')  -- needs the escape as [ is special in telescope

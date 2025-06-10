@@ -1,6 +1,6 @@
 return {
     cmd = { 'vscode-json-language-server', '--stdio' },
-    filetypes = { 'json', 'jsonc' },
+    filetypes = { 'json', 'jsonc', 'javascript' },
     init_options = {
         provideFormatter = true,
     },

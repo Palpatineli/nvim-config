@@ -13,4 +13,9 @@ vim.keymap.set("n", "K", vim.lsp.buf.hover, {noremap=true, silent=true})
 vim.keymap.set('n', '<space>r', vim.lsp.buf.rename, {noremap=true})
 vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, {noremap=true})
 
-vim.lsp.enable({'lua_ls'})
+local lsp_dir = vim.fn.stdpath('config') .. '/lsp'
+local lsp_servers = {}
+for _, f in pairs(vim.fn.readdir(lsp_dir)) do
+    table.insert(lsp_servers, vim.fn.fnamemodify(f, ':t:r'))
+end
+vim.lsp.enable(lsp_servers)
