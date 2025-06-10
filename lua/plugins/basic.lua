@@ -3,10 +3,11 @@ return {
     {'hat0uma/csvview.nvim', cmd = {'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle'}, },
     {'LiadOz/nvim-dap-repl-highlights'},
     {'neanias/everforest-nvim', priority=1000, config=function()
-        require'everforest'.setup{background='hard'}
-        require'everforest'.load()
+        vim.o.bg = 'light'
+        vim.g.everforest_background = 'hard'
+        vim.g.everforest_better_performance = 1
+        vim.cmd[[colorscheme everforest]]
     end},
-    {"cdmill/focus.nvim", cmd = { "Focus", "Zen", "Narrow" }, opts={}},
     {'f-person/git-blame.nvim'},
     {'akinsho/git-conflict.nvim'},
     {'RRethy/vim-illuminate'},
@@ -14,7 +15,7 @@ return {
         require'local-highlight'.setup{disable_file_types={'markdown'}} end},
     {'iamcco/markdown-preview.nvim', cmd={ "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" }, build = function() vim.fn["mkdp#util#install"]() end,},
-    {"williamboman/mason-lspconfig.nvim", dependencies="williamboman/mason.nvim"},
+    {"williamboman/mason.nvim", config=true},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {'ojroques/nvim-osc52', config=function()
         local function copy()

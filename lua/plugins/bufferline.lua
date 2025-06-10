@@ -16,8 +16,8 @@ return {
     end},
     {'nvim-lualine/lualine.nvim', dependencies={'neanias/everforest'},
         config = function ()
-            local trunc = require'core.util.trunc'
-            local current_treesitter_context = require'core.util.current_treesitter_context'
+            local trunc = require'core.util'.trunc
+            local current_treesitter_context = require'core.util'.current_treesitter_context
             local theme = "everforest"
             local custom_theme = require('lualine.themes.'..theme)
             require('lualine').setup({

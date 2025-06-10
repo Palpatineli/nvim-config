@@ -2,7 +2,7 @@ return {
     {'folke/flash.nvim', event='VeryLazy', keys={
         {'s', mode={'n', 'x', 'o'}, function() require'flash'.jump() end, desc='flash'}
     }, config=true},
-    {'folke/snacks.nvim', priority=1000, lazy=false,
+    {'folke/snacks.nvim', priority=1000, lazy=false, config=true,
         ---@type snacks.Config
         opts = {
             bigfile = { enabled = true },
@@ -18,10 +18,13 @@ return {
                     explorer = { },
                     todo_comments = { }
                 }
-            }
+            },
+            zen = {
+            },
         },
         keys = {
             { '<F2>', function() Snacks.explorer() end},
+            { '<F3>', function() Snacks.zen() end },
             { "<space>f", function() Snacks.picker.git_files{untracked = true} end, desc = "Find Git Files" },
             { '<space>g', function() Snacks.lazygit() end},
             { "<space>a", function() Snacks.picker.git_grep{ untracked=true } end, desc = "Live Search"},
@@ -35,15 +38,13 @@ return {
         }
     },
     {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', install = { colorscheme = { "everforest" } },
-        checker = { enabled = true },
-        config=function ()
-            require'trouble'.setup{}
-            vim.keymap.set("n", "<space>x", "<cmd>Trouble diagnostics toggle<cr>", {silent=true, noremap=true})
-            vim.keymap.set("n", "<space>w", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-                {silent=true, noremap=true})
-            vim.keymap.set("n", "<space>o", "<cmd>Trouble symbols toggle<cr>", {silent=true, noremap=true})
-            vim.keymap.set("n", "<space>l", "<cmd>Trouble lsp toggle<cr>", {silent=true, noremap=true})
-        end,
+        checker = { enabled = true }, config=true,
+        keys = {
+            {"<space>x", "<cmd>Trouble diagnostics toggle<cr>"},
+            {"<space>w", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>"},
+            {"<space>o", "<cmd>Trouble symbols toggle<cr>"},
+            {"<space>l", "<cmd>Trouble lsp toggle<cr>"},
+        },
         specs = {
             "folke/snacks.nvim",
             opts = function(_, opts)
