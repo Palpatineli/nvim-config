@@ -1,3 +1,5 @@
+vim.g.mapleader = ';'
+vim.g.maplocalleader = ';'
 require'config.speedup'
 require'config.options'
 require'core.lazy'

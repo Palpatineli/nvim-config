@@ -1,6 +1,4 @@
 -- mapping
-vim.g.mapleader = ';'
-vim.g.maplocalleader = ';'
 vim.cmd[[ca w!! w !sudo tee "%"]]
 ---- Move around between windows
 vim.keymap.set('n', '<c-j>', '<c-w>j', {silent=true})
