@@ -62,10 +62,10 @@ return { {
         require('dap.ext.vscode').load_launchjs(config_path)
     end,
     keys = {
-        {"<leader>db", require'dap'.toggle_breakpoint},
-        {"<leader>dc", require'dap'.continue},
-        {"<leader>ds", require'dap'.step_into},
-        {"<leader>dn", require'dap'.step_over},
-        {"<leader>du", require'dap'.repl.open},
+        {"<leader>db", function() require'dap'.toggle_breakpoint() end},
+        {"<leader>dc", function() require'dap'.continue() end},
+        {"<leader>ds", function() require'dap'.step_into() end},
+        {"<leader>dn", function() require'dap'.step_over() end},
+        {"<leader>du", function() require'dap'.repl.open() end},
     }
 } }
