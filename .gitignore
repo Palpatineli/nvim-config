@@ -5,3 +5,5 @@ spell
 
 plugin/packer_compiled.lua
 lua/.luarc.json
+lsp/package-lock.json
+lsp/package.json

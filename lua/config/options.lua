@@ -54,4 +54,8 @@ end
 vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.md", "*.txt"}, callback=function() vim.bo.filetype = 'markdown' end})
 vim.api.nvim_create_autocmd({'BufNewFile', 'BufEnter'}, {pattern={"*.typ"}, callback=function() vim.bo.filetype = 'typst' end})
 
-vim.diagnostic.config{virtual_lines = true}
+vim.diagnostic.config{
+    virtual_text = true,
+    float = true,
+    virtual_lines = false
+}

@@ -3,10 +3,12 @@ return {
     {'hat0uma/csvview.nvim', cmd = {'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle'}, },
     {'LiadOz/nvim-dap-repl-highlights'},
     {'neanias/everforest-nvim', priority=1000, config=function()
-        vim.o.bg = 'light'
-        vim.g.everforest_background = 'hard'
-        vim.g.everforest_better_performance = 1
-        vim.cmd[[colorscheme everforest]]
+        require'everforest'.setup{
+            background = "hard",
+            italics = true,
+            better_performance = 1,
+        }
+        require'everforest'.load()
     end},
     {'f-person/git-blame.nvim'},
     {'akinsho/git-conflict.nvim'},

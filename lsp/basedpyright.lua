@@ -1,24 +1,32 @@
 return {
-    cmd = { 'basedpyright' },
-    filetypes = { 'python' },
-    root_markers = { ".git", "setup.py", "setup.cfg", "pyproject.toml", "requirement.txt", "Makefile" },
-    settings = {
-        python = {
-            analysis = {
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = 'openFilesOnly',
-            },
-        },
+  cmd = { 'basedpyright-langserver', '--stdio' },
+  filetypes = { 'python' },
+  root_markers = {
+    'pyproject.toml',
+    'setup.py',
+    'setup.cfg',
+    'requirements.txt',
+    'Pipfile',
+    'pyrightconfig.json',
+    '.git',
+  },
+  settings = {
+    basedpyright = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = 'openFilesOnly',
+      },
     },
-    capabilities = require'blink.cmp'.get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    on_attach = function(client, bufnr)
-        vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
-            client:exec_cmd({
-                command = 'pyright.organizeimports',
-                arguments = { vim.uri_from_bufnr(bufnr) },
-            })
-        end, {
-        desc = 'Organize Imports' })
-    end
+  },
+  on_attach = function(client, bufnr)
+    vim.api.nvim_buf_create_user_command(bufnr, 'LspPyrightOrganizeImports', function()
+      client:exec_cmd({
+        command = 'basedpyright.organizeimports',
+        arguments = { vim.uri_from_bufnr(bufnr) },
+      })
+    end, {
+      desc = 'Organize Imports',
+    })
+  end,
 }
