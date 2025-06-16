@@ -11,7 +11,7 @@ return {
             schemas = {
                 {
                     fileMatch = {"__provenance.json"},
-                    url = "~/.templates/schemas/ProvenanceSchema.json",
+                    url = vim.fn.expand("~/.templates/schemas/ProvenanceSchema.json"),
                 }
             }
         }
