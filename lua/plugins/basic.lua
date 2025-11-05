@@ -2,22 +2,30 @@ return {
     {'norcalli/nvim-colorizer.lua'},
     {'hat0uma/csvview.nvim', cmd = {'CsvViewEnable', 'CsvViewDisable', 'CsvViewToggle'}, },
     {'LiadOz/nvim-dap-repl-highlights'},
-    {'neanias/everforest-nvim', priority=1000, config=function()
-        require'everforest'.setup{
-            background = "hard",
-            italics = true,
-            better_performance = 1,
-        }
-        require'everforest'.load()
-    end},
+    -- {"navarasu/onedark.nvim", priority = 1000, config = function()
+    --     require('onedark').setup { style = 'darker' }
+    --     require('onedark').load()
+    -- end},
+    -- {'neanias/everforest-nvim', priority=1000, config=function()
+    --     require'everforest'.setup{
+    --         background = "hard",
+    --         italics = true,
+    --         better_performance = 1,
+    --     }
+    --     require'everforest'.load()
+    -- end},
+    { "catppuccin/nvim", name='catppuccin', config=function()
+        require'catppuccin'.setup{flavour='frappe'}
+        vim.cmd.colorscheme('catppuccin')
+        end, priority = 1000 },
     {'f-person/git-blame.nvim'},
     {'akinsho/git-conflict.nvim'},
     {'RRethy/vim-illuminate'},
+    {'goerz/jupytext.nvim', version = '0.2.0', opts = {}},
     {'tzachar/local-highlight.nvim', config=function ()
         require'local-highlight'.setup{disable_file_types={'markdown'}} end},
     {'iamcco/markdown-preview.nvim', cmd={ "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" }, build = function() vim.fn["mkdp#util#install"]() end,},
-    {"williamboman/mason.nvim", config=true},
     {"ecthelionvi/NeoColumn.nvim", config=function() require'NeoColumn'.setup{NeoColumn="120", always_on=true} end},
     {'ojroques/nvim-osc52', config=function()
         local function copy()

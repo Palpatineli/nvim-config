@@ -14,16 +14,15 @@ return {
             {silent=true, noremap=true})
         vim.keymap.set('n', '<leader>b', require'bufferline.commands'.pick, {silent=true, noremap=true})
     end},
-    {'nvim-lualine/lualine.nvim', dependencies={'neanias/everforest'},
+    {'nvim-lualine/lualine.nvim', dependencies={'catppuccin/nvim'},
         config = function ()
             local trunc = require'core.util'.trunc
             local current_treesitter_context = require'core.util'.current_treesitter_context
-            local theme = "everforest"
-            local custom_theme = require('lualine.themes.'..theme)
+            local frappe = require("catppuccin.palettes").get_palette("frappe")
             require('lualine').setup({
                 options = {
                     icons_enabled=true,
-                    theme = theme,
+                    theme = 'catppuccin',
                     component_separators = { left = '', right = '' },
                     section_separators = { left = '', right = '' },
                     globalstatus = true,
@@ -31,7 +30,7 @@ return {
                 sections = {
                     lualine_a = {'mode'},
                     lualine_b = {
-                        {'branch', color={bg=custom_theme.normal.b.fg, fg=custom_theme.normal.b.bg},
+                        {'branch', color={bg=frappe.base, fg=frappe.text},
                             fmt=trunc(180, 15, 80, false)},
                         'diff',
                         {'filename', file_status=true, path=1, fmt=trunc(180, 15, 80, false)},
@@ -41,8 +40,8 @@ return {
                             always_visible=true, symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'}}
                     },
                     lualine_x = {{current_treesitter_context, fmt=trunc(180, 35, 80, false)}},
-                    lualine_y = {{'filetype', color={bg=custom_theme.normal.b.bg}}},
-                    lualine_z = {{'%4l:%3c', color={bg=custom_theme.command.a.bg}}, '%L'},
+                    lualine_y = {{'filetype', color={bg=frappe.base}}},
+                    lualine_z = {{'%4l:%3c', color={bg=frappe.text}}, '%L'},
                 }
             })
         end},

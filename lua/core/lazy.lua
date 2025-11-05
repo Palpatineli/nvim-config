@@ -14,7 +14,7 @@ end ---@diagnostic disable-next-line:undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require"lazy".setup({ import = "plugins" }, {
-    install = { colorscheme = { "everforest" }},
+    install = { colorscheme = { "catppuccin" }},
     checker = { enabled = true },
     performance = { rtp = { disabled_plugins = {
         "gzip",

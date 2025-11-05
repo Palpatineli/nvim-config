@@ -14,7 +14,7 @@ vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.cmdheight = 0
 vim.opt.conceallevel = 1
 vim.opt.termguicolors = true
-vim.opt.background = 'light'
+vim.opt.background = 'dark'
 ---- substitutions go global by default
 vim.opt.gdefault = true
 ---- program title shows file name
