@@ -32,6 +32,9 @@ vim.opt.shiftwidth = 4
 vim.opt.inccommand = 'nosplit'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.updatetime = 500
+-- newline
+vim.opt.fileformats = {'unix', 'dos'}
+vim.opt.fixendofline = true
 
 if vim.fn.has('wsl') == 1 then
     vim.g.clipboard = {
