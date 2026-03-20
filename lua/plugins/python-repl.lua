@@ -18,7 +18,7 @@ return {
                 },
                 repl_filetype = function(bufnr, ft) return ft end,
                 dap_integration = true,
-                repl_open_cmd = view.bottom(40),
+                repl_open_cmd = view.split.botright(40),
             },
             keymaps = {
                 visual_send = ";<space>",
