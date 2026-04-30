@@ -37,7 +37,7 @@ return {
             { "gr", function() Snacks.picker.lsp_references() end, desc = "Goto References" },
         }
     },
-    {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', install = { colorscheme = { "catpuccin" } },
+    {'folke/trouble.nvim', dependencies='nvim-tree/nvim-web-devicons', install = { colorscheme = { "catppuccin" } },
         checker = { enabled = true }, config=true,
         keys = {
             {"<space>x", "<cmd>Trouble diagnostics toggle<cr>"},
