@@ -20,7 +20,7 @@ local function swich_source_header(bufnr)
 end
 
 return {
-    cmd = { 'clangd' },
+    cmd = { 'clangd', "--background-index", "--clang-tidy"},
     filetypes = { 'c', 'cpp' },
     root_markers = { '.clangd', 'compile_commands.json', '.git' },
     capabilities = require'blink.cmp'.get_lsp_capabilities({
